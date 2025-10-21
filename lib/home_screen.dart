@@ -19,14 +19,6 @@ class HomeScreen extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            Text(
-              "Delivered to your doorstep",
-              style: TextStyle(
-                fontFamily: "Roboto",
-                fontSize: 15,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
           ],
         ),
       ),
