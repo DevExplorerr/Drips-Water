@@ -1,4 +1,4 @@
-import 'package:drips_water/home_screen.dart';
+import 'package:drips_water/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +13,7 @@ class DripsWater extends StatelessWidget {
     return MaterialApp(
       title: "Drips Water",
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }
