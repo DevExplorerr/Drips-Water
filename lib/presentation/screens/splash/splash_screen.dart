@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, use_build_context_synchronously, annotate_overrides
 
+import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -24,24 +25,25 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff5DCCFC),
+      backgroundColor: AppColors.primary,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'assets/images/splash_screen/logo.png',
-              width: 157,
-              height: 171,
+              width: 160,
+              height: 170,
+              filterQuality: FilterQuality.high,
             ),
             const SizedBox(height: 20),
             Text(
               'Drips Water',
-              // style: GoogleFonts.poppins(
-              //   fontSize: 38,
-              //   fontWeight: FontWeight.bold,
-              //   color: Color(0xffFFFFFF),
-              // ),
+              style: TextStyle(
+                fontSize: 40,
+                color: AppColors.textDark,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ],
         ),

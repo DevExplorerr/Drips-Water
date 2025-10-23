@@ -7,19 +7,21 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[300],
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Drips Water",
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontSize: 30,
-                fontWeight: FontWeight.w700,
+      body: SafeArea(
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Drips Water",
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
