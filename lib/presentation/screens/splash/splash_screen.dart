@@ -15,7 +15,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 4), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const OnboardingScreen()),
@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
 
             const SizedBox(height: 20),
-            Text(
+            const Text(
               'Drips Water',
               style: TextStyle(
                 fontSize: 40,
