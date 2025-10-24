@@ -3,6 +3,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,7 +15,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 10), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const OnboardingScreen()),
@@ -36,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 170,
               filterQuality: FilterQuality.high,
             ),
+
             const SizedBox(height: 20),
             Text(
               'Drips Water',
@@ -44,6 +46,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 color: AppColors.textDark,
                 fontWeight: FontWeight.w700,
               ),
+            ),
+            const SizedBox(height: 40),
+            LoadingAnimationWidget.fourRotatingDots(
+              color: AppColors.white,
+              size: 80,
             ),
           ],
         ),

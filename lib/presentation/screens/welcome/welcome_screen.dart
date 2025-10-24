@@ -41,15 +41,21 @@ class WelcomeScreen extends StatelessWidget {
                 Text(
                   "Welcome to Drips Water",
                   textAlign: TextAlign.center,
-                  style: textTheme.titleLarge,
+                  style: textTheme.titleLarge?.copyWith(
+                    color: AppColors.textDark,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   "Water Delivery App",
                   textAlign: TextAlign.center,
-                  style: textTheme.bodyMedium,
+                  style: textTheme.bodyMedium?.copyWith(
+                    fontFamily: 'Inter',
+                    color: AppColors.textDark,
+                  ),
                 ),
                 const SizedBox(height: 32),
+                // Create Account Button
                 SizedBox(
                   height: 50,
                   width: double.infinity,
@@ -62,7 +68,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const SignupScreen(),
@@ -71,16 +77,15 @@ class WelcomeScreen extends StatelessWidget {
                     },
                     child: Text(
                       "Create an Account",
-                      style: TextStyle(
-                        color: AppColors.textLight,
-                        fontSize: textTheme.bodyMedium?.fontSize,
-                        fontFamily: textTheme.bodyMedium?.fontFamily,
+                      style: textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w700,
+                        fontFamily: 'Inter',
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
+                // Login Button
                 SizedBox(
                   height: 50,
                   width: double.infinity,
@@ -95,7 +100,7 @@ class WelcomeScreen extends StatelessWidget {
                       elevation: 0,
                     ),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const LoginScreen(),
@@ -104,26 +109,33 @@ class WelcomeScreen extends StatelessWidget {
                     },
                     child: Text(
                       "LOGIN",
-                      style: TextStyle(
-                        color: textTheme.bodyMedium?.color,
-                        fontSize: textTheme.bodyMedium?.fontSize,
-                        fontFamily: textTheme.bodyMedium?.fontFamily,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textDark,
+                        fontFamily: 'Inter',
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
+                // Continue as Guest
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const HomeScreen(),
                       ),
+                      (route) => false,
                     );
                   },
-                  child: Text("Continue as Guest", style: textTheme.bodyMedium),
+                  child: Text(
+                    "Continue as Guest",
+                    style: textTheme.bodyMedium?.copyWith(
+                      fontFamily: 'Inter',
+                      color: AppColors.textDark,
+                    ),
+                  ),
                 ),
               ],
             ),

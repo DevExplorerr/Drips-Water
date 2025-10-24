@@ -20,4 +20,11 @@ class AppColors {
 
   // Card
   static const card = Color(0xffF8F8F8);
+
+  // Icon
+  static const icon = Color(0xff1E1E1E);
+
+  // Form
+  static const enabledBorder = Color(0xff808080);
+  static const focusedBorder = Color(0xff000000);
 }

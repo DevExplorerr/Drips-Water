@@ -20,6 +20,13 @@ class AppTheme {
         shape: const WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         ),
+        textStyle: const WidgetStatePropertyAll(
+          TextStyle(
+            fontSize: 18,
+            color: AppColors.textDark,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
     ),
 
@@ -41,6 +48,34 @@ class AppTheme {
         fontSize: 20,
         fontWeight: FontWeight.w700,
       ),
-    )
+    ),
+
+    // Icon
+    iconTheme: const IconThemeData(color: AppColors.icon),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(
+        overlayColor: WidgetStatePropertyAll(AppColors.black.withOpacity(0.1)),
+      ),
+    ),
+
+    // TextField
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: AppColors.primary,
+      selectionColor: AppColors.grey.withOpacity(0.5),
+      selectionHandleColor: AppColors.primary,
+    ),
+    inputDecorationTheme: InputDecorationThemeData(
+      hintStyle: appTextTheme.bodySmall?.copyWith(
+        color: AppColors.secondaryText,
+      ),
+      enabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
+        borderSide: BorderSide(color: AppColors.enabledBorder),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.zero,
+        borderSide: BorderSide(color: AppColors.focusedBorder),
+      ),
+    ),
   );
 }

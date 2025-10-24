@@ -1,3 +1,4 @@
+import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,7 +7,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[300],
+      backgroundColor: AppColors.primary,
       body: SafeArea(
         child: const Center(
           child: Column(
