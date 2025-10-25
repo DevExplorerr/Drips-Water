@@ -1,8 +1,12 @@
 import 'package:drips_water/core/theme/app_theme.dart';
+import 'package:drips_water/firebase/firebase_options.dart';
 import 'package:drips_water/presentation/screens/splash/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const DripsWater());
 }
