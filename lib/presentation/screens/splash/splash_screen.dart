@@ -2,8 +2,10 @@
 
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/onboarding/onboarding_screen.dart';
+import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,14 +15,30 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
+    _navigate();
+  }
+
+  void _navigate() async {
+    await Future.delayed(const Duration(seconds: 4));
+
+    final prefs = await SharedPreferences.getInstance();
+    final seenOnboarding = prefs.getBool('seenOnboarding') ?? false;
+
+    if (seenOnboarding) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        MaterialPageRoute(builder: (_) => const WelcomeScreen()),
       );
-    });
+    } else {
+      await prefs.setBool('seenOnboarding', true);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+      );
+    }
   }
 
   @override

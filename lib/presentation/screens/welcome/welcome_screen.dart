@@ -4,6 +4,7 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/auth/login_screen.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
 import 'package:drips_water/presentation/screens/home/home_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -69,11 +70,32 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignupScreen(),
-                        ),
-                      );
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryanimation) =>
+                                    const SignupScreen(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              const begin =
+                                  Offset(1.0, 0.0);
+                              const end = Offset.zero;
+                              const curve = Curves.ease;
+                              final tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   CupertinoPageRoute(
+                      //     builder: (context) => const SignupScreen(),
+                      //   ),
+                      // );
                     },
                     child: Text(
                       "Create an Account",
@@ -101,11 +123,32 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryanimation) =>
+                                    const LoginScreen(),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              const begin =
+                                  Offset(1.0, 0.0);
+                              const end = Offset.zero;
+                              const curve = Curves.ease;
+                              final tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   CupertinoPageRoute(
+                      //     builder: (context) => const LoginScreen(),
+                      //   ),
+                      // );
                     },
                     child: Text(
                       "LOGIN",
@@ -123,7 +166,7 @@ class WelcomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
+                      CupertinoPageRoute(
                         builder: (context) => const HomeScreen(),
                       ),
                       (route) => false,

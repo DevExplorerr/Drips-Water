@@ -1,8 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/global/snackbar.dart';
+import 'package:drips_water/logic/services/auth_service.dart';
+import 'package:drips_water/presentation/screens/auth/login_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -41,53 +45,67 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
     super.dispose();
   }
 
-  // Future<void> resetPassword() async {
-  //   final email = emailController.text.trim();
+  Future<void> resetPasswordWithEmail() async {
+    final email = _emailController.text.trim();
 
-  //   if (email.isEmpty) {
-  //     showFloatingSnackBar(
-  //       context,
-  //       message: "Please enter your email address.",
-  //       backgroundColor: AppColors.error,
-  //     );
-  //     return;
-  //   }
+    if (email.isEmpty) {
+      showFloatingSnackBar(
+        context,
+        message: "Please enter your email address.",
+        backgroundColor: AppColors.error,
+      );
+      return;
+    }
 
-  //   setState(() => isLoading = true);
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      showFloatingSnackBar(
+        context,
+        message: "Please enter a valid email address.",
+        backgroundColor: AppColors.error,
+      );
+      return;
+    }
 
-  //   try {
-  //     await authservice.value.resetPassword(email: email);
+    setState(() => isLoading = true);
 
-  //     showFloatingSnackBar(
-  //       context,
-  //       message: "Reset link sent! Check your email.",
-  //       backgroundColor: AppColors.success,
-  //     );
+    try {
+      await authService.value.resetPasswordWithEmail(email: email);
 
-  //     await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
+      showFloatingSnackBar(
+        context,
+        message: "Reset link sent! Check your email.",
+        backgroundColor: AppColors.success,
+      );
 
-  //     if (mounted) {
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(builder: (_) => const LoginScreen()),
-  //       );
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     showFloatingSnackBar(
-  //       context,
-  //       message: e.message ?? "An error occurred. Please try again.",
-  //       backgroundColor: AppColors.error,
-  //     );
-  //   } catch (_) {
-  //     showFloatingSnackBar(
-  //       context,
-  //       message: "Unexpected error occurred. Try again later.",
-  //       backgroundColor: AppColors.error,
-  //     );
-  //   } finally {
-  //     if (mounted) setState(() => isLoading = false);
-  //   }
-  // }
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      final errorMsg = switch (e.code) {
+        'user-not-found' => "No account found for this email.",
+        _ => e.message ?? e.code,
+      };
+
+      showFloatingSnackBar(
+        context,
+        message: errorMsg,
+        backgroundColor: AppColors.error,
+      );
+    } catch (_) {
+      showFloatingSnackBar(
+        context,
+        message: "Unexpected error occurred. Try again later.",
+        backgroundColor: AppColors.error,
+      );
+    } finally {
+      if (mounted) setState(() => isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,8 +150,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                   ),
                   const SizedBox(height: 35),
                   CustomTextField(
-                    hintText: "Email",
-                    labelText: "Reset Password",
+                    hintText: "Enter your email",
+                    labelText: "Email",
                     controller: _emailController,
                     textInputType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.done,
@@ -141,7 +159,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                   const SizedBox(height: 40),
                   isLoading
                       ? Center(
-                          child: LoadingAnimationWidget.waveDots(
+                          child: LoadingAnimationWidget.threeArchedCircle(
                             color: AppColors.primary,
                             size: 45,
                           ),
@@ -150,7 +168,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                           text: "Reset Password",
                           height: 55,
                           width: double.infinity,
-                          onPressed: () {},
+                          onPressed: () {
+                            resetPasswordWithEmail();
+                          },
                         ),
                 ],
               ),

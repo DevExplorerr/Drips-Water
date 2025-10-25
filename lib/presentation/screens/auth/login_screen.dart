@@ -1,11 +1,14 @@
-// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use, use_build_context_synchronously
 
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/global/snackbar.dart';
+import 'package:drips_water/logic/services/auth_service.dart';
 import 'package:drips_water/presentation/screens/auth/reset_password_screen.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
 import 'package:drips_water/presentation/screens/home/home_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -19,7 +22,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final bool isLoading = false;
+  bool isLoading = false;
   bool obscureText = true;
   String errorMessage = '';
 
@@ -28,6 +31,64 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() => errorMessage = "Please enter email and password");
+      return;
+    }
+
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+      setState(() => errorMessage = "Please enter a valid email address.");
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+      errorMessage = '';
+    });
+
+    try {
+      await authService.value.login(email: email, password: password);
+
+      if (!mounted) return;
+      showFloatingSnackBar(
+        context,
+        message: "Login successfully",
+        backgroundColor: AppColors.success,
+      );
+
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      final errorMsg =
+          (e.code == 'user-not-found' || e.code == 'wrong-password')
+          ? "Invalid email or password."
+          : e.message ?? e.code;
+
+      showFloatingSnackBar(
+        context,
+        message: errorMsg,
+        backgroundColor: AppColors.error,
+      );
+    } catch (_) {
+      showFloatingSnackBar(
+        context,
+        message: "Unexpected error occurred please try again later.",
+        backgroundColor: AppColors.error,
+      );
+    } finally {
+      if (mounted) setState(() => isLoading = false);
+    }
   }
 
   @override
@@ -129,20 +190,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 40),
                 isLoading
                     ? Center(
-                        child: LoadingAnimationWidget.waveDots(
+                        child: LoadingAnimationWidget.threeArchedCircle(
                           color: AppColors.primary,
                           size: 45,
                         ),
                       )
                     : CustomButton(
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
-                            ),
-                            (route) => false,
-                          );
+                          _login();
                         },
                         height: 55,
                         width: double.infinity,
