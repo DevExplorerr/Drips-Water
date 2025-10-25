@@ -8,6 +8,7 @@ import 'package:drips_water/presentation/screens/home/home_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -212,29 +213,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryanimation) =>
-                                    const LoginScreen(),
-                            transitionsBuilder:
-                                (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  const begin = Offset(1.0, 0.0);
-                                  const end = Offset.zero;
-                                  const curve = Curves.ease;
-                                  final tween = Tween(
-                                    begin: begin,
-                                    end: end,
-                                  ).chain(CurveTween(curve: curve));
-                                  return SlideTransition(
-                                    position: animation.drive(tween),
-                                    child: child,
-                                  );
-                                },
+                          CupertinoPageRoute(
+                            builder: (context) => const LoginScreen(),
                           ),
                         );
                       },

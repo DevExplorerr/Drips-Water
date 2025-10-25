@@ -70,32 +70,11 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.pushReplacement(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryanimation) =>
-                                    const SignupScreen(),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              const begin =
-                                  Offset(1.0, 0.0);
-                              const end = Offset.zero;
-                              const curve = Curves.ease;
-                              final tween = Tween(begin: begin, end: end)
-                                  .chain(CurveTween(curve: curve));
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            },
-                          ),
-                        );
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   CupertinoPageRoute(
-                      //     builder: (context) => const SignupScreen(),
-                      //   ),
-                      // );
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const SignupScreen(),
+                        ),
+                      );
                     },
                     child: Text(
                       "Create an Account",
@@ -123,32 +102,11 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.pushReplacement(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryanimation) =>
-                                    const LoginScreen(),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              const begin =
-                                  Offset(1.0, 0.0);
-                              const end = Offset.zero;
-                              const curve = Curves.ease;
-                              final tween = Tween(begin: begin, end: end)
-                                  .chain(CurveTween(curve: curve));
-                              return SlideTransition(
-                                position: animation.drive(tween),
-                                child: child,
-                              );
-                            },
-                          ),
-                        );
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   CupertinoPageRoute(
-                      //     builder: (context) => const LoginScreen(),
-                      //   ),
-                      // );
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
                     },
                     child: Text(
                       "LOGIN",
