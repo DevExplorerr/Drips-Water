@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     child: Text(
                       "Forgot Password?",
-                      style: textTheme.bodyMedium?.copyWith(
+                      style: textTheme.bodySmall?.copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w700,
                       ),
@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       )
                     : const SizedBox.shrink(),
-                const SizedBox(height: 50),
+                const SizedBox(height: 40),
                 isLoading
                     ? Center(
                         child: LoadingAnimationWidget.waveDots(
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: double.infinity,
                         text: "LOGIN",
                       ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -158,8 +158,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: AppColors.secondaryText,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

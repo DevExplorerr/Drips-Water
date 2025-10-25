@@ -136,18 +136,19 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: double.infinity,
                         text: "CREATE AN ACCOUNT",
                       ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Already have an account?",
-                      style: textTheme.bodyMedium?.copyWith(
+                      style: textTheme.bodySmall?.copyWith(
                         color: AppColors.secondaryText,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
