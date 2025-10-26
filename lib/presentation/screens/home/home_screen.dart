@@ -1,46 +1,48 @@
-import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/logic/services/auth_service.dart';
-import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
-import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
+
+import 'package:drips_water/presentation/screens/home/cart_screen.dart';
+import 'package:drips_water/presentation/screens/home/favorite_screen.dart';
+import 'package:drips_water/presentation/screens/home/profile_screen.dart';
+import 'package:drips_water/presentation/widgets/bottom_navbar/bottom_navbar.dart';
+import 'package:drips_water/presentation/widgets/home_content/home_content.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentSelectedIndex = 0;
+
+  void updateCurrentIndex(int index) {
+    setState(() {
+      _currentSelectedIndex = index;
+    });
+  }
+
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      const HomeContent(),
+      const FavoriteScreen(),
+      const CartScreen(),
+      const ProfileScreen(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Drips Water",
-                style: TextStyle(
-                  fontFamily: "Poppins",
-                  fontSize: 30,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 40),
-              CustomButton(
-                onPressed: () {
-                  authService.value.logout();
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => const WelcomeScreen()),
-                    (route) => false,
-                  );
-                },
-                height: 55,
-                width: 55,
-                text: "Logout",
-              ),
-            ],
-          ),
-        ),
+      body: IndexedStack(index: _currentSelectedIndex, children: _screens),
+      bottomNavigationBar: BottomNavbar(
+        currentSelectedIndex: _currentSelectedIndex,
+        updateCurrentIndex: updateCurrentIndex,
       ),
     );
   }
