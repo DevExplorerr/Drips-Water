@@ -21,6 +21,9 @@ class AppColors {
   // Card
   static const card = Color(0xffF8F8F8);
 
+  // Favorite
+  static const favorite = Color(0xffE31B23);
+
   // Icon
   static const icon = Color(0xff1E1E1E);
 
