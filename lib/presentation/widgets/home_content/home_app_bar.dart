@@ -1,4 +1,6 @@
+import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -6,62 +8,63 @@ class HomeAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
+    final textTheme = Theme.of(context).textTheme;
+    final bool isGuest = FirebaseAuth.instance.currentUser == null;
     return Container(
-      color: const Color(0xff3FBDF1),
+      color: AppColors.primary,
       height: 225,
       width: double.infinity,
       child: Padding(
-        padding: EdgeInsets.all(screenWidth * 0.05),
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 30,
+          bottom: 10,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  style: TextButton.styleFrom(overlayColor: Colors.transparent),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignupScreen(),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 40,
+              child: isGuest
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignupScreen(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        child: Text(
+                          "Sign Up",
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: AppColors.textDark,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    );
-                  },
-                  child: Text(
-                    "Sign Up",
-                    // style: GoogleFonts.poppins(
-                    //   color: Colors.white,
-                    //   fontSize: screenWidth * 0.03,
-                    //   fontWeight: FontWeight.w600,
-                    // ),
-                  ),
-                ),
-              ],
+                    )
+                  : const SizedBox.shrink(),
             ),
-            SizedBox(height: screenHeight * 0.02),
-            Padding(
-              padding: EdgeInsets.only(left: screenWidth * 0.04),
-              child: Text(
-                "Welcome!",
-                // style: GoogleFonts.poppins(
-                //   color: Colors.white,
-                //   fontSize: screenWidth * 0.06,
-                //   fontWeight: FontWeight.bold,
-                // ),
-              ),
+            const SizedBox(height: 12),
+            Text(
+              "Welcome!",
+              style: textTheme.titleLarge?.copyWith(color: AppColors.textDark),
             ),
-            SizedBox(height: screenHeight * 0.015),
+            const SizedBox(height: 12),
+
+            //Search Bar
             Container(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-              height: screenHeight * 0.07,
-              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              height: 60,
               decoration: BoxDecoration(
-                color: Colors.lightBlue[500],
-                borderRadius: BorderRadius.circular(5),
+                color: AppColors.secondary,
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,9 +85,7 @@ class HomeAppBar extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.search),
-                    color: Colors.white,
-                    iconSize: screenWidth * 0.06,
+                    icon: const Icon(Icons.search, color: AppColors.white),
                   ),
                 ],
               ),

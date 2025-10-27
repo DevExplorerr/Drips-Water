@@ -30,7 +30,7 @@ class DripsWater extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(
-              backgroundColor: AppColors.white,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: Center(
                 child: LoadingAnimationWidget.waveDots(
                   color: AppColors.primary,
