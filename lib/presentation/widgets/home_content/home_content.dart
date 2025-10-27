@@ -12,7 +12,7 @@ class HomeContent extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Column(
       children: [
-        const CustomAppBar(),
+        const HomeAppBar(),
         Expanded(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
