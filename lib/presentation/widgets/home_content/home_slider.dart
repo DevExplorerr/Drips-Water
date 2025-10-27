@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class HomeSlider extends StatefulWidget {
 class _HomeSliderState extends State<HomeSlider> {
   int currentIndex = 0;
   final PageController pageController = PageController();
+  Timer? autoSlideTimer;
 
   final List<Map<String, String>> sliderData = [
     {
@@ -22,13 +24,53 @@ class _HomeSliderState extends State<HomeSlider> {
     {
       'image': 'assets/images/home_screen/slider_image1.png',
       'image1': 'assets/images/home_screen/slider_shade1.png',
-      'title': 'Drips Springs',
+      'title': 'Drips Distilled',
+      'description': 'Bottle water delivery',
+    },
+    {
+      'image': 'assets/images/home_screen/slider_image1.png',
+      'image1': 'assets/images/home_screen/slider_shade1.png',
+      'title': 'Drips Purified',
       'description': 'Bottle water delivery',
     },
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _startAutoSlide();
+  }
+
+  void _startAutoSlide() {
+    _cancelTimer();
+    autoSlideTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (pageController.hasClients) {
+        final nextPage = (currentIndex + 1) % sliderData.length;
+        pageController.animateToPage(
+          nextPage,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  void _cancelTimer() {
+    autoSlideTimer?.cancel();
+    autoSlideTimer = null;
+  }
+
+  void _pauseAndResumeAutoSlide() {
+    _cancelTimer();
+    // Resume after a short delay
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) _startAutoSlide();
+    });
+  }
+
+  @override
   void dispose() {
+    _cancelTimer();
     pageController.dispose();
     super.dispose();
   }
@@ -39,90 +81,95 @@ class _HomeSliderState extends State<HomeSlider> {
 
     return Column(
       children: [
-        SizedBox(
-          height: 180,
-          child: PageView.builder(
-            controller: pageController,
-            itemCount: sliderData.length,
-            onPageChanged: (index) => setState(() => currentIndex = index),
-            itemBuilder: (context, index) {
-              final item = sliderData[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                      image: AssetImage(item['image']!),
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.high,
-                    ),
-                  ),
+        GestureDetector(
+          onPanDown: (_) => _pauseAndResumeAutoSlide(),
+          onPanCancel: _pauseAndResumeAutoSlide,
+          onPanEnd: (_) => _pauseAndResumeAutoSlide(),
+          child: SizedBox(
+            height: 180,
+            child: PageView.builder(
+              controller: pageController,
+              itemCount: sliderData.length,
+              onPageChanged: (index) => setState(() => currentIndex = index),
+              itemBuilder: (context, index) {
+                final item = sliderData[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       image: DecorationImage(
-                        image: AssetImage(item['image1']!),
+                        image: AssetImage(item['image']!),
                         fit: BoxFit.cover,
                         filterQuality: FilterQuality.high,
                       ),
                     ),
-                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item['title']!,
-                          style: textTheme.titleLarge?.copyWith(
-                            color: AppColors.textDark,
-                          ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        image: DecorationImage(
+                          image: AssetImage(item['image1']!),
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.high,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          item['description']!,
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: AppColors.white,
-                          ),
-                        ),
-                        const Spacer(),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xffFFC33A),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 12,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                            ),
-                            onPressed: () {},
-                            child: Text(
-                              "Quick Shop",
-                              style: textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'Inter',
-                              ),
+                      ),
+                      padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['title']!,
+                            style: textTheme.titleLarge?.copyWith(
+                              color: AppColors.textDark,
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 4),
+                          Text(
+                            item['description']!,
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: AppColors.white,
+                            ),
+                          ),
+                          const Spacer(),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xffFFC33A),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                "Quick Shop",
+                                style: textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Inter',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
         const SizedBox(height: 8),
-        pageIndicator(),
+        _buildPageIndicator(),
       ],
     );
   }
 
-  Widget pageIndicator() {
+  Widget _buildPageIndicator() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
