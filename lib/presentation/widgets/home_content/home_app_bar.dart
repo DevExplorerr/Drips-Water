@@ -58,37 +58,13 @@ class HomeAppBar extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            //Search Bar
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              height: 60,
-              decoration: BoxDecoration(
-                color: AppColors.secondary,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: TextField(
-                      cursorColor: Colors.black,
-                      decoration: InputDecoration(
-                        hintText: "Search Something...",
-                        // hintStyle: GoogleFonts.rubik(
-                        //   color: Colors.white,
-                        //   fontSize: screenWidth * 0.035,
-                        //   fontWeight: FontWeight.w400,
-                        // ),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.search, color: AppColors.white),
-                  ),
-                ],
-              ),
+            // Search Bar
+            SearchBar(
+              hintText: "Search something...",
+              leading: Icon(Icons.search, color: AppColors.primary),
+              onTapOutside: (event) {
+                FocusScope.of(context).unfocus();
+              },
             ),
           ],
         ),

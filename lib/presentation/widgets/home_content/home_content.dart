@@ -26,7 +26,7 @@ class HomeContent extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Text(
                     "Water type",
-                    style: textTheme.titleMedium?.copyWith(fontFamily: 'Inter'),
+                    style: textTheme.titleSmall?.copyWith(fontFamily: 'Inter'),
                   ),
                 ),
                 const SizedBox(height: 12),

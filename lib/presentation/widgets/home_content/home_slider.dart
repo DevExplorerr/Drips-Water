@@ -94,7 +94,7 @@ class _HomeSliderState extends State<HomeSlider> {
               itemBuilder: (context, index) {
                 final item = sliderData[index];
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
@@ -137,8 +137,8 @@ class _HomeSliderState extends State<HomeSlider> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xffFFC33A),
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 12,
+                                  horizontal: 10,
+                                  vertical: 10,
                                 ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6),

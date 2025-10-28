@@ -38,7 +38,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(_icons.length, (index) {

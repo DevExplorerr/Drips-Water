@@ -77,5 +77,19 @@ class AppTheme {
         borderSide: BorderSide(color: AppColors.focusedBorder),
       ),
     ),
+
+    // Search Bar
+    searchBarTheme: SearchBarThemeData(
+      backgroundColor: const WidgetStatePropertyAll(AppColors.background),
+      elevation: const WidgetStatePropertyAll(3),
+      padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 15)),
+      shape: const WidgetStatePropertyAll(
+        RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      ),
+      hintStyle: WidgetStatePropertyAll(
+        appTextTheme.bodySmall?.copyWith(color: AppColors.secondaryText),
+      ),
+      textStyle: WidgetStatePropertyAll(appTextTheme.bodySmall),
+    ),
   );
 }
