@@ -15,6 +15,7 @@ class HomeContent extends StatelessWidget {
         const HomeAppBar(),
         Expanded(
           child: SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 50),
             physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -12,6 +12,11 @@ class AppTheme {
     fontFamily: 'Poppins',
     textTheme: appTextTheme,
 
+    // Card
+    cardTheme: const CardThemeData(
+      color: AppColors.card
+    ),
+
     // Button
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -91,5 +96,10 @@ class AppTheme {
       ),
       textStyle: WidgetStatePropertyAll(appTextTheme.bodySmall),
     ),
+
+    // Floating Action Button
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: AppColors.primary,
+    )
   );
 }
