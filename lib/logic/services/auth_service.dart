@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +6,7 @@ ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? get currentUser => _auth.currentUser;
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
@@ -14,10 +16,20 @@ class AuthService {
     required String password,
     required String userName,
   }) async {
-    final UserCredential userCredential = await _auth
-        .createUserWithEmailAndPassword(email: email, password: password);
+    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-    await userCredential.user?.updateDisplayName(userName);
+    // Save user info to firestore
+    if (userCredential.user != null) {
+      await _firestore.collection("users").doc(userCredential.user!.uid).set({
+        "uid": userCredential.user!.uid,
+        "name": userName,
+        "email": email,
+        "createdAt": FieldValue.serverTimestamp(),
+      });
+    }
 
     return userCredential;
   }

@@ -1,6 +1,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -34,7 +35,7 @@ class HomeAppBar extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
+                            CupertinoPageRoute(
                               builder: (context) => const SignupScreen(),
                             ),
                             (route) => false,
