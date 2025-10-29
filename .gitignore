@@ -86,3 +86,6 @@ app.*.map.json
 
 # Firebase
 lib/firebase/firebase_options.dart
+
+# Dialog Flow
+assets/credentials.json

@@ -22,6 +22,9 @@ class AppColors {
   // Card
   static const card = Color(0xffF8F8F8);
 
+  // Chat Bot Color
+  static const bot = Color(0xffF1F1F1);
+
   // Favorite
   static const favorite = Color(0xffE31B23);
 

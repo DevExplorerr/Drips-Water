@@ -13,9 +13,7 @@ class AppTheme {
     textTheme: appTextTheme,
 
     // Card
-    cardTheme: const CardThemeData(
-      color: AppColors.card
-    ),
+    cardTheme: const CardThemeData(color: AppColors.card),
 
     // Button
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -49,6 +47,7 @@ class AppTheme {
       scrolledUnderElevation: 0,
       iconTheme: IconThemeData(color: AppColors.primary),
       titleTextStyle: TextStyle(
+        fontFamily: "Poppins",
         color: AppColors.primary,
         fontSize: 20,
         fontWeight: FontWeight.w700,
@@ -100,6 +99,6 @@ class AppTheme {
     // Floating Action Button
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: AppColors.primary,
-    )
+    ),
   );
 }

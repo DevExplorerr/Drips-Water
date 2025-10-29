@@ -2,7 +2,7 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  final String labelText;
+  final String? labelText;
   final TextEditingController controller;
   final TextInputType textInputType;
   final bool? obscureText;
@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
 
   const CustomTextField({
     super.key,
-    required this.labelText,
+    this.labelText,
     required this.controller,
     required this.textInputType,
     this.obscureText,
@@ -28,13 +28,15 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          labelText,
-          style: textTheme.bodySmall?.copyWith(
-            color: AppColors.secondaryText,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
+        labelText != null
+            ? Text(
+                labelText ?? "",
+                style: textTheme.bodySmall?.copyWith(
+                  color: AppColors.secondaryText,
+                  fontWeight: FontWeight.w700,
+                ),
+              )
+            : const SizedBox.shrink(),
         const SizedBox(height: 5),
         TextFormField(
           style: textTheme.bodySmall,
