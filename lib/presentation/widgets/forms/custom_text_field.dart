@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputAction textInputAction;
   final String hintText;
   final IconButton? suffixIcon;
+  final Function(String)? onFieldSubmitted;
 
   const CustomTextField({
     super.key,
@@ -19,6 +20,7 @@ class CustomTextField extends StatelessWidget {
     required this.textInputAction,
     required this.hintText,
     this.suffixIcon,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -28,16 +30,16 @@ class CustomTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        labelText != null
-            ? Text(
-                labelText ?? "",
-                style: textTheme.bodySmall?.copyWith(
-                  color: AppColors.secondaryText,
-                  fontWeight: FontWeight.w700,
-                ),
-              )
-            : const SizedBox.shrink(),
-        const SizedBox(height: 5),
+        if (labelText != null && labelText!.isNotEmpty) ...[
+          Text(
+            labelText!,
+            style: textTheme.bodySmall?.copyWith(
+              color: AppColors.secondaryText,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 5),
+        ],
         TextFormField(
           style: textTheme.bodySmall,
           controller: controller,
@@ -45,6 +47,7 @@ class CustomTextField extends StatelessWidget {
           obscureText: obscureText ?? false,
           textInputAction: textInputAction,
           autofocus: false,
+          onFieldSubmitted: onFieldSubmitted,
           decoration: InputDecoration(
             hintText: hintText,
             suffixIcon: suffixIcon,
