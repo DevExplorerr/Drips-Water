@@ -7,11 +7,13 @@ class ProductCard extends StatelessWidget {
   final String productName;
   final String price;
   final String image;
+  final String description;
   const ProductCard({
     super.key,
     required this.productName,
     required this.price,
     required this.image,
+    required this.description,
   });
 
   @override
@@ -21,7 +23,14 @@ class ProductCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(builder: (context) => const ProductDetailScreen()),
+          CupertinoPageRoute(
+            builder: (context) => ProductDetailScreen(
+              productName: productName,
+              image: image,
+              price: price,
+              description: description,
+            ),
+          ),
         );
       },
       child: Container(

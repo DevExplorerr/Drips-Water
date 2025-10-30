@@ -1,8 +1,21 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+  final String productName;
+  final String image;
+  final String price;
+  final String description;
+  const ProductDetailScreen({
+    super.key,
+    required this.productName,
+    required this.image,
+    required this.price,
+    required this.description,
+  });
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -21,10 +34,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           Container(
             height: 350,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/product_detail/product1.png"),
+                image: AssetImage(widget.image),
                 fit: BoxFit.cover,
+                filterQuality: FilterQuality.high,
+                colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.05),
+                  BlendMode.darken,
+                ),
               ),
             ),
             child: Padding(
@@ -37,7 +55,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: const Icon(Icons.arrow_back, color: AppColors.white),
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: AppColors.white,
+                    ),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +113,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+              padding: const EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 30,
+                bottom: 50,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -100,23 +126,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Drips Spring water", style: textTheme.titleSmall),
+                      Text(widget.productName, style: textTheme.titleLarge),
                       Text(
-                        "(Available In Stock)",
+                        "(In Stock)",
                         style: textTheme.bodySmall?.copyWith(
                           color: AppColors.secondaryText,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Text("\$100", style: textTheme.bodyLarge),
-                  const SizedBox(height: 12),
-                  Text(
-                    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam",
-                    style: textTheme.bodySmall,
-                  ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
+                  Text(widget.price, style: textTheme.titleSmall),
+                  const SizedBox(height: 25),
+                  Text(widget.description, style: textTheme.bodyMedium),
+                  const SizedBox(height: 25),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -160,14 +183,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                             child: DropdownButton<String>(
                               dropdownColor: AppColors.white,
-                              value: "50ml",
+                              value: "100ml",
                               style: textTheme.bodyMedium?.copyWith(
                                 color: AppColors.secondaryText,
                                 fontWeight: FontWeight.w500,
                               ),
                               underline: const SizedBox(),
                               icon: const Icon(Icons.keyboard_arrow_down),
-                              items: ["50ml", "100ml"].map((String value) {
+                              items: ["100ml", "500ml", "1L", "5L"].map((
+                                String value,
+                              ) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -247,35 +272,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ],
                   ),
                   const Spacer(),
-                  SizedBox(
-                    width: double.infinity,
+                  CustomButton(
+                    onPressed: () {},
                     height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => CheckoutScreen(),
-                        //   ),
-                        // );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      child: Text(
-                        "BUY",
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontFamily: 'Inter',
-                          color: AppColors.textDark,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
+                    width: double.infinity,
+                    text: "BUY",
                   ),
-                  const SizedBox(height: 20),
                 ],
               ),
             ),
