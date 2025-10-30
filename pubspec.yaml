@@ -53,7 +53,7 @@ flutter:
     - assets/images/welcome_screen/
     - assets/images/home_screen/
     - assets/images/cart_screen/
-    - assets/images/product_page/
+    - assets/images/product_detail/
     - assets/images/order_success/
 
   fonts:

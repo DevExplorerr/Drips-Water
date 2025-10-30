@@ -28,6 +28,9 @@ class AppColors {
   // Favorite
   static const favorite = Color(0xffE31B23);
 
+  // Review
+  static const review = Color(0xffFFDF00);
+
   // Icon
   static const icon = Color(0xff1E1E1E);
 
