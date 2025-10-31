@@ -35,7 +35,7 @@ class _ProductCardState extends State<ProductCard> {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(
+          MaterialPageRoute(
             builder: (context) => ProductDetailScreen(
               productName: widget.productName,
               image: widget.image,
