@@ -47,6 +47,7 @@ class CustomTextField extends StatelessWidget {
           obscureText: obscureText ?? false,
           textInputAction: textInputAction,
           autofocus: false,
+          autocorrect: true,
           onFieldSubmitted: onFieldSubmitted,
           decoration: InputDecoration(
             hintText: hintText,
