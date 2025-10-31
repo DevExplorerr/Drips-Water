@@ -1,9 +1,11 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/product/product_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final String productName;
   final String price;
   final String image;
@@ -21,6 +23,12 @@ class ProductCard extends StatelessWidget {
   });
 
   @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  bool isFavorite = false;
+  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return GestureDetector(
@@ -29,11 +37,12 @@ class ProductCard extends StatelessWidget {
           context,
           CupertinoPageRoute(
             builder: (context) => ProductDetailScreen(
-              productName: productName,
-              image: image,
-              price: price,
-              description: description, rating: rating, reviews: reviews,
-              
+              productName: widget.productName,
+              image: widget.image,
+              price: widget.price,
+              description: widget.description,
+              rating: widget.rating,
+              reviews: widget.reviews,
             ),
           ),
         );
@@ -42,38 +51,66 @@ class ProductCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.grey.withOpacity(0.1),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image
             Stack(
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(12),
                   ),
-                  child: Image.asset(
-                    image,
-                    height: 150,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.medium,
+                  child: Hero(
+                    tag: widget.productName,
+                    child: Image.asset(
+                      widget.image,
+                      height: 150,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.high,
+                      colorBlendMode: BlendMode.darken,
+                      color: AppColors.black.withOpacity(0.05),
+                    ),
                   ),
                 ),
+
+                // Favorite Icon
                 Positioned(
                   top: 10,
                   right: 12,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: AppColors.white,
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(6),
-                      child: Icon(
-                        Icons.favorite,
-                        color: AppColors.favorite,
-                        size: 18,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isFavorite = !isFavorite;
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: AppColors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.black.withOpacity(0.1),
+                            blurRadius: 3,
+                          ),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(6),
+                        child: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: AppColors.favorite,
+                          size: 18,
+                        ),
                       ),
                     ),
                   ),
@@ -81,11 +118,13 @@ class ProductCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
+
+            // Product Name
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                productName,
-                style: textTheme.bodyLarge?.copyWith(
+                widget.productName,
+                style: textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
                 maxLines: 2,
@@ -93,11 +132,15 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
+
+            // Price
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(price, style: textTheme.bodyMedium),
+              child: Text(widget.price, style: textTheme.bodyMedium),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
+
+            // Rating & Reviews
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
@@ -105,14 +148,14 @@ class ProductCard extends StatelessWidget {
                   const Icon(Icons.star, color: AppColors.review, size: 20),
                   const SizedBox(width: 4),
                   Text(
-                    rating.toString(),
+                    widget.rating.toStringAsFixed(1),
                     style: textTheme.bodySmall?.copyWith(
                       color: AppColors.secondaryText,
                     ),
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    "(${reviews.toString()})",
+                    "(${widget.reviews.toString()})",
                     style: textTheme.bodySmall?.copyWith(
                       color: AppColors.secondaryText,
                     ),

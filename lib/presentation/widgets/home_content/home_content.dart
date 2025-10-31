@@ -17,6 +17,7 @@ class HomeContent extends StatelessWidget {
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(bottom: 50),
             physics: const BouncingScrollPhysics(),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -32,8 +33,6 @@ class HomeContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 SingleChildScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(

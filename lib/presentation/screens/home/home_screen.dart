@@ -77,10 +77,6 @@ class ChatBotFloatingButton extends StatelessWidget {
                 },
           ),
         );
-        // HapticFeedback.mediumImpact();
-        // context
-        //     .findAncestorStateOfType<_HomeContentState>()
-        //     ?._openAddTaskBottomSheet(context);
       },
       child: Container(
         height: 60,

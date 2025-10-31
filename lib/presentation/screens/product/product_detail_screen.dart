@@ -35,83 +35,86 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 350,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(widget.image),
-                fit: BoxFit.cover,
-                filterQuality: FilterQuality.high,
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.05),
-                  BlendMode.darken,
+          Hero(
+            tag: widget.productName,
+            child: Container(
+              height: 300,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(widget.image),
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.05),
+                    BlendMode.darken,
+                  ),
                 ),
               ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 50, right: 10, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: AppColors.white,
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 45,
-                        width: 45,
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.favorite,
-                            color: AppColors.favorite,
-                            size: 25,
-                          ),
-                          onPressed: () {},
-                        ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50, right: 10, bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: AppColors.white,
                       ),
-                      Container(
-                        height: 45,
-                        width: 45,
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Center(
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 45,
+                          width: 45,
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
                           child: IconButton(
-                            alignment: Alignment.center,
                             icon: const Icon(
-                              Icons.shopping_bag_outlined,
-                              color: AppColors.primary,
+                              Icons.favorite,
+                              color: AppColors.favorite,
                               size: 25,
                             ),
-                            onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => CartPage(),
-                              //   ),
-                              // );
-                            },
+                            onPressed: () {},
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        Container(
+                          height: 45,
+                          width: 45,
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: IconButton(
+                              alignment: Alignment.center,
+                              icon: const Icon(
+                                Icons.shopping_bag_outlined,
+                                color: AppColors.primary,
+                                size: 25,
+                              ),
+                              onPressed: () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => CartPage(),
+                                //   ),
+                                // );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -120,7 +123,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.only(
                 left: 15,
                 right: 15,
-                top: 30,
+                top: 20,
                 bottom: 50,
               ),
               child: Column(
