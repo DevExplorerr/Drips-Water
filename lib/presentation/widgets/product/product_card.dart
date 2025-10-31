@@ -2,7 +2,6 @@
 
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/product/product_detail_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
