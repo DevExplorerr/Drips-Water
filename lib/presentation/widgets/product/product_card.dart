@@ -8,12 +8,16 @@ class ProductCard extends StatelessWidget {
   final String price;
   final String image;
   final String description;
+  final double rating;
+  final int reviews;
   const ProductCard({
     super.key,
     required this.productName,
     required this.price,
     required this.image,
     required this.description,
+    required this.rating,
+    required this.reviews,
   });
 
   @override
@@ -28,7 +32,8 @@ class ProductCard extends StatelessWidget {
               productName: productName,
               image: image,
               price: price,
-              description: description,
+              description: description, rating: rating, reviews: reviews,
+              
             ),
           ),
         );
@@ -80,7 +85,7 @@ class ProductCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 productName,
-                style: textTheme.bodyMedium?.copyWith(
+                style: textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
                 maxLines: 2,
@@ -90,11 +95,29 @@ class ProductCard extends StatelessWidget {
             const SizedBox(height: 4),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                price,
-                style: textTheme.bodySmall?.copyWith(
-                  color: AppColors.secondaryText,
-                ),
+              child: Text(price, style: textTheme.bodyMedium),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  const Icon(Icons.star, color: AppColors.review, size: 20),
+                  const SizedBox(width: 4),
+                  Text(
+                    rating.toString(),
+                    style: textTheme.bodySmall?.copyWith(
+                      color: AppColors.secondaryText,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    "(${reviews.toString()})",
+                    style: textTheme.bodySmall?.copyWith(
+                      color: AppColors.secondaryText,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

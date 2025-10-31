@@ -32,6 +32,8 @@ class HomeContent extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 SingleChildScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(

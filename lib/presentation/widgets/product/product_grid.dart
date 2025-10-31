@@ -4,36 +4,45 @@ import 'package:flutter/material.dart';
 class ProductGrid extends StatelessWidget {
   const ProductGrid({super.key});
 
-  final List<Map<String, dynamic>> products = const [
-    {
-      "image": "assets/images/home_screen/water1.png",
-      "name": "Drips Spring Water",
-      "price": "\$100",
-      "description":
-          "Refreshing spring water naturally filtered through mineral-rich rocks for a crisp, clean taste.",
-    },
-    {
-      "image": "assets/images/home_screen/water2.png",
-      "name": "Drips Distilled Water",
-      "price": "\$50",
-      "description":
-          "Steam-distilled to absolute purity - perfect for labs, appliances, and medical use.",
-    },
-    {
-      "image": "assets/images/home_screen/water3.png",
-      "name": "Drips Mineral Water",
-      "price": "\$50",
-      "description":
-          "Infused with essential minerals to keep your body hydrated and energized all day.",
-    },
-    {
-      "image": "assets/images/home_screen/water4.png",
-      "name": "Drips Premium Water",
-      "price": "\$100",
-      "description":
-          "Ultra-pure, smooth, and naturally balanced — designed for those who value refined hydration.",
-    },
-  ];
+final List<Map<String, dynamic>> products = const [
+  {
+    "image": "assets/images/home_screen/water1.png",
+    "name": "Drips Spring Water",
+    "price": "\$100",
+    "rating": 4.8,
+    "reviews": 186,
+    "description":
+        "Refreshing spring water naturally filtered through mineral-rich rocks for a crisp, clean taste.",
+  },
+  {
+    "image": "assets/images/home_screen/water2.png",
+    "name": "Drips Distilled Water",
+    "price": "\$50",
+    "rating": 4.6,
+    "reviews": 132,
+    "description":
+        "Steam-distilled to absolute purity — perfect for labs, appliances, and medical use.",
+  },
+  {
+    "image": "assets/images/home_screen/water3.png",
+    "name": "Drips Mineral Water",
+    "price": "\$50",
+    "rating": 4.7,
+    "reviews": 158,
+    "description":
+        "Infused with essential minerals to keep your body hydrated and energized all day.",
+  },
+  {
+    "image": "assets/images/home_screen/water4.png",
+    "name": "Drips Purified Water",
+    "price": "\$100",
+    "rating": 4.9,
+    "reviews": 204,
+    "description":
+        "Ultra-pure, smooth, and naturally balanced — designed for those who value refined hydration.",
+  },
+];
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +64,8 @@ class ProductGrid extends StatelessWidget {
           price: item['price'],
           image: item['image'],
           description: item['description'],
+          rating: item['rating'],
+          reviews: item['reviews'],
         );
       },
     );

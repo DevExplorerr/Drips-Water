@@ -9,12 +9,16 @@ class ProductDetailScreen extends StatefulWidget {
   final String image;
   final String price;
   final String description;
+  final double rating;
+  final int reviews;
   const ProductDetailScreen({
     super.key,
     required this.productName,
     required this.image,
     required this.price,
     required this.description,
+    required this.rating,
+    required this.reviews,
   });
 
   @override
@@ -143,17 +147,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Icon(Icons.star, color: AppColors.review, size: 20),
+                      const Icon(Icons.star, color: AppColors.review, size: 25),
                       const SizedBox(width: 4),
                       Text(
-                        "4.5",
+                        widget.rating.toString(),
                         style: textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        "(128 reviews)",
+                        "(${widget.reviews})",
                         style: textTheme.bodySmall?.copyWith(
                           color: AppColors.secondaryText,
                         ),
