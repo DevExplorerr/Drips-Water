@@ -1,16 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/logic/services/auth_service.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeAppBar extends StatelessWidget {
+class HomeAppBar extends StatefulWidget {
   const HomeAppBar({super.key});
+
+  @override
+  State<HomeAppBar> createState() => _HomeAppBarState();
+}
+
+class _HomeAppBarState extends State<HomeAppBar> {
+  String? userName;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserName();
+  }
+
+  Future<void> fetchUserName() async {
+    final user = authService.value.currentUser;
+    if (user != null) {
+      try {
+        final snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+
+        if (snapshot.exists) {
+          setState(() {
+            userName = snapshot.data()?['name'] ?? 'Guest';
+          });
+        }
+      } catch (e) {
+        debugPrint('Error fetching username: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final bool isGuest = FirebaseAuth.instance.currentUser == null;
+    final bool isGuest = authService.value.currentUser == null;
 
     return SliverAppBar(
       backgroundColor: AppColors.primary,
@@ -51,7 +85,9 @@ class HomeAppBar extends StatelessWidget {
                 ),
               const SizedBox(height: 12),
               Text(
-                "Welcome!",
+                isGuest
+                    ? "Welcome, Guest"
+                    : (userName != null ? "Welcome, $userName" : "Loading..."),
                 style: textTheme.titleLarge?.copyWith(
                   color: AppColors.textDark,
                 ),
@@ -60,7 +96,6 @@ class HomeAppBar extends StatelessWidget {
           ),
         ),
       ),
-      // Pinned search bar at the bottom of app bar
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(35),
         child: Container(
