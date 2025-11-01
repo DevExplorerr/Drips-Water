@@ -11,63 +11,66 @@ class HomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final bool isGuest = FirebaseAuth.instance.currentUser == null;
-    return Container(
-      color: AppColors.primary,
-      height: 225,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 30,
-          bottom: 10,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 40,
-              child: isGuest
-                  ? Align(
-                      alignment: Alignment.topRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            CupertinoPageRoute(
-                              builder: (context) => const SignupScreen(),
-                            ),
-                            (route) => false,
-                          );
-                        },
-                        child: Text(
-                          "Sign Up",
-                          style: textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textDark,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              "Welcome!",
-              style: textTheme.titleLarge?.copyWith(color: AppColors.textDark),
-            ),
-            const SizedBox(height: 12),
 
-            // Search Bar
-            SearchBar(
-              hintText: "Search something...",
-              leading: Icon(Icons.search, color: AppColors.primary),
-              onTapOutside: (event) {
-                FocusScope.of(context).unfocus();
-              },
-            ),
-          ],
+    return SliverAppBar(
+      backgroundColor: AppColors.primary,
+      expandedHeight: 130,
+      pinned: true,
+      floating: false,
+      automaticallyImplyLeading: false,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.pin,
+        background: Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isGuest)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => const SignupScreen(),
+                        ),
+                        (route) => false,
+                      );
+                    },
+                    child: Text(
+                      "Sign Up",
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textDark,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 12),
+              Text(
+                "Welcome!",
+                style: textTheme.titleLarge?.copyWith(
+                  color: AppColors.textDark,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      // Pinned search bar at the bottom of app bar
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(35),
+        child: Container(
+          color: AppColors.primary,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          child: SearchBar(
+            hintText: "Search something...",
+            leading: Icon(Icons.search, color: AppColors.primary),
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
+          ),
         ),
       ),
     );

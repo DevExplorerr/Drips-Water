@@ -10,59 +10,56 @@ class HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
+
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      slivers: [
         const HomeAppBar(),
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 50),
-            physics: const BouncingScrollPhysics(),
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 24),
-                const HomeSlider(),
-                const SizedBox(height: 32),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    "Water type",
-                    style: textTheme.titleSmall?.copyWith(fontFamily: 'Inter'),
-                  ),
+
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 24),
+              const HomeSlider(),
+              const SizedBox(height: 32),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "Water type",
+                  style: textTheme.titleSmall?.copyWith(fontFamily: 'Inter'),
                 ),
-                const SizedBox(height: 12),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: const [
-                      WaterCategoryTile(color: Color(0xff212121), text: "All"),
-                      SizedBox(width: 12),
-                      WaterCategoryTile(
-                        color: Color(0x99212121),
-                        text: "Distilled",
-                      ),
-                      SizedBox(width: 12),
-                      WaterCategoryTile(
-                        color: Color(0x99212121),
-                        text: "Spring",
-                      ),
-                      SizedBox(width: 12),
-                      WaterCategoryTile(
-                        color: Color(0x99212121),
-                        text: "Purified",
-                      ),
-                    ],
-                  ),
+              ),
+              const SizedBox(height: 12),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: const [
+                    WaterCategoryTile(color: Color(0xff212121), text: "All"),
+                    SizedBox(width: 12),
+                    WaterCategoryTile(
+                      color: Color(0x99212121),
+                      text: "Distilled",
+                    ),
+                    SizedBox(width: 12),
+                    WaterCategoryTile(color: Color(0x99212121), text: "Spring"),
+                    SizedBox(width: 12),
+                    WaterCategoryTile(
+                      color: Color(0x99212121),
+                      text: "Purified",
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 32),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: ProductGrid(),
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 32),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: ProductGrid(),
+              ),
+              const SizedBox(height: 50),
+            ],
           ),
         ),
       ],
