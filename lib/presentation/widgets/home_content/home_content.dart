@@ -34,7 +34,7 @@ class HomeContent extends StatelessWidget {
                 const SizedBox(height: 12),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     children: const [
                       WaterCategoryTile(color: Color(0xff212121), text: "All"),
