@@ -2,27 +2,37 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class WaterCategoryTile extends StatelessWidget {
-  final Color color;
   final String text;
-  const WaterCategoryTile({super.key, required this.color, required this.text});
+  final bool isSelected;
+  final VoidCallback onTap;
+  const WaterCategoryTile({
+    super.key,
+    required this.text,
+    required this.onTap,
+    required this.isSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      width: 75,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      alignment: Alignment.center,
-      child: Center(
-        child: Text(
-          text,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.textDark),
-          textAlign: TextAlign.center,
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        height: 40,
+        width: 90,
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.black : AppColors.grey,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        alignment: Alignment.center,
+        child: Center(
+          child: Text(
+            text,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textDark),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );
