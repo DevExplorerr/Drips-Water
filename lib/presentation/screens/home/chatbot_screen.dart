@@ -156,6 +156,7 @@ class _InputArea extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           CircleAvatar(
+            radius: 24,
             backgroundColor: AppColors.primary,
             child: IconButton(
               icon: const Icon(Icons.send, color: AppColors.white),
