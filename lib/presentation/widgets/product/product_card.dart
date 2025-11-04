@@ -1,34 +1,31 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/product/product_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class ProductCard extends StatefulWidget {
+class ProductCard extends StatelessWidget {
   final Map<String, dynamic> data;
   const ProductCard({super.key, required this.data});
 
   @override
-  State<ProductCard> createState() => _ProductCardState();
-}
-
-class _ProductCardState extends State<ProductCard> {
-  bool isFavorite = false;
-  @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final ValueNotifier<bool> isFavorite = ValueNotifier(false);
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => ProductDetailScreen(
-              productName: widget.data['name'],
-              image: widget.data['imageUrl'],
-              price: widget.data['price'],
-              description: widget.data['description'],
-              rating: widget.data['rating'],
-              reviews: widget.data['reviews'],
+              productName: data['name'],
+              image: data['imageUrl'],
+              price: data['price'],
+              description: data['description'],
+              rating: data['rating'],
+              reviews: data['reviews'],
             ),
           ),
         );
@@ -49,59 +46,36 @@ class _ProductCardState extends State<ProductCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(12),
-                  ),
-                  child: Hero(
-                    tag: widget.data['name'],
-                    child: Image.network(
-                      widget.data['imageUrl'],
+            Hero(
+              tag: data['name'],
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: data['imageUrl'],
                       height: 150,
                       width: double.infinity,
                       fit: BoxFit.cover,
                       filterQuality: FilterQuality.high,
                       colorBlendMode: BlendMode.darken,
                       color: AppColors.black.withOpacity(0.05),
-                    ),
-                  ),
-                ),
-
-                // Favorite Icon
-                Positioned(
-                  top: 10,
-                  right: 12,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isFavorite = !isFavorite;
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: AppColors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.black.withOpacity(0.1),
-                            blurRadius: 3,
+                      placeholder: (_, __) =>
+                          LoadingAnimationWidget.threeArchedCircle(
+                            color: AppColors.primary,
+                            size: 30,
                           ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: AppColors.favorite,
-                          size: 18,
-                        ),
-                      ),
+                      errorWidget: (_, __, ___) =>
+                          const Icon(Icons.broken_image, color: AppColors.icon),
                     ),
                   ),
-                ),
-              ],
+
+                  // Favorite Icon
+                  FavoriteButton(isFavorite: isFavorite),
+                ],
+              ),
             ),
             const SizedBox(height: 8),
 
@@ -109,7 +83,7 @@ class _ProductCardState extends State<ProductCard> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                widget.data['name'],
+                data['name'],
                 style: textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -122,10 +96,7 @@ class _ProductCardState extends State<ProductCard> {
             // Price
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                '\$${widget.data['price']}',
-                style: textTheme.bodyMedium,
-              ),
+              child: Text('\$${data['price']}', style: textTheme.bodyMedium),
             ),
             const SizedBox(height: 8),
 
@@ -137,14 +108,14 @@ class _ProductCardState extends State<ProductCard> {
                   const Icon(Icons.star, color: AppColors.review, size: 20),
                   const SizedBox(width: 4),
                   Text(
-                    '${widget.data['rating']}',
+                    '${data['rating']}',
                     style: textTheme.bodySmall?.copyWith(
                       color: AppColors.secondaryText,
                     ),
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    "(${widget.data['reviews']})",
+                    "(${data['reviews']})",
                     style: textTheme.bodySmall?.copyWith(
                       color: AppColors.secondaryText,
                     ),
@@ -155,6 +126,49 @@ class _ProductCardState extends State<ProductCard> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class FavoriteButton extends StatelessWidget {
+  final ValueNotifier<bool> isFavorite;
+  const FavoriteButton({super.key, required this.isFavorite});
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: isFavorite,
+      builder: (context, value, _) {
+        return Positioned(
+          top: 10,
+          right: 12,
+          child: GestureDetector(
+            onTap: () {
+              isFavorite.value = !value;
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: AppColors.white.withOpacity(0.4),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.black.withOpacity(0.1),
+                    blurRadius: 3,
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Icon(
+                  value ? Icons.favorite : Icons.favorite_border,
+                  color: AppColors.favorite,
+                  size: 18,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

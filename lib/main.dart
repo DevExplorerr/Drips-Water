@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/app_theme.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
@@ -12,6 +13,10 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
+  );
 
   runApp(const DripsWater());
 }
