@@ -16,17 +16,7 @@ class _HomeContentState extends State<HomeContent> {
 
   final List<Map<String, dynamic>> products = const [
     {
-      "image": "assets/images/home_screen/water1.png",
-      "name": "Drips Spring Water",
-      "price": "\$100",
-      "rating": 4.8,
-      "reviews": 186,
-      "description":
-          "Refreshing spring water naturally filtered through mineral-rich rocks for a crisp, clean taste.",
-      "category": "Spring",
-    },
-    {
-      "image": "assets/images/home_screen/water2.png",
+      "image": "assets/images/home_screen/distilled_water.png",
       "name": "Drips Distilled Water",
       "price": "\$50",
       "rating": 4.6,
@@ -36,17 +26,17 @@ class _HomeContentState extends State<HomeContent> {
       "category": "Distilled",
     },
     {
-      "image": "assets/images/home_screen/water3.png",
-      "name": "Drips Mineral Water",
-      "price": "\$50",
-      "rating": 4.7,
-      "reviews": 158,
+      "image": "assets/images/home_screen/spring_water.png",
+      "name": "Drips Spring Water",
+      "price": "\$100",
+      "rating": 4.8,
+      "reviews": 186,
       "description":
-          "Infused with essential minerals to keep your body hydrated and energized all day.",
-      "category": "Mineral",
+          "Refreshing spring water naturally filtered through mineral-rich rocks for a crisp, clean taste.",
+      "category": "Spring",
     },
     {
-      "image": "assets/images/home_screen/water4.png",
+      "image": "assets/images/home_screen/purified_water.png",
       "name": "Drips Purified Water",
       "price": "\$100",
       "rating": 4.9,
@@ -54,6 +44,16 @@ class _HomeContentState extends State<HomeContent> {
       "description":
           "Ultra-pure, smooth, and naturally balanced - designed for those who value refined hydration.",
       "category": "Purified",
+    },
+    {
+      "image": "assets/images/home_screen/mineral_water.png",
+      "name": "Drips Mineral Water",
+      "price": "\$50",
+      "rating": 4.7,
+      "reviews": 158,
+      "description":
+          "Infused with essential minerals to keep your body hydrated and energized all day.",
+      "category": "Mineral",
     },
   ];
 
