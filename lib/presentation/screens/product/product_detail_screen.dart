@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class ProductDetailScreen extends StatefulWidget {
   final String productName;
   final String image;
-  final String price;
+  final int price;
   final String description;
   final double rating;
   final int reviews;
@@ -42,7 +42,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(widget.image),
+                  image: NetworkImage(widget.image),
                   fit: BoxFit.cover,
                   filterQuality: FilterQuality.high,
                   colorFilter: ColorFilter.mode(
@@ -143,7 +143,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Text(widget.price, style: textTheme.titleSmall),
+                  Text('\$${widget.price}', style: textTheme.titleSmall),
                   const SizedBox(height: 25),
                   Text(widget.description, style: textTheme.bodyMedium),
                   const SizedBox(height: 25),

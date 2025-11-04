@@ -5,21 +5,8 @@ import 'package:drips_water/presentation/screens/product/product_detail_screen.d
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatefulWidget {
-  final String productName;
-  final String price;
-  final String image;
-  final String description;
-  final double rating;
-  final int reviews;
-  const ProductCard({
-    super.key,
-    required this.productName,
-    required this.price,
-    required this.image,
-    required this.description,
-    required this.rating,
-    required this.reviews,
-  });
+  final Map<String, dynamic> data;
+  const ProductCard({super.key, required this.data});
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -36,12 +23,12 @@ class _ProductCardState extends State<ProductCard> {
           context,
           MaterialPageRoute(
             builder: (context) => ProductDetailScreen(
-              productName: widget.productName,
-              image: widget.image,
-              price: widget.price,
-              description: widget.description,
-              rating: widget.rating,
-              reviews: widget.reviews,
+              productName: widget.data['name'],
+              image: widget.data['imageUrl'],
+              price: widget.data['price'],
+              description: widget.data['description'],
+              rating: widget.data['rating'],
+              reviews: widget.data['reviews'],
             ),
           ),
         );
@@ -69,9 +56,9 @@ class _ProductCardState extends State<ProductCard> {
                     top: Radius.circular(12),
                   ),
                   child: Hero(
-                    tag: widget.productName,
-                    child: Image.asset(
-                      widget.image,
+                    tag: widget.data['name'],
+                    child: Image.network(
+                      widget.data['imageUrl'],
                       height: 150,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -104,7 +91,7 @@ class _ProductCardState extends State<ProductCard> {
                         ],
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(6),
+                        padding: const EdgeInsets.all(6),
                         child: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: AppColors.favorite,
@@ -122,7 +109,7 @@ class _ProductCardState extends State<ProductCard> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                widget.productName,
+                widget.data['name'],
                 style: textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                 ),
@@ -135,7 +122,10 @@ class _ProductCardState extends State<ProductCard> {
             // Price
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(widget.price, style: textTheme.bodyMedium),
+              child: Text(
+                '\$${widget.data['price']}',
+                style: textTheme.bodyMedium,
+              ),
             ),
             const SizedBox(height: 8),
 
@@ -147,14 +137,14 @@ class _ProductCardState extends State<ProductCard> {
                   const Icon(Icons.star, color: AppColors.review, size: 20),
                   const SizedBox(width: 4),
                   Text(
-                    widget.rating.toStringAsFixed(1),
+                    '${widget.data['rating']}',
                     style: textTheme.bodySmall?.copyWith(
                       color: AppColors.secondaryText,
                     ),
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    "(${widget.reviews.toString()})",
+                    "(${widget.data['reviews']})",
                     style: textTheme.bodySmall?.copyWith(
                       color: AppColors.secondaryText,
                     ),

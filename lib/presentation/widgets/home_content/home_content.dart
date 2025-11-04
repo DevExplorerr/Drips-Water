@@ -13,58 +13,23 @@ class HomeContent extends StatefulWidget {
 
 class _HomeContentState extends State<HomeContent> {
   String selectedCategory = "All";
-
-  final List<Map<String, dynamic>> products = const [
-    {
-      "image": "assets/images/home_screen/distilled_water.png",
-      "name": "Drips Distilled Water",
-      "price": "\$50",
-      "rating": 4.6,
-      "reviews": 132,
-      "description":
-          "Steam-distilled to absolute purity - perfect for labs, appliances, and medical use.",
-      "category": "Distilled",
-    },
-    {
-      "image": "assets/images/home_screen/spring_water.png",
-      "name": "Drips Spring Water",
-      "price": "\$100",
-      "rating": 4.8,
-      "reviews": 186,
-      "description":
-          "Refreshing spring water naturally filtered through mineral-rich rocks for a crisp, clean taste.",
-      "category": "Spring",
-    },
-    {
-      "image": "assets/images/home_screen/purified_water.png",
-      "name": "Drips Purified Water",
-      "price": "\$100",
-      "rating": 4.9,
-      "reviews": 204,
-      "description":
-          "Ultra-pure, smooth, and naturally balanced - designed for those who value refined hydration.",
-      "category": "Purified",
-    },
-    {
-      "image": "assets/images/home_screen/mineral_water.png",
-      "name": "Drips Mineral Water",
-      "price": "\$50",
-      "rating": 4.7,
-      "reviews": 158,
-      "description":
-          "Infused with essential minerals to keep your body hydrated and energized all day.",
-      "category": "Mineral",
-    },
+  List<String> categories = const [
+    "All",
+    "Distilled",
+    "Spring",
+    "Purified",
+    "Mineral",
   ];
+
+  void onSelectedCategory(String category) {
+    setState(() {
+      selectedCategory = category;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
-    final filteredProducts = selectedCategory == "All"
-        ? products
-        : products.where((p) => p["category"] == selectedCategory).toList();
-
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -91,21 +56,17 @@ class _HomeContentState extends State<HomeContent> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    for (final category in [
-                      "All",
-                      "Distilled",
-                      "Spring",
-                      "Purified",
-                      "Mineral",
-                    ])
+                    for (final category in categories)
                       Padding(
                         padding: const EdgeInsets.only(right: 12),
-                        child: WaterCategoryTile(
-                          text: category,
-                          isSelected: selectedCategory == category,
+                        child: GestureDetector(
                           onTap: () {
-                            setState(() => selectedCategory = category);
+                            onSelectedCategory(category);
                           },
+                          child: WaterCategoryTile(
+                            text: category,
+                            isSelected: selectedCategory == category,
+                          ),
                         ),
                       ),
                   ],
@@ -116,7 +77,7 @@ class _HomeContentState extends State<HomeContent> {
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ProductGrid(products: filteredProducts),
+                child: ProductGrid(selectedCategory: selectedCategory),
               ),
               const SizedBox(height: 50),
             ],

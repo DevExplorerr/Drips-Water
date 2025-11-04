@@ -52,7 +52,6 @@ flutter:
     - assets/images/splash_screen/
     - assets/images/welcome_screen/
     - assets/images/home_screen/
-    - assets/images/cart_screen/
     - assets/images/order_success/
 
   fonts:

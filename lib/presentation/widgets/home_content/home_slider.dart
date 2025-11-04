@@ -22,14 +22,14 @@ class _HomeSliderState extends State<HomeSlider> {
       'description': 'Bottle water delivery',
     },
     {
-      'image': 'assets/images/home_screen/slider_image1.png',
-      'image1': 'assets/images/home_screen/slider_shade1.png',
+      'image': 'assets/images/home_screen/slider_image.png',
+      'image1': 'assets/images/home_screen/slider_shade.png',
       'title': 'Drips Distilled',
       'description': 'Bottle water delivery',
     },
     {
-      'image': 'assets/images/home_screen/slider_image1.png',
-      'image1': 'assets/images/home_screen/slider_shade1.png',
+      'image': 'assets/images/home_screen/slider_image.png',
+      'image1': 'assets/images/home_screen/slider_shade.png',
       'title': 'Drips Purified',
       'description': 'Bottle water delivery',
     },
