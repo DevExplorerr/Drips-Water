@@ -54,10 +54,10 @@ class ProductGrid extends StatelessWidget {
             childAspectRatio: childAspectRatio,
           ),
           itemBuilder: (context, index) {
-            final data = products[index].data() as Map<String, dynamic>;
-            return ProductCard(
-              data: data,
-            );
+            final productDoc = products[index];
+            final data = productDoc.data() as Map<String, dynamic>;
+            data['id'] = productDoc.id;
+            return ProductCard(data: data);
           },
         );
       },

@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/product/product_detail_screen.dart';
+import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -13,7 +14,6 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final ValueNotifier<bool> isFavorite = ValueNotifier(false);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -26,6 +26,7 @@ class ProductCard extends StatelessWidget {
               description: data['description'],
               rating: data['rating'],
               reviews: data['reviews'],
+              productId: data['id'],
             ),
           ),
         );
@@ -73,7 +74,11 @@ class ProductCard extends StatelessWidget {
                   ),
 
                   // Favorite Icon
-                  FavoriteButton(isFavorite: isFavorite),
+                  Positioned(
+                    top: 10,
+                    right: 12,
+                    child: FavoriteButton(productId: data['id'], size: 18),
+                  ),
                 ],
               ),
             ),
@@ -130,45 +135,44 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-class FavoriteButton extends StatelessWidget {
-  final ValueNotifier<bool> isFavorite;
-  const FavoriteButton({super.key, required this.isFavorite});
+// class FavoriteButton extends StatelessWidget {
+//   final ValueNotifier<bool> isFavorite;
+//   const FavoriteButton({super.key, required this.isFavorite});
 
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: isFavorite,
-      builder: (context, value, _) {
-        return Positioned(
-          top: 10,
-          right: 12,
-          child: GestureDetector(
-            onTap: () {
-              isFavorite.value = !value;
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: AppColors.white.withOpacity(0.4),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.black.withOpacity(0.1),
-                    blurRadius: 3,
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Icon(
-                  value ? Icons.favorite : Icons.favorite_border,
-                  color: AppColors.favorite,
-                  size: 18,
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ValueListenableBuilder<bool>(
+//       valueListenable: isFavorite,
+//       builder: (context, value, _) {
+//         return Positioned(
+//
+//           child: GestureDetector(
+//             onTap: () {
+//               isFavorite.value = !value;
+//             },
+//             child: Container(
+//               decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(6),
+//                 color: AppColors.white.withOpacity(0.4),
+//                 boxShadow: [
+//                   BoxShadow(
+//                     color: AppColors.black.withOpacity(0.1),
+//                     blurRadius: 3,
+//                   ),
+//                 ],
+//               ),
+//               child: Padding(
+//                 padding: const EdgeInsets.all(10),
+//                 child: Icon(
+//                   value ? Icons.favorite : Icons.favorite_border,
+//                   color: AppColors.favorite,
+//                   size: 18,
+//                 ),
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }

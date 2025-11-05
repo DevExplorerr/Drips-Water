@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/app_theme.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
+import 'package:drips_water/logic/providers/favorite_provider.dart';
 import 'package:drips_water/logic/services/auth_service.dart';
 import 'package:drips_water/presentation/screens/home/home_screen.dart';
 import 'package:drips_water/presentation/screens/splash/splash_screen.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +20,12 @@ void main() async {
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
 
-  runApp(const DripsWater());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => FavoriteProvider()..loadFavorites(),
+      child: const DripsWater(),
+    ),
+  );
 }
 
 class DripsWater extends StatelessWidget {

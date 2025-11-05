@@ -3,10 +3,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
+import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProductDetailScreen extends StatefulWidget {
+  final String productId;
   final String productName;
   final String image;
   final int price;
@@ -22,6 +24,7 @@ class ProductDetailScreen extends StatefulWidget {
     required this.description,
     required this.rating,
     required this.reviews,
+    required this.productId,
   });
 
   @override
@@ -42,6 +45,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         children: [
           // Product Image, Back, Favorite, Cart Buttons
           ProductImageSection(
+            productId: widget.productId,
             image: widget.image,
             name: widget.productName,
             isFavorite: isFavorite,
@@ -104,6 +108,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 }
 
 class ProductImageSection extends StatelessWidget {
+  final String productId;
   final String image;
   final String name;
   final bool isFavorite;
@@ -117,6 +122,7 @@ class ProductImageSection extends StatelessWidget {
     required this.isFavorite,
     required this.onBack,
     required this.onToggleFavorite,
+    required this.productId,
   });
 
   @override
@@ -157,11 +163,12 @@ class ProductImageSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildIconButton(Icons.arrow_back, onBack),
-                _buildIconButton(
-                  isFavorite ? Icons.favorite : Icons.favorite_border,
-                  onToggleFavorite,
-                  iconColor: AppColors.favorite,
-                ),
+                FavoriteButton(productId: productId, size: 25),
+                // _buildIconButton(
+                //   isFavorite ? Icons.favorite : Icons.favorite_border,
+                //   onToggleFavorite,
+                //   iconColor: AppColors.favorite,
+                // ),
               ],
             ),
           ),
