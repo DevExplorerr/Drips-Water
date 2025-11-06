@@ -45,9 +45,11 @@ class FavoriteProvider extends ChangeNotifier {
       await favRef.delete();
     } else {
       _favorites.add(productId);
-      await favRef.set({'isFavorite': true});
+      await favRef.set({
+        'isFavorite': true,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
     }
-
     notifyListeners();
   }
 }
