@@ -22,7 +22,7 @@ void main() async {
 
   runApp(
     ChangeNotifierProvider(
-      create: (_) => FavoriteProvider()..loadFavorites(),
+      create: (_) => FavoriteProvider(),
       child: const DripsWater(),
     ),
   );

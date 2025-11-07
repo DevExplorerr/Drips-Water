@@ -23,7 +23,7 @@ class FavoriteButton extends StatelessWidget {
     final isFavorite = provider.isFavorite(productId);
 
     return GestureDetector(
-      onTap: () => provider.toggleFavorite(productId),
+      onTap: () => provider.toggleFavorite(productId, context),
       child: Container(
         height: height,
         width: width,
