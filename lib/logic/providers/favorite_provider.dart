@@ -7,8 +7,6 @@ class FavoriteProvider extends ChangeNotifier {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
-  Set<String> get favorites => _favorites;
-
   bool isFavorite(String productId) => _favorites.contains(productId);
 
   // Load user's favorites from Firestore once at startup

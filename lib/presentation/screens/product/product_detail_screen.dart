@@ -33,7 +33,6 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int quantity = 1;
-  bool isFavorite = false;
   String selectedSize = "100ml";
 
   @override
@@ -43,16 +42,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Product Image, Back, Favorite, Cart Buttons
           ProductImageSection(
             productId: widget.productId,
             image: widget.image,
             name: widget.productName,
-            isFavorite: isFavorite,
             onBack: () => Navigator.pop(context),
-            onToggleFavorite: () {
-              setState(() => isFavorite = !isFavorite);
-            },
           ),
 
           // Product Info
@@ -111,17 +105,13 @@ class ProductImageSection extends StatelessWidget {
   final String productId;
   final String image;
   final String name;
-  final bool isFavorite;
   final VoidCallback onBack;
-  final VoidCallback onToggleFavorite;
 
   const ProductImageSection({
     super.key,
     required this.image,
     required this.name,
-    required this.isFavorite,
     required this.onBack,
-    required this.onToggleFavorite,
     required this.productId,
   });
 
@@ -163,17 +153,17 @@ class ProductImageSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildIconButton(Icons.arrow_back, onBack),
-                FavoriteButton(productId: productId, size: 25),
-                // _buildIconButton(
-                //   isFavorite ? Icons.favorite : Icons.favorite_border,
-                //   onToggleFavorite,
-                //   iconColor: AppColors.favorite,
-                // ),
+                FavoriteButton(
+                  productId: productId,
+                  iconSize: 25,
+                  height: 45,
+                  width: 45,
+                ),
               ],
             ),
           ),
 
-          // Cart Button (bottom right)
+          // Cart Button
           Positioned(
             bottom: 20,
             right: 15,

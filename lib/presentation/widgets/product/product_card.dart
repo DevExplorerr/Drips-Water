@@ -77,7 +77,12 @@ class ProductCard extends StatelessWidget {
                   Positioned(
                     top: 10,
                     right: 12,
-                    child: FavoriteButton(productId: data['id'], size: 18),
+                    child: FavoriteButton(
+                      productId: data['id'],
+                      iconSize: 18,
+                      height: 40,
+                      width: 40,
+                    ),
                   ),
                 ],
               ),
@@ -134,45 +139,3 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
-
-// class FavoriteButton extends StatelessWidget {
-//   final ValueNotifier<bool> isFavorite;
-//   const FavoriteButton({super.key, required this.isFavorite});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ValueListenableBuilder<bool>(
-//       valueListenable: isFavorite,
-//       builder: (context, value, _) {
-//         return Positioned(
-//
-//           child: GestureDetector(
-//             onTap: () {
-//               isFavorite.value = !value;
-//             },
-//             child: Container(
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(6),
-//                 color: AppColors.white.withOpacity(0.4),
-//                 boxShadow: [
-//                   BoxShadow(
-//                     color: AppColors.black.withOpacity(0.1),
-//                     blurRadius: 3,
-//                   ),
-//                 ],
-//               ),
-//               child: Padding(
-//                 padding: const EdgeInsets.all(10),
-//                 child: Icon(
-//                   value ? Icons.favorite : Icons.favorite_border,
-//                   color: AppColors.favorite,
-//                   size: 18,
-//                 ),
-//               ),
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }

@@ -7,9 +7,15 @@ import 'package:drips_water/logic/providers/favorite_provider.dart';
 
 class FavoriteButton extends StatelessWidget {
   final String productId;
-  final double size;
+  final double iconSize;
+  final double height;
+  final double width;
 
-  const FavoriteButton({super.key, required this.productId, this.size = 25});
+  const FavoriteButton({
+    super.key,
+    required this.productId,
+    required this.iconSize, required this.height, required this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +25,8 @@ class FavoriteButton extends StatelessWidget {
     return GestureDetector(
       onTap: () => provider.toggleFavorite(productId),
       child: Container(
-        height: 45,
-        width: 45,
+        height: height,
+        width: width,
         decoration: BoxDecoration(
           color: AppColors.white.withOpacity(0.4),
           borderRadius: BorderRadius.circular(6),
@@ -28,7 +34,7 @@ class FavoriteButton extends StatelessWidget {
         child: Icon(
           isFavorite ? Icons.favorite : Icons.favorite_border,
           color: AppColors.favorite,
-          size: size,
+          size: iconSize,
         ),
       ),
     );
