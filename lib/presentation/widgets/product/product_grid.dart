@@ -4,24 +4,51 @@ import 'package:drips_water/presentation/widgets/product/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class ProductGrid extends StatelessWidget {
+class ProductGrid extends StatefulWidget {
   final String selectedCategory;
   const ProductGrid({super.key, required this.selectedCategory});
 
   @override
-  Widget build(BuildContext context) {
+  State<ProductGrid> createState() => _ProductGridState();
+}
+
+class _ProductGridState extends State<ProductGrid> {
+  late Future<QuerySnapshot> _productsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  @override
+  void didUpdateWidget(covariant ProductGrid oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedCategory != widget.selectedCategory) {
+      _loadProducts();
+    }
+  }
+
+  void _loadProducts() {
     final productsRef = FirebaseFirestore.instance.collection('products');
     Query query = productsRef;
 
-    if (selectedCategory != 'All') {
-      query = query.where('category', isEqualTo: selectedCategory);
+    if (widget.selectedCategory != 'All') {
+      query = query.where('category', isEqualTo: widget.selectedCategory);
     }
 
+    setState(() {
+      _productsFuture = query.get();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     double childAspectRatio = width < 380 ? 0.52 : 0.62;
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: query.snapshots(),
+    return FutureBuilder<QuerySnapshot>(
+      future: _productsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
