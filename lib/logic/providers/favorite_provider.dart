@@ -41,7 +41,7 @@ class FavoriteProvider extends ChangeNotifier {
         .doc(uid)
         .collection('favorites');
 
-    // Listen in real-time; keeps _favorites in sync across devices
+    // Real-time sync across devices
     _favSub = favRef.snapshots().listen((snapshot) {
       _favorites
         ..clear()
@@ -56,7 +56,6 @@ class FavoriteProvider extends ChangeNotifier {
     if (uid == null) {
       showDialog(
         context: context,
-        barrierDismissible: true,
         animationStyle: AnimationStyle(
           curve: Curves.ease,
           duration: const Duration(milliseconds: 300),
@@ -92,5 +91,4 @@ class FavoriteProvider extends ChangeNotifier {
   }
 }
 
-// Would you like me to extend this system to include real-time Firestore sync (so if user favorites from another device, it updates automatically too)?
 // Would you like me to show how to extend this to show all favorited products in a “Favorites Screen” next? (It will reuse the same Provider, no extra Firestore reads.)
