@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/logic/services/auth_service.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
+import 'package:drips_water/presentation/screens/search/search_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -108,8 +109,15 @@ class _HomeAppBarState extends State<HomeAppBar> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           child: SearchBar(
             hintText: "Search something...",
+            autoFocus: false,
             leading: const Icon(Icons.search, color: AppColors.primary),
             onTapOutside: (_) => FocusScope.of(context).unfocus(),
+            onTap: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => const SearchScreen()),
+              );
+            },
           ),
         ),
       ),
