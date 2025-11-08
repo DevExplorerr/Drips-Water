@@ -31,6 +31,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     _debounce?.cancel();
+    FocusManager.instance.primaryFocus?.unfocus();
     super.dispose();
   }
 
@@ -89,7 +90,10 @@ class _SearchScreenState extends State<SearchScreen> {
         leading: IconButton(
           padding: const EdgeInsets.only(left: 20),
           icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            FocusScope.of(context).unfocus();
+            Navigator.pop(context);
+          },
         ),
       ),
       body: Column(
@@ -158,6 +162,3 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 }
-
-
-// Would you like me to make it debounced (so Firestore or local filtering only triggers after user stops typing for ~400ms)? That would improve performance even more.
