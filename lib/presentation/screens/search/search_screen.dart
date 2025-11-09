@@ -87,6 +87,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         leading: IconButton(
           padding: const EdgeInsets.only(left: 20),
           icon: const Icon(Icons.arrow_back_ios),
@@ -108,6 +109,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 EdgeInsets.symmetric(horizontal: 10),
               ),
               textInputAction: TextInputAction.search,
+              keyboardType: TextInputType.text,
               leading: const Icon(Icons.search, color: AppColors.primary),
               trailing: <Widget>[
                 IconButton(
