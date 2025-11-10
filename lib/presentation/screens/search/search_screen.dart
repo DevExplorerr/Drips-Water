@@ -100,14 +100,11 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             child: SearchBar(
               controller: _searchController,
               hintText: "Search something...",
               autoFocus: true,
-              padding: const WidgetStatePropertyAll(
-                EdgeInsets.symmetric(horizontal: 10),
-              ),
               textInputAction: TextInputAction.search,
               keyboardType: TextInputType.text,
               leading: const Icon(Icons.search, color: AppColors.primary),
@@ -141,9 +138,14 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   )
                 : Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: 20,
+                    ),
                     child: GridView.builder(
                       itemCount: _filteredItems.length,
+                      physics: const BouncingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 12,
