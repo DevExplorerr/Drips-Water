@@ -12,6 +12,8 @@ class FavoriteProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Set<String> get favorites => _favorites;
+
   bool isFavorite(String productId) => _favorites.contains(productId);
 
   FavoriteProvider() {
@@ -90,5 +92,3 @@ class FavoriteProvider extends ChangeNotifier {
     super.dispose();
   }
 }
-
-// Would you like me to show how to extend this to show all favorited products in a “Favorites Screen” next? (It will reuse the same Provider, no extra Firestore reads.)

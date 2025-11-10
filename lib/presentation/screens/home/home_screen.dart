@@ -3,7 +3,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/home/cart_screen.dart';
 import 'package:drips_water/presentation/screens/home/chatbot_screen.dart';
-import 'package:drips_water/presentation/screens/home/favorite_screen.dart';
+import 'package:drips_water/presentation/screens/home/favorite/favorite_screen.dart';
 import 'package:drips_water/presentation/screens/home/profile_screen.dart';
 import 'package:drips_water/presentation/widgets/bottom_navbar/bottom_navbar.dart';
 import 'package:drips_water/presentation/widgets/home_content/home_content.dart';
@@ -30,11 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _screens = [
-      const HomeContent(),
-      const FavoriteScreen(),
-      const CartScreen(),
-      const ProfileScreen(),
+    _screens = const [
+      HomeContent(),
+      FavoriteScreen(),
+      CartScreen(),
+      ProfileScreen(),
     ];
   }
 
@@ -56,7 +56,6 @@ class ChatBotFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -82,11 +81,11 @@ class ChatBotFloatingButton extends StatelessWidget {
         height: 60,
         width: 60,
         decoration: BoxDecoration(
-          color: theme.floatingActionButtonTheme.backgroundColor,
+          color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
           shape: BoxShape.circle,
           boxShadow: [const BoxShadow(color: AppColors.grey, blurRadius: 5)],
         ),
-        child: Icon(Icons.chat, color: AppColors.white, size: 30),
+        child: const Icon(Icons.chat, color: AppColors.white, size: 30),
       ),
     );
   }

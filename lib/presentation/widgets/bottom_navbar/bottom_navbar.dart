@@ -17,7 +17,7 @@ class BottomNavbar extends StatefulWidget {
 }
 
 class _BottomNavbarState extends State<BottomNavbar> {
-  final List<IconData> _icons = [
+  final List<IconData> _icons = const [
     Icons.home_outlined,
     Icons.favorite_border_outlined,
     Icons.shopping_cart_outlined,
@@ -45,7 +45,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
             final isSelected = widget.currentSelectedIndex == index;
             return GestureDetector(
               onTap: () {
-                  widget.updateCurrentIndex(index);
+                widget.updateCurrentIndex(index);
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
