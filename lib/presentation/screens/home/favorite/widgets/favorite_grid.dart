@@ -12,7 +12,7 @@ class FavoriteGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    double childAspectRatio = width < 380 ? 0.52 : 0.62;
+    double childAspectRatio = width < 380 ? 0.58 : 0.64;
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('products')
@@ -38,14 +38,14 @@ class FavoriteGrid extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.only(
             top: 20,
-            left: 20,
-            right: 20,
+            left: 10,
+            right: 10,
             bottom: 100,
           ),
           itemCount: products.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 12,
+            crossAxisSpacing: 10,
             mainAxisSpacing: 20,
             childAspectRatio: childAspectRatio,
           ),

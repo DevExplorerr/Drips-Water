@@ -1,13 +1,16 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/presentation/screens/product/product_detail_screen.dart';
+import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FavoriteCard extends StatefulWidget {
   final Map<String, dynamic> data;
-  final VoidCallback? onTap;
-  const FavoriteCard({super.key, required this.data, this.onTap});
+  const FavoriteCard({super.key, required this.data});
 
   @override
   State<FavoriteCard> createState() => FavoriteCardState();
@@ -39,15 +42,28 @@ class FavoriteCardState extends State<FavoriteCard>
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     final data = widget.data;
-    final name = data['name'];
-    final price = data['price'];
-    final imageUrl = data['imageUrl'];
 
     return ScaleTransition(
       scale: _scaleAnim,
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailScreen(
+                productName: data['name'],
+                image: data['imageUrl'],
+                price: data['price'],
+                description: data['description'],
+                rating: data['rating'],
+                reviews: data['reviews'],
+                productId: data['id'],
+              ),
+            ),
+          );
+        },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(22),
@@ -65,11 +81,7 @@ class FavoriteCardState extends State<FavoriteCard>
               filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor.withOpacity(
-                    Theme.of(context).brightness == Brightness.dark
-                        ? 0.25
-                        : 0.6,
-                  ),
+                  color: Theme.of(context).cardColor.withOpacity(0.5),
                   border: Border.all(
                     color: AppColors.primary.withOpacity(0.3),
                     width: 1,
@@ -79,48 +91,47 @@ class FavoriteCardState extends State<FavoriteCard>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(22),
-                            topRight: Radius.circular(22),
-                          ),
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: Image.network(
-                              imageUrl,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) =>
-                                  const Icon(Icons.image_not_supported),
+                    Hero(
+                      tag: data['id'],
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(22),
+                              topRight: Radius.circular(22),
                             ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            padding: const EdgeInsets.all(7),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.9),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.primary.withOpacity(0.4),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: CachedNetworkImage(
+                                imageUrl: data['imageUrl'],
+                                fit: BoxFit.cover,
+                                filterQuality: FilterQuality.high,
+                                colorBlendMode: BlendMode.darken,
+                                color: AppColors.black.withOpacity(0.05),
+                                placeholder: (_, __) =>
+                                    LoadingAnimationWidget.threeArchedCircle(
+                                      color: AppColors.primary,
+                                      size: 30,
+                                    ),
+                                errorWidget: (_, __, ___) => const Icon(
+                                  Icons.broken_image,
+                                  color: AppColors.icon,
                                 ),
-                              ],
-                            ),
-                            child: const Icon(
-                              Icons.favorite_rounded,
-                              color: Colors.white,
-                              size: 18,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: FavoriteButton(
+                              productId: data['id'],
+                              iconSize: 18,
+                              height: 40,
+                              width: 40,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -131,26 +142,23 @@ class FavoriteCardState extends State<FavoriteCard>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            name,
+                            data['name'],
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.titleSmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.textLight,
-                                ),
+                            style: textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Rs. $price",
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                "\$${data['price']}",
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -168,11 +176,12 @@ class FavoriteCardState extends State<FavoriteCard>
                                   ),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                child: const Text(
+                                child: Text(
                                   "❤️ Favorite",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 11,
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: AppColors.textDark,
+                                    fontSize: 12,
+                                    fontFamily: 'Inter',
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -182,7 +191,6 @@ class FavoriteCardState extends State<FavoriteCard>
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8),
                   ],
                 ),
               ),

@@ -45,57 +45,59 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ProductImageSection(
             productId: widget.productId,
             image: widget.image,
-            name: widget.productName,
             onBack: () => Navigator.pop(context),
           ),
 
           // Product Info
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 15,
-                right: 15,
-                top: 20,
-                bottom: 50,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ProductInfoSection(
-                    productName: widget.productName,
-                    price: widget.price,
-                    description: widget.description,
-                    rating: widget.rating,
-                    reviews: widget.reviews,
-                  ),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 15,
+                  right: 15,
+                  top: 20,
+                  bottom: 50,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProductInfoSection(
+                      productName: widget.productName,
+                      price: widget.price,
+                      description: widget.description,
+                      rating: widget.rating,
+                      reviews: widget.reviews,
+                    ),
 
-                  const SizedBox(height: 25),
+                    const SizedBox(height: 25),
 
-                  // Options (Bottle Size + Quantity)
-                  ProductOptionsRow(
-                    quantity: quantity,
-                    selectedSize: selectedSize,
-                    onQuantityChanged: (newQty) {
-                      setState(() => quantity = newQty);
-                    },
-                    onSizeChanged: (size) {
-                      setState(() => selectedSize = size);
-                    },
-                  ),
-
-                  const Spacer(),
-
-                  CustomButton(
-                    onPressed: () {},
-                    height: 50,
-                    width: double.infinity,
-                    text: "BUY",
-                  ),
-                ],
+                    // Options (Bottle Size + Quantity)
+                    ProductOptionsRow(
+                      quantity: quantity,
+                      selectedSize: selectedSize,
+                      onQuantityChanged: (newQty) {
+                        setState(() => quantity = newQty);
+                      },
+                      onSizeChanged: (size) {
+                        setState(() => selectedSize = size);
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        child: CustomButton(
+          onPressed: () {},
+          height: 50,
+          width: double.infinity,
+          text: "BUY",
+        ),
       ),
     );
   }
@@ -104,13 +106,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 class ProductImageSection extends StatelessWidget {
   final String productId;
   final String image;
-  final String name;
   final VoidCallback onBack;
 
   const ProductImageSection({
     super.key,
     required this.image,
-    required this.name,
     required this.onBack,
     required this.productId,
   });
@@ -118,7 +118,7 @@ class ProductImageSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: name,
+      tag: productId,
       child: Stack(
         children: [
           // Product Image

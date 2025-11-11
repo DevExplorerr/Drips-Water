@@ -48,7 +48,7 @@ class ProductCard extends StatelessWidget {
           children: [
             // Image
             Hero(
-              tag: data['name'],
+              tag: data['id'],
               child: Stack(
                 children: [
                   ClipRRect(
