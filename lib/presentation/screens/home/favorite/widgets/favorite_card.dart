@@ -44,6 +44,7 @@ class FavoriteCardState extends State<FavoriteCard>
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final data = widget.data;
+    final String heroTag = '${data['id']}_FavoriteCard';
 
     return ScaleTransition(
       scale: _scaleAnim,
@@ -60,6 +61,7 @@ class FavoriteCardState extends State<FavoriteCard>
                 rating: data['rating'],
                 reviews: data['reviews'],
                 productId: data['id'],
+                heroTag: heroTag,
               ),
             ),
           );
@@ -92,7 +94,7 @@ class FavoriteCardState extends State<FavoriteCard>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Hero(
-                      tag: data['id'],
+                      tag: heroTag,
                       child: Stack(
                         children: [
                           ClipRRect(

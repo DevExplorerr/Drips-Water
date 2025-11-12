@@ -15,6 +15,7 @@ class ProductDetailScreen extends StatefulWidget {
   final String description;
   final double rating;
   final int reviews;
+  final String? heroTag;
 
   const ProductDetailScreen({
     super.key,
@@ -25,6 +26,7 @@ class ProductDetailScreen extends StatefulWidget {
     required this.rating,
     required this.reviews,
     required this.productId,
+    this.heroTag,
   });
 
   @override
@@ -45,6 +47,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ProductImageSection(
             productId: widget.productId,
             image: widget.image,
+            heroTag: widget.heroTag ?? "",
             onBack: () => Navigator.pop(context),
           ),
 
@@ -107,18 +110,20 @@ class ProductImageSection extends StatelessWidget {
   final String productId;
   final String image;
   final VoidCallback onBack;
+  final String heroTag;
 
   const ProductImageSection({
     super.key,
     required this.image,
     required this.onBack,
     required this.productId,
+    required this.heroTag,
   });
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: productId,
+      tag: heroTag,
       child: Stack(
         children: [
           // Product Image

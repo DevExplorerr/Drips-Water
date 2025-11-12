@@ -14,6 +14,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final String heroTag = '${data['id']}_ProductCard';
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -27,6 +28,7 @@ class ProductCard extends StatelessWidget {
               rating: data['rating'],
               reviews: data['reviews'],
               productId: data['id'],
+              heroTag: heroTag,
             ),
           ),
         );
@@ -48,7 +50,7 @@ class ProductCard extends StatelessWidget {
           children: [
             // Image
             Hero(
-              tag: data['id'],
+              tag: heroTag,
               child: Stack(
                 children: [
                   ClipRRect(
