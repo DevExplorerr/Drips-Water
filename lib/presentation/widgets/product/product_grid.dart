@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/widgets/product/product_card.dart';
+import 'package:drips_water/presentation/widgets/shared/product_card_loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProductGrid extends StatefulWidget {
   final String selectedCategory;
@@ -51,12 +50,7 @@ class _ProductGridState extends State<ProductGrid> {
       future: _productsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: LoadingAnimationWidget.threeArchedCircle(
-              color: AppColors.primary,
-              size: 40,
-            ),
-          );
+          return const ProductCardLoadingIndicator();
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -69,23 +63,26 @@ class _ProductGridState extends State<ProductGrid> {
         }
 
         final products = snapshot.data!.docs;
-        return GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.only(bottom: 40),
-          itemCount: products.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 20,
-            childAspectRatio: childAspectRatio,
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: 40),
+            itemCount: products.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 20,
+              childAspectRatio: childAspectRatio,
+            ),
+            itemBuilder: (context, index) {
+              final productDoc = products[index];
+              final data = productDoc.data() as Map<String, dynamic>;
+              data['id'] = productDoc.id;
+              return ProductCard(data: data);
+            },
           ),
-          itemBuilder: (context, index) {
-            final productDoc = products[index];
-            final data = productDoc.data() as Map<String, dynamic>;
-            data['id'] = productDoc.id;
-            return ProductCard(data: data);
-          },
         );
       },
     );
