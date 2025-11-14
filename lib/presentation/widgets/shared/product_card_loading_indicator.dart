@@ -27,7 +27,7 @@ class ProductCardLoadingIndicator extends StatelessWidget {
         return Shimmer.fromColors(
           baseColor: AppColors.grey.withOpacity(0.3),
           highlightColor: AppColors.grey.withOpacity(0.1),
-          period: const Duration(seconds: 3),
+          period: const Duration(milliseconds: 600),
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.black,
