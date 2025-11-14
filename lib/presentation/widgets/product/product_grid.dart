@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/presentation/widgets/product/product_card.dart';
+import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:drips_water/presentation/widgets/shared/product_card_loading_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -54,11 +55,11 @@ class _ProductGridState extends State<ProductGrid> {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(
-            child: Text(
-              "No products found.",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+          return AppEmptyState(
+            title: "No Products Found",
+            description:
+                "We can't find any items in this section right now. Check out our other popular categories!",
+            icon: Icons.inventory_2_outlined,
           );
         }
 

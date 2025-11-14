@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drips_water/presentation/screens/home/favorite/widgets/empty_state.dart';
 import 'package:drips_water/presentation/screens/home/favorite/widgets/favorite_card.dart';
+import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:drips_water/presentation/widgets/shared/product_card_loading_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -19,11 +19,18 @@ class FavoriteGrid extends StatelessWidget {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const ProductCardLoadingIndicator();
+          return const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            child: ProductCardLoadingIndicator(),
+          );
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const EmptyState();
+          return AppEmptyState(
+            title: "No favorites yet",
+            description: "Add some products you love",
+            icon: Icons.favorite_outline,
+          );
         }
 
         final products = snapshot.data!.docs;

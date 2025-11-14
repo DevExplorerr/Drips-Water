@@ -3,8 +3,16 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class EmptyState extends StatelessWidget {
-  const EmptyState({super.key});
+class AppEmptyState extends StatelessWidget {
+  final String title;
+  final String description;
+  final IconData icon;
+  const AppEmptyState({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +28,11 @@ class EmptyState extends StatelessWidget {
               color: AppColors.primary.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.favorite_outline,
-              color: AppColors.primary,
-              size: 60,
-            ),
+            child: Icon(icon, color: AppColors.primary, size: 60),
           ),
           const SizedBox(height: 20),
           Text(
-            "No favorites yet",
+            title,
             style: textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w600,
               color: AppColors.primary,
@@ -36,7 +40,8 @@ class EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            "Add some products you love",
+            description,
+            textAlign: TextAlign.center,
             style: textTheme.bodySmall?.copyWith(
               fontFamily: 'Inter',
               color: AppColors.secondaryText,

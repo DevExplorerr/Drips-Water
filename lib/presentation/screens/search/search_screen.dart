@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/presentation/widgets/product/product_card.dart';
+import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
+import 'package:drips_water/presentation/widgets/shared/product_card_loading_indicator.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -21,6 +23,7 @@ class _SearchScreenState extends State<SearchScreen> {
   List<QueryDocumentSnapshot<Map<String, dynamic>>> _filteredItems = [];
 
   Timer? _debounce;
+  bool _isTyping = false;
 
   @override
   void initState() {
@@ -59,12 +62,17 @@ class _SearchScreenState extends State<SearchScreen> {
   void _filterList(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
+    setState(() => _isTyping = true);
+
     // Start a new timer
     _debounce = Timer(const Duration(milliseconds: 400), () {
       if (!mounted) return;
 
       if (query.isEmpty) {
-        setState(() => _filteredItems = []);
+        setState(() {
+          _filteredItems = [];
+          _isTyping = false;
+        });
         return;
       }
 
@@ -76,6 +84,8 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             )
             .toList();
+
+        _isTyping = false;
       });
     });
   }
@@ -98,6 +108,7 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: Column(
         children: [
+          // Search Bar
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             child: SearchBar(
@@ -129,13 +140,21 @@ class _SearchScreenState extends State<SearchScreen> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   )
-                : _filteredItems.isEmpty
-                ? Center(
-                    child: Text(
-                      "No Products Found",
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
+                // Showing Loader while Typing
+                : _isTyping
+                ? const Padding(
+                    padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+                    child: ProductCardLoadingIndicator(),
                   )
+                // Empty State
+                : _filteredItems.isEmpty
+                ? AppEmptyState(
+                    title: "No Products Found",
+                    description:
+                        "We couldn't find anything matching your search. Try adjusting your search criteria or a different keyword.",
+                    icon: Icons.search_off_outlined,
+                  )
+                // Product Grid
                 : Padding(
                     padding: const EdgeInsets.only(
                       left: 20,
