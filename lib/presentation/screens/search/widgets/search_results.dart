@@ -1,5 +1,5 @@
 import 'package:drips_water/presentation/screens/search/search_viewmodel.dart';
-import 'package:drips_water/presentation/widgets/product/product_card.dart';
+import 'package:drips_water/presentation/widgets/card/product_card.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:drips_water/presentation/widgets/shared/product_card_loading_indicator.dart';
 import 'package:flutter/material.dart';

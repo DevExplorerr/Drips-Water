@@ -1,7 +1,7 @@
-import 'package:drips_water/presentation/widgets/home_content/home_app_bar.dart';
-import 'package:drips_water/presentation/widgets/home_content/home_slider.dart';
-import 'package:drips_water/presentation/widgets/home_content/water_category_tile.dart';
-import 'package:drips_water/presentation/widgets/product/product_grid.dart';
+import 'package:drips_water/presentation/screens/home/home_content/widgets/home_app_bar.dart';
+import 'package:drips_water/presentation/screens/home/home_content/widgets/home_slider.dart';
+import 'package:drips_water/presentation/screens/home/home_content/widgets/water_category_tile.dart';
+import 'package:drips_water/presentation/screens/home/home_content/product_grid.dart';
 import 'package:flutter/material.dart';
 
 class HomeContent extends StatefulWidget {

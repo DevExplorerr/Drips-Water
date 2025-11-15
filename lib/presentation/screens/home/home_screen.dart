@@ -2,11 +2,11 @@
 
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/home/cart_screen.dart';
-import 'package:drips_water/presentation/screens/home/chatbot_screen.dart';
+import 'package:drips_water/presentation/screens/home/chatbot/chatbot_screen.dart';
 import 'package:drips_water/presentation/screens/home/favorite/favorite_screen.dart';
 import 'package:drips_water/presentation/screens/home/profile_screen.dart';
 import 'package:drips_water/presentation/widgets/bottom_navbar/bottom_navbar.dart';
-import 'package:drips_water/presentation/widgets/home_content/home_content.dart';
+import 'package:drips_water/presentation/screens/home/home_content/home_content.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

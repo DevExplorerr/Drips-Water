@@ -2,7 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/presentation/screens/product/product_detail_screen.dart';
+import 'package:drips_water/presentation/screens/product/product_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -20,7 +20,7 @@ class ProductCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailScreen(
+            builder: (context) => ProductScreen(
               productName: data['name'],
               image: data['imageUrl'],
               price: data['price'],
