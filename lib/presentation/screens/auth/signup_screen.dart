@@ -4,6 +4,8 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/services/auth_service.dart';
 import 'package:drips_water/presentation/screens/auth/login_screen.dart';
+import 'package:drips_water/presentation/screens/auth/widgets/footer.dart';
+import 'package:drips_water/presentation/screens/auth/widgets/header.dart';
 import 'package:drips_water/presentation/screens/home/home_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
@@ -122,18 +124,11 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 35),
-                Text(
-                  "Create your Account",
-                  style: textTheme.titleLarge?.copyWith(
-                    color: AppColors.primary,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  "Please fill in your details to create your account.",
-                  style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.secondaryText,
-                  ),
+                const Header(
+                  title: "Create your Account",
+                  description:
+                      "Please fill in your details to create your account.",
+                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
                 const SizedBox(height: 35),
                 CustomTextField(
@@ -199,34 +194,17 @@ class _SignupScreenState extends State<SignupScreen> {
                         text: "CREATE AN ACCOUNT",
                       ),
                 const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Already have an account?",
-                      style: textTheme.bodySmall?.copyWith(
-                        color: AppColors.secondaryText,
+                Footer(
+                  title: "Already have an account?",
+                  subTitle: "Sign in",
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const LoginScreen(),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "Sign in",
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ],
             ),

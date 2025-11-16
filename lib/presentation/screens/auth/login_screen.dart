@@ -5,6 +5,8 @@ import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/services/auth_service.dart';
 import 'package:drips_water/presentation/screens/auth/reset_password_screen.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
+import 'package:drips_water/presentation/screens/auth/widgets/footer.dart';
+import 'package:drips_water/presentation/screens/auth/widgets/header.dart';
 import 'package:drips_water/presentation/screens/home/home_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
@@ -112,21 +114,13 @@ class _LoginScreenState extends State<LoginScreen> {
               bottom: 20,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 35),
-                Text(
-                  "Welcome Back!",
-                  style: textTheme.titleLarge?.copyWith(
-                    color: AppColors.primary,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  "Please fill in your email password to login to your account.",
-                  style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.secondaryText,
-                  ),
+                const Header(
+                  title: "Welcome Back!",
+                  description:
+                      "Please fill in your email password to login to your account.",
+                  crossAxisAlignment: CrossAxisAlignment.start,
                 ),
                 const SizedBox(height: 35),
                 CustomTextField(
@@ -205,34 +199,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: "LOGIN",
                       ),
                 const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account?",
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: AppColors.secondaryText,
+                Footer(
+                  title: "Don't have an account?",
+                  subTitle: "Sign up",
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => const SignupScreen(),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => const SignupScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "Sign up",
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ],
             ),

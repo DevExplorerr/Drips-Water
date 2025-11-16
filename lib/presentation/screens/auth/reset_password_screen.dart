@@ -4,6 +4,7 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/services/auth_service.dart';
 import 'package:drips_water/presentation/screens/auth/login_screen.dart';
+import 'package:drips_water/presentation/screens/auth/widgets/header.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -109,12 +110,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -139,14 +138,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                     ),
                   ),
                   const SizedBox(height: 25),
-                  Text("Reset Password", style: theme.textTheme.titleLarge),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Enter your email to receive a reset link",
-                    textAlign: TextAlign.center,
-                    style: textTheme.bodySmall?.copyWith(
-                      color: AppColors.secondaryText,
-                    ),
+                  const Header(
+                    title: "Reset Password",
+                    description: "Enter your email to receive a reset link",
+                    crossAxisAlignment: CrossAxisAlignment.center,
                   ),
                   const SizedBox(height: 35),
                   CustomTextField(
