@@ -83,19 +83,19 @@ class SignupScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      signupViewModel.errorMessage.isNotEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 25),
-                              child: Center(
-                                child: Text(
-                                  signupViewModel.errorMessage,
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: AppColors.error,
-                                  ),
-                                ),
+                      if (signupViewModel.validationError != null &&
+                          signupViewModel.validationError!.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25),
+                          child: Center(
+                            child: Text(
+                              signupViewModel.validationError!,
+                              style: textTheme.bodySmall?.copyWith(
+                                color: AppColors.error,
                               ),
-                            )
-                          : const SizedBox.shrink(),
+                            ),
+                          ),
+                        ),
                       const SizedBox(height: 50),
                       signupViewModel.isLoading
                           ? Center(
@@ -105,36 +105,36 @@ class SignupScreen extends StatelessWidget {
                               ),
                             )
                           : CustomButton(
-                              onPressed: () {
-                                signupViewModel.register(
-                                  onSuccess: () async {
-                                    showFloatingSnackBar(
-                                      context,
-                                      message: "Registration Successful",
-                                      backgroundColor: AppColors.success,
-                                    );
+                              onPressed: () async {
+                                final success = await signupViewModel
+                                    .register();
 
-                                    await Future.delayed(
-                                      const Duration(milliseconds: 500),
-                                    );
+                                if (success) {
+                                  showFloatingSnackBar(
+                                    context,
+                                    message: "Registration Successful",
+                                    backgroundColor: AppColors.success,
+                                  );
 
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HomeScreen(),
-                                      ),
-                                      (route) => false,
-                                    );
-                                  },
-                                  onError: (errorMsg) {
-                                    showFloatingSnackBar(
-                                      context,
-                                      message: errorMsg,
-                                      backgroundColor: AppColors.error,
-                                    );
-                                  },
-                                );
+                                  await Future.delayed(
+                                    const Duration(milliseconds: 500),
+                                  );
+
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HomeScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                } else if (signupViewModel.authError != null &&
+                                    signupViewModel.authError!.isNotEmpty) {
+                                  showFloatingSnackBar(
+                                    context,
+                                    message: signupViewModel.authError!,
+                                    backgroundColor: AppColors.error,
+                                  );
+                                }
                               },
                               height: 55,
                               width: double.infinity,

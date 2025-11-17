@@ -8,7 +8,11 @@ class SignupViewModel extends ChangeNotifier {
   final TextEditingController userNameController = TextEditingController();
   bool obscureText = true;
   bool isLoading = false;
-  String errorMessage = '';
+
+  // For inline validation messages
+  String? validationError;
+  // For Firebase/auth errors
+  String? authError;
 
   @override
   void dispose() {
@@ -18,23 +22,22 @@ class SignupViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> register({
-    required VoidCallback onSuccess,
-    required Function(String) onError,
-  }) async {
+  Future<bool> register() async {
     final userName = userNameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    final validation = _validate(userName, email, password);
-    if (validation != null) {
-      errorMessage = validation;
+    final validationMsg = _validate(userName, email, password);
+    if (validationMsg != null) {
+      validationError = validationMsg;
+      authError = null;
       notifyListeners();
-      return;
+      return false;
     }
 
+    validationError = null;
+    authError = null;
     isLoading = true;
-    errorMessage = '';
     notifyListeners();
 
     try {
@@ -43,15 +46,15 @@ class SignupViewModel extends ChangeNotifier {
         password: password,
         userName: userName,
       );
-      onSuccess();
+      return true;
     } on FirebaseAuthException catch (e) {
-      final errorMsg = _getFirebaseAuthErrorMessage(e);
-      errorMessage = errorMsg;
+      authError = _getFirebaseAuthErrorMessage(e);
       notifyListeners();
-      onError(errorMsg);
+      return false;
     } catch (_) {
-      const errorMsg = "Unexpected error occurred. Try again later.";
-      onError(errorMsg);
+      authError = "Unexpected error occurred. Try again later.";
+      notifyListeners();
+      return false;
     } finally {
       isLoading = false;
       notifyListeners();
