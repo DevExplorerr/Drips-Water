@@ -1,5 +1,5 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/presentation/screens/search/search_viewmodel.dart';
+import 'package:drips_water/logic/view_models/search_view_model.dart';
 import 'package:drips_water/presentation/screens/search/widgets/search_results.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ class SearchScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => SearchViewModel(),
       child: Consumer<SearchViewModel>(
-        builder: (context, vm, _) {
+        builder: (context, searchViewModel, _) {
           return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
@@ -31,7 +31,7 @@ class SearchScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                   child: SearchBar(
-                    controller: vm.searchController,
+                    controller: searchViewModel.searchController,
                     hintText: "Search something...",
                     autoFocus: true,
                     textInputAction: TextInputAction.search,
@@ -39,17 +39,17 @@ class SearchScreen extends StatelessWidget {
                     leading: const Icon(Icons.search, color: AppColors.primary),
                     trailing: <Widget>[
                       IconButton(
-                        onPressed: vm.clearSearch,
+                        onPressed: searchViewModel.clearSearch,
                         icon: const Icon(Icons.clear, color: AppColors.primary),
                       ),
                     ],
-                    onChanged: vm.onSearchChanged,
+                    onChanged: searchViewModel.onSearchChanged,
                     onTapOutside: (_) => FocusScope.of(context).unfocus(),
                   ),
                 ),
 
                 // Search Results Section
-                Expanded(child: SearchResults(viewModel: vm)),
+                Expanded(child: SearchResults(viewModel: searchViewModel)),
               ],
             ),
           );

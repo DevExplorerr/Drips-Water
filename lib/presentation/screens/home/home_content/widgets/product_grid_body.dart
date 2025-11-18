@@ -1,4 +1,4 @@
-import 'package:drips_water/presentation/screens/home/home_content/product_grid_viewmodel.dart';
+import 'package:drips_water/logic/view_models/product_grid_view_model.dart';
 import 'package:drips_water/presentation/widgets/card/product_card.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:drips_water/presentation/widgets/shared/product_card_loading_indicator.dart';
@@ -26,14 +26,16 @@ class ProductGridBodyState extends State<ProductGridBody> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<ProductGridViewModel>();
+    final productGridViewModel = context.watch<ProductGridViewModel>();
 
     final width = MediaQuery.of(context).size.width;
     double childAspectRatio = width < 380 ? 0.52 : 0.62;
 
-    if (vm.isLoading) return const ProductCardLoadingIndicator();
+    if (productGridViewModel.isLoading) {
+      return const ProductCardLoadingIndicator();
+    }
 
-    if (vm.products.isEmpty) {
+    if (productGridViewModel.products.isEmpty) {
       return AppEmptyState(
         title: "No Products Found",
         description:
@@ -46,7 +48,7 @@ class ProductGridBodyState extends State<ProductGridBody> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.only(bottom: 40),
-      itemCount: vm.products.length,
+      itemCount: productGridViewModel.products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 12,
@@ -54,7 +56,7 @@ class ProductGridBodyState extends State<ProductGridBody> {
         childAspectRatio: childAspectRatio,
       ),
       itemBuilder: (context, index) {
-        final doc = vm.products[index];
+        final doc = productGridViewModel.products[index];
         final data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
         return ProductCard(data: data);
