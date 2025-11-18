@@ -1,19 +1,15 @@
+import 'package:drips_water/logic/view_models/product_grid_view_model.dart';
 import 'package:drips_water/presentation/screens/home/home_content/widgets/home_app_bar.dart';
 import 'package:drips_water/presentation/screens/home/home_content/widgets/home_slider.dart';
-import 'package:drips_water/presentation/screens/home/home_content/widgets/water_category_tile.dart';
+import 'package:drips_water/presentation/screens/home/home_content/widgets/category_tile.dart';
 import 'package:drips_water/presentation/screens/home/home_content/product_grid.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class HomeContent extends StatefulWidget {
+class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
 
-  @override
-  State<HomeContent> createState() => _HomeContentState();
-}
-
-class _HomeContentState extends State<HomeContent> {
-  String selectedCategory = "All";
-  List<String> categories = const [
+  final List<String> categories = const [
     "All",
     "Distilled",
     "Spring",
@@ -21,15 +17,10 @@ class _HomeContentState extends State<HomeContent> {
     "Mineral",
   ];
 
-  void onSelectedCategory(String category) {
-    setState(() {
-      selectedCategory = category;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final vm = context.watch<ProductGridViewModel>();
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -60,12 +51,11 @@ class _HomeContentState extends State<HomeContent> {
                       Padding(
                         padding: const EdgeInsets.only(right: 12),
                         child: GestureDetector(
-                          onTap: () {
-                            onSelectedCategory(category);
-                          },
-                          child: WaterCategoryTile(
+                          onTap: () => vm.changeCategory(category),
+
+                          child: CategoryTile(
                             text: category,
-                            isSelected: selectedCategory == category,
+                            isSelected: vm.categorySelected == category,
                           ),
                         ),
                       ),
@@ -77,7 +67,7 @@ class _HomeContentState extends State<HomeContent> {
 
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ProductGrid(selectedCategory: selectedCategory),
+                child: const ProductGrid(),
               ),
               const SizedBox(height: 50),
             ],

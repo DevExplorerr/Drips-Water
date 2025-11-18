@@ -1,30 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drips_water/logic/services/product_service.dart';
 import 'package:flutter/material.dart';
 
 class ProductGridViewModel extends ChangeNotifier {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final ProductService _service = ProductService();
 
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> products = [];
   bool isLoading = false;
   String selectedCategory = "All";
 
-  List<QueryDocumentSnapshot> products = [];
+  String get categorySelected => selectedCategory;
 
-  Future<void> loadProducts(String category) async {
+  Future<void> loadProducts() async {
     isLoading = true;
     notifyListeners();
 
-    selectedCategory = category;
-
-    Query query = _firestore.collection('products');
-
-    if (category != "All") {
-      query = query.where('category', isEqualTo: category);
-    }
-
-    final snapshot = await query.get();
-    products = snapshot.docs;
+    products = await _service.getProductsByCategory(selectedCategory);
 
     isLoading = false;
     notifyListeners();
+  }
+
+  void changeCategory(String category) {
+    selectedCategory = category;
+    notifyListeners();
+    loadProducts();
   }
 }

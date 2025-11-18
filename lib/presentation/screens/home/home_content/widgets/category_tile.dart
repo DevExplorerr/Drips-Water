@@ -1,14 +1,10 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class WaterCategoryTile extends StatelessWidget {
+class CategoryTile extends StatelessWidget {
   final String text;
   final bool isSelected;
-  const WaterCategoryTile({
-    super.key,
-    required this.text,
-    required this.isSelected,
-  });
+  const CategoryTile({super.key, required this.text, required this.isSelected});
 
   @override
   Widget build(BuildContext context) {

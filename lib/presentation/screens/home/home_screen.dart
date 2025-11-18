@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/logic/view_models/product_grid_view_model.dart';
 import 'package:drips_water/presentation/screens/home/cart_screen.dart';
 import 'package:drips_water/presentation/screens/home/chatbot/chatbot_screen.dart';
 import 'package:drips_water/presentation/screens/home/favorite/favorite_screen.dart';
@@ -8,6 +9,7 @@ import 'package:drips_water/presentation/screens/home/profile_screen.dart';
 import 'package:drips_water/presentation/widgets/bottom_navbar/bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/home/home_content/home_content.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,34 +21,26 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentSelectedIndex = 0;
 
-  void updateCurrentIndex(int index) {
-    setState(() {
-      _currentSelectedIndex = index;
-    });
-  }
-
-  late final List<Widget> _screens;
-
-  @override
-  void initState() {
-    super.initState();
-    _screens = const [
-      HomeContent(),
-      FavoriteScreen(),
-      CartScreen(),
-      ProfileScreen(),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(index: _currentSelectedIndex, children: _screens),
-      bottomNavigationBar: BottomNavbar(
-        currentSelectedIndex: _currentSelectedIndex,
-        updateCurrentIndex: updateCurrentIndex,
+    return ChangeNotifierProvider(
+      create: (_) => ProductGridViewModel()..loadProducts(),
+      child: Scaffold(
+        body: IndexedStack(
+          index: _currentSelectedIndex,
+          children: const [
+            HomeContent(),
+            FavoriteScreen(),
+            CartScreen(),
+            ProfileScreen(),
+          ],
+        ),
+        bottomNavigationBar: BottomNavbar(
+          currentSelectedIndex: _currentSelectedIndex,
+          updateCurrentIndex: (i) => setState(() => _currentSelectedIndex = i),
+        ),
+        floatingActionButton: const ChatBotFloatingButton(),
       ),
-      floatingActionButton: const ChatBotFloatingButton(),
     );
   }
 }
