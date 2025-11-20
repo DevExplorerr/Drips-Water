@@ -2,37 +2,40 @@
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drips_water/logic/services/search_service.dart';
 import 'package:flutter/material.dart';
 
 class SearchViewModel extends ChangeNotifier {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final SearchController searchController = SearchController();
+  final SearchService _searchService;
 
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> allItems = [];
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> filteredItems = [];
+  SearchViewModel(this._searchService) {
+    loadProducts();
+  }
+
+  final TextEditingController searchController = TextEditingController();
+
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> allProducts = [];
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> filteredProducts = [];
 
   Timer? _debounce;
   bool isTyping = false;
+  bool isLoading = false;
 
-  SearchViewModel() {
-    fetchItems();
+  Future<void> loadProducts() async {
+    isLoading = true;
+    notifyListeners();
+
+    allProducts = await _searchService.fetchProducts();
+
+    isLoading = false;
+    notifyListeners();
   }
 
   @override
   void dispose() {
     _debounce?.cancel();
-    FocusManager.instance.primaryFocus?.unfocus();
+    searchController.dispose();
     super.dispose();
-  }
-
-  // Fetch Items When Searching
-  Future<void> fetchItems() async {
-    try {
-      final snapshot = await _firestore.collection('products').get();
-      allItems = snapshot.docs;
-    } finally {
-      notifyListeners();
-    }
   }
 
   // Filter the item
@@ -40,15 +43,16 @@ class SearchViewModel extends ChangeNotifier {
     isTyping = true;
     notifyListeners();
 
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce?.cancel();
 
     // Start a new timer
     _debounce = Timer(const Duration(milliseconds: 400), () {
       isTyping = false;
+
       if (query.isEmpty) {
-        filteredItems = [];
+        filteredProducts = [];
       } else {
-        filteredItems = allItems
+        filteredProducts = allProducts
             .where(
               (doc) => doc.data()['name'].toString().toLowerCase().contains(
                 query.toLowerCase(),
@@ -64,7 +68,7 @@ class SearchViewModel extends ChangeNotifier {
   // Clear input
   void clearSearch() {
     searchController.clear();
-    filteredItems = [];
+    filteredProducts = [];
     notifyListeners();
   }
 }

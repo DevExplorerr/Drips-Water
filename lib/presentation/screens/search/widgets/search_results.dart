@@ -10,7 +10,7 @@ class SearchResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double childAspectRatio = MediaQuery.of(context).size.width < 380
+    final double childAspectRatio = MediaQuery.of(context).size.width < 380
         ? 0.52
         : 0.62;
 
@@ -33,8 +33,8 @@ class SearchResults extends StatelessWidget {
     }
 
     // No Results / Empty State
-    if (viewModel.filteredItems.isEmpty) {
-      return AppEmptyState(
+    if (viewModel.filteredProducts.isEmpty) {
+      return const AppEmptyState(
         title: "No Products Found",
         description:
             "We couldn't find anything matching your search. Try adjusting your search criteria or a different keyword.",
@@ -46,7 +46,7 @@ class SearchResults extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
       child: GridView.builder(
-        itemCount: viewModel.filteredItems.length,
+        itemCount: viewModel.filteredProducts.length,
         physics: const BouncingScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -55,7 +55,7 @@ class SearchResults extends StatelessWidget {
           childAspectRatio: childAspectRatio,
         ),
         itemBuilder: (context, index) {
-          final product = viewModel.filteredItems[index];
+          final product = viewModel.filteredProducts[index];
           final data = product.data();
           data['id'] = product.id;
           return ProductCard(data: data);

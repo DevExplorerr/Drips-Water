@@ -1,4 +1,5 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/logic/services/search_service.dart';
 import 'package:drips_water/logic/view_models/search_view_model.dart';
 import 'package:drips_water/presentation/screens/search/widgets/search_results.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SearchViewModel(),
+      create: (_) => SearchViewModel(SearchService()),
       child: Consumer<SearchViewModel>(
         builder: (context, searchViewModel, _) {
           return Scaffold(
@@ -20,7 +21,6 @@ class SearchScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20),
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  FocusScope.of(context).unfocus();
                   Navigator.pop(context);
                 },
               ),
@@ -37,7 +37,7 @@ class SearchScreen extends StatelessWidget {
                     textInputAction: TextInputAction.search,
                     keyboardType: TextInputType.text,
                     leading: const Icon(Icons.search, color: AppColors.primary),
-                    trailing: <Widget>[
+                    trailing: [
                       IconButton(
                         onPressed: searchViewModel.clearSearch,
                         icon: const Icon(Icons.clear, color: AppColors.primary),

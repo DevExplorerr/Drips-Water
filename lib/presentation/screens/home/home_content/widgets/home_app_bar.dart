@@ -104,20 +104,22 @@ class _HomeAppBarState extends State<HomeAppBar> {
       ),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(30),
-        child: Container(
-          color: AppColors.primary,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: SearchBar(
-            hintText: "Search something...",
-            autoFocus: false,
-            leading: const Icon(Icons.search, color: AppColors.primary),
-            onTapOutside: (_) => FocusScope.of(context).unfocus(),
-            onTap: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute(builder: (context) => const SearchScreen()),
-              );
-            },
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => const SearchScreen()),
+            );
+          },
+          child: Container(
+            color: AppColors.primary,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: IgnorePointer(
+              child: SearchBar(
+                hintText: "Search something...",
+                leading: const Icon(Icons.search, color: AppColors.primary),
+              ),
+            ),
           ),
         ),
       ),
