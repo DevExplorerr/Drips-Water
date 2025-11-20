@@ -18,7 +18,7 @@ class FavoriteScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(centerTitle: true, title: const Text("Favorites")),
       body: favoriteIds.isEmpty
-          ? AppEmptyState(
+          ? const AppEmptyState(
               title: "No favorites yet",
               description:
                   "Tap the heart icon on any item to save it here for later.",

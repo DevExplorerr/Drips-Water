@@ -5,7 +5,7 @@ import 'package:drips_water/presentation/widgets/shared/product_card_loading_ind
 import 'package:flutter/material.dart';
 
 class FavoriteGrid extends StatelessWidget {
-  final Set<String> favoriteIds;
+  final List<String> favoriteIds;
   const FavoriteGrid({super.key, required this.favoriteIds});
 
   @override
@@ -26,7 +26,7 @@ class FavoriteGrid extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return AppEmptyState(
+          return const AppEmptyState(
             title: "No favorites yet",
             description: "Add some products you love",
             icon: Icons.favorite_outline,

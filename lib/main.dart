@@ -3,7 +3,9 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/app_theme.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
+import 'package:drips_water/logic/repository/favorite_repository.dart';
 import 'package:drips_water/logic/services/auth_service.dart';
+import 'package:drips_water/logic/services/favorite_service.dart';
 import 'package:drips_water/presentation/screens/home/home_screen.dart';
 import 'package:drips_water/presentation/screens/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +24,7 @@ void main() async {
 
   runApp(
     ChangeNotifierProvider(
-      create: (_) => FavoriteProvider(),
+      create: (_) => FavoriteProvider(FavoriteService(FavoriteRepository())),
       child: const DripsWater(),
     ),
   );
