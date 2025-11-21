@@ -1,53 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/logic/services/auth_service.dart';
+import 'package:drips_water/logic/view_models/home_app_bar_view_model.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
 import 'package:drips_water/presentation/screens/search/search_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class HomeAppBar extends StatefulWidget {
+class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
 
   @override
-  State<HomeAppBar> createState() => _HomeAppBarState();
-}
-
-class _HomeAppBarState extends State<HomeAppBar> {
-  String? userName;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchUserName();
-  }
-
-  Future<void> fetchUserName() async {
-    final user = authService.value.currentUser;
-    if (user != null) {
-      try {
-        final snapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-
-        if (snapshot.exists) {
-          setState(() {
-            userName = snapshot.data()?['name'] ?? 'Guest';
-          });
-        }
-      } catch (e) {
-        debugPrint('Error fetching username: $e');
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final vm = context.watch<HomeAppBarViewModel>();
     final textTheme = Theme.of(context).textTheme;
-    final bool isGuest = FirebaseAuth.instance.currentUser == null;
-
     return SliverAppBar(
       backgroundColor: AppColors.primary,
       expandedHeight: 170,
@@ -67,7 +32,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 height: 40,
                 child: Align(
                   alignment: Alignment.topRight,
-                  child: isGuest
+                  child: vm.isGuest
                       ? TextButton(
                           onPressed: () {
                             Navigator.pushAndRemoveUntil(
@@ -91,9 +56,11 @@ class _HomeAppBarState extends State<HomeAppBar> {
               ),
               const SizedBox(height: 8),
               Text(
-                isGuest
+                vm.isGuest
                     ? "Welcome, Guest"
-                    : (userName != null ? "Welcome, $userName" : "Loading..."),
+                    : vm.isLoading
+                    ? "Loading..."
+                    : "Welcome, ${vm.userName}",
                 style: textTheme.titleLarge?.copyWith(
                   color: AppColors.textDark,
                 ),

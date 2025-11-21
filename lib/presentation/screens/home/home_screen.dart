@@ -1,6 +1,8 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/logic/services/user_service.dart';
+import 'package:drips_water/logic/view_models/home_app_bar_view_model.dart';
 import 'package:drips_water/logic/view_models/product_grid_view_model.dart';
 import 'package:drips_water/presentation/screens/home/cart_screen.dart';
 import 'package:drips_water/presentation/screens/home/chatbot/chatbot_screen.dart';
@@ -8,6 +10,7 @@ import 'package:drips_water/presentation/screens/home/favorite/favorite_screen.d
 import 'package:drips_water/presentation/screens/home/profile_screen.dart';
 import 'package:drips_water/presentation/widgets/bottom_navbar/bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/home/home_content/home_content.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,8 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ProductGridViewModel()..loadProducts(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) {
+            final user = FirebaseAuth.instance.currentUser;
+            return HomeAppBarViewModel(UserService())..loadUserName(user?.uid);
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ProductGridViewModel()..loadProducts(),
+        ),
+      ],
       child: Scaffold(
         body: IndexedStack(
           index: _currentSelectedIndex,
