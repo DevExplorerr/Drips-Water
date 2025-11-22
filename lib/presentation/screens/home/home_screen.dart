@@ -24,35 +24,48 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentSelectedIndex = 0;
 
+  Future<bool> _onWillPop() async {
+    if (_currentSelectedIndex != 0) {
+      setState(() => _currentSelectedIndex = 0);
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) {
-            final user = FirebaseAuth.instance.currentUser;
-            return HomeAppBarViewModel(UserService())..loadUserName(user?.uid);
-          },
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) {
+              final user = FirebaseAuth.instance.currentUser;
+              return HomeAppBarViewModel(UserService())
+                ..loadUserName(user?.uid);
+            },
+          ),
+          ChangeNotifierProvider(
+            create: (_) => ProductGridViewModel()..loadProducts(),
+          ),
+        ],
+        child: Scaffold(
+          body: IndexedStack(
+            index: _currentSelectedIndex,
+            children: const [
+              HomeContent(),
+              FavoriteScreen(),
+              CartScreen(),
+              ProfileScreen(),
+            ],
+          ),
+          bottomNavigationBar: BottomNavbar(
+            currentSelectedIndex: _currentSelectedIndex,
+            updateCurrentIndex: (i) =>
+                setState(() => _currentSelectedIndex = i),
+          ),
+          floatingActionButton: const ChatBotFloatingButton(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => ProductGridViewModel()..loadProducts(),
-        ),
-      ],
-      child: Scaffold(
-        body: IndexedStack(
-          index: _currentSelectedIndex,
-          children: const [
-            HomeContent(),
-            FavoriteScreen(),
-            CartScreen(),
-            ProfileScreen(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavbar(
-          currentSelectedIndex: _currentSelectedIndex,
-          updateCurrentIndex: (i) => setState(() => _currentSelectedIndex = i),
-        ),
-        floatingActionButton: const ChatBotFloatingButton(),
       ),
     );
   }
