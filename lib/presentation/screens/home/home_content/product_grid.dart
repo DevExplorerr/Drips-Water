@@ -1,4 +1,4 @@
-import 'package:drips_water/logic/view_models/product_grid_view_model.dart';
+import 'package:drips_water/logic/view_models/product/product_grid_view_model.dart';
 import 'package:drips_water/presentation/widgets/card/product_card.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:drips_water/presentation/widgets/shared/product_card_loading_indicator.dart';

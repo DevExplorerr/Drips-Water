@@ -1,4 +1,4 @@
-import 'package:drips_water/logic/view_models/product_grid_view_model.dart';
+import 'package:drips_water/logic/view_models/product/product_grid_view_model.dart';
 import 'package:drips_water/presentation/screens/home/home_content/widgets/home_app_bar.dart';
 import 'package:drips_water/presentation/screens/home/home_content/widgets/home_slider.dart';
 import 'package:drips_water/presentation/screens/home/home_content/widgets/category_tile.dart';

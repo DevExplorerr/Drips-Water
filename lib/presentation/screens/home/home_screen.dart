@@ -3,7 +3,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/logic/services/user_service.dart';
 import 'package:drips_water/logic/view_models/home/home_app_bar_view_model.dart';
-import 'package:drips_water/logic/view_models/product_grid_view_model.dart';
+import 'package:drips_water/logic/view_models/product/product_grid_view_model.dart';
 import 'package:drips_water/presentation/screens/home/cart_screen.dart';
 import 'package:drips_water/presentation/screens/home/chatbot/chatbot_screen.dart';
 import 'package:drips_water/presentation/screens/home/favorite/favorite_screen.dart';
