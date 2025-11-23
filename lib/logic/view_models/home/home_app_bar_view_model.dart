@@ -1,4 +1,4 @@
-import 'package:drips_water/logic/services/user_service.dart';
+import 'package:drips_water/data/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppBarViewModel extends ChangeNotifier {

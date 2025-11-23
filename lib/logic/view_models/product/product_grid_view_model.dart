@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drips_water/logic/services/product_service.dart';
+import 'package:drips_water/data/services/product_service.dart';
 import 'package:flutter/material.dart';
 
 class ProductGridViewModel extends ChangeNotifier {

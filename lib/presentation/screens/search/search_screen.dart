@@ -1,5 +1,5 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/logic/services/search_service.dart';
+import 'package:drips_water/data/services/search_service.dart';
 import 'package:drips_water/logic/view_models/product/search_view_model.dart';
 import 'package:drips_water/presentation/screens/search/widgets/search_results.dart';
 import 'package:flutter/material.dart';

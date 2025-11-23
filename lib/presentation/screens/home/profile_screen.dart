@@ -1,4 +1,4 @@
-import 'package:drips_water/logic/services/auth_service.dart';
+import 'package:drips_water/data/services/auth_service.dart';
 import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';

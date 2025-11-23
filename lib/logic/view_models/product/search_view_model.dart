@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drips_water/logic/services/search_service.dart';
+import 'package:drips_water/data/services/search_service.dart';
 import 'package:flutter/material.dart';
 
 class SearchViewModel extends ChangeNotifier {

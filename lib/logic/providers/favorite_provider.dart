@@ -1,4 +1,4 @@
-import 'package:drips_water/logic/services/favorite_service.dart';
+import 'package:drips_water/data/services/favorite_service.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteProvider extends ChangeNotifier {
