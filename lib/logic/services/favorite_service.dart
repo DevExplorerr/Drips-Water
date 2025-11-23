@@ -1,4 +1,4 @@
-import 'package:drips_water/logic/repository/favorite_repository.dart';
+import 'package:drips_water/data/repositories/favorite_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FavoriteService {
