@@ -2,7 +2,7 @@
 
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
-import 'package:drips_water/logic/view_models/login_view_model.dart';
+import 'package:drips_water/logic/view_models/auth/login_view_model.dart';
 import 'package:drips_water/presentation/screens/auth/reset_password_screen.dart';
 import 'package:drips_water/presentation/screens/auth/signup_screen.dart';
 import 'package:drips_water/presentation/screens/auth/widgets/footer.dart';
