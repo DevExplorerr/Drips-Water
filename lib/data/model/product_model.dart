@@ -11,7 +11,7 @@ class Product {
   final double rating;
   final double reviews;
   final bool isFavorite;
-  final bool inStock;
+  final int stock;
 
   Product({
     required this.id,
@@ -21,10 +21,10 @@ class Product {
     required this.description,
     required this.sizes,
     required this.price,
-    required this.reviews,
     required this.rating,
+    required this.reviews,
     required this.isFavorite,
-    required this.inStock,
+    required this.stock,
   });
 
   // Firestore to Model
@@ -42,7 +42,7 @@ class Product {
       reviews: data['reviews'],
       rating: data['rating'],
       isFavorite: data['isFavorite'],
-      inStock: data['inStock'],
+      stock: data['stock'],
     );
   }
 
@@ -59,7 +59,7 @@ class Product {
       reviews: data['reviews'],
       rating: data['rating'],
       isFavorite: data['isFavorite'],
-      inStock: data['inStock'],
+      stock: data['stock'],
     );
   }
 
@@ -75,7 +75,7 @@ class Product {
       'reviews': reviews,
       'rating': rating,
       'isFavorite': isFavorite,
-      'inStock': inStock,
+      'stock': stock,
     };
   }
 
@@ -91,7 +91,7 @@ class Product {
     double? reviews,
     double? rating,
     bool? isFavorite,
-    bool? inStock,
+    int? stock,
   }) {
     return Product(
       id: id ?? this.id,
@@ -104,7 +104,7 @@ class Product {
       reviews: reviews ?? this.reviews,
       rating: rating ?? this.rating,
       isFavorite: isFavorite ?? this.isFavorite,
-      inStock: inStock ?? this.inStock,
+      stock: stock ?? this.stock,
     );
   }
 }
