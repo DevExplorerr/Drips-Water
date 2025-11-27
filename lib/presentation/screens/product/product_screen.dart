@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:drips_water/data/model/product_model.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_image_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_info_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_option_section.dart';
@@ -7,26 +8,9 @@ import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class ProductScreen extends StatefulWidget {
-  final String productId;
-  final String productName;
-  final String image;
-  final int price;
-  final String description;
-  final double rating;
-  final int reviews;
+  final ProductModel product;
   final String? heroTag;
-
-  const ProductScreen({
-    super.key,
-    required this.productName,
-    required this.image,
-    required this.price,
-    required this.description,
-    required this.rating,
-    required this.reviews,
-    required this.productId,
-    this.heroTag,
-  });
+  const ProductScreen({super.key, this.heroTag, required this.product});
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
@@ -45,8 +29,8 @@ class _ProductScreenState extends State<ProductScreen> {
         children: [
           // Product Image Section
           ProductImageSection(
-            productId: widget.productId,
-            image: widget.image,
+            productId: widget.product.id,
+            image: widget.product.imageUrl,
             heroTag: widget.heroTag ?? "",
             onBack: () => Navigator.pop(context),
           ),
@@ -67,11 +51,11 @@ class _ProductScreenState extends State<ProductScreen> {
                   children: [
                     // Product Info Section
                     ProductInfoSection(
-                      productName: widget.productName,
-                      price: widget.price,
-                      description: widget.description,
-                      rating: widget.rating,
-                      reviews: widget.reviews,
+                      productName: widget.product.name,
+                      price: widget.product.price,
+                      description: widget.product.description,
+                      rating: widget.product.rating,
+                      reviews: widget.product.reviews,
                     ),
 
                     const SizedBox(height: 25),

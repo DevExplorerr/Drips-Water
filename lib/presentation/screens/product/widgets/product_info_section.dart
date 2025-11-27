@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class ProductInfoSection extends StatelessWidget {
   final String productName;
-  final int price;
+  final double price;
   final String description;
   final double rating;
-  final int reviews;
+  final double reviews;
 
   const ProductInfoSection({
     super.key,

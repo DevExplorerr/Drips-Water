@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drips_water/data/services/product_service.dart';
+import 'package:drips_water/data/model/product_model.dart';
+import 'package:drips_water/data/repositories/product_repository.dart';
 import 'package:flutter/material.dart';
 
 class ProductGridViewModel extends ChangeNotifier {
-  final ProductService _service = ProductService();
+  final ProductRepository _repo = ProductRepository();
 
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> products = [];
+  List<ProductModel> products = [];
   bool isLoading = false;
   String selectedCategory = "All";
 
@@ -15,15 +15,16 @@ class ProductGridViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    products = await _service.getProductsByCategory(selectedCategory);
+    products = await _repo.fetchProductsByCategory(selectedCategory);
 
     isLoading = false;
     notifyListeners();
   }
 
   void changeCategory(String category) {
+    if (category == selectedCategory) return;
+
     selectedCategory = category;
-    notifyListeners();
     loadProducts();
   }
 }

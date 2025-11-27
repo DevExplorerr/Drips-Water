@@ -20,9 +20,7 @@ class SearchScreen extends StatelessWidget {
               leading: IconButton(
                 padding: const EdgeInsets.only(left: 20),
                 icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () => Navigator.pop(context),
               ),
             ),
             body: Column(

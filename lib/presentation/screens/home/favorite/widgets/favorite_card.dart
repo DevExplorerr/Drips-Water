@@ -3,14 +3,15 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/model/product_model.dart';
 import 'package:drips_water/presentation/screens/product/product_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class FavoriteCard extends StatefulWidget {
-  final Map<String, dynamic> data;
-  const FavoriteCard({super.key, required this.data});
+  final ProductModel product;
+  const FavoriteCard({super.key, required this.product});
 
   @override
   State<FavoriteCard> createState() => FavoriteCardState();
@@ -43,8 +44,8 @@ class FavoriteCardState extends State<FavoriteCard>
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final data = widget.data;
-    final String heroTag = '${data['id']}_FavoriteCard';
+    final productData = widget.product;
+    final String heroTag = '${productData.id}_FavoriteCard';
 
     return ScaleTransition(
       scale: _scaleAnim,
@@ -53,16 +54,8 @@ class FavoriteCardState extends State<FavoriteCard>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ProductScreen(
-                productName: data['name'],
-                image: data['imageUrl'],
-                price: data['price'],
-                description: data['description'],
-                rating: data['rating'],
-                reviews: data['reviews'],
-                productId: data['id'],
-                heroTag: heroTag,
-              ),
+              builder: (context) =>
+                  ProductScreen(product: productData, heroTag: heroTag),
             ),
           );
         },
@@ -105,7 +98,7 @@ class FavoriteCardState extends State<FavoriteCard>
                             child: AspectRatio(
                               aspectRatio: 1,
                               child: CachedNetworkImage(
-                                imageUrl: data['imageUrl'],
+                                imageUrl: productData.imageUrl,
                                 fit: BoxFit.cover,
                                 filterQuality: FilterQuality.high,
                                 colorBlendMode: BlendMode.darken,
@@ -126,7 +119,7 @@ class FavoriteCardState extends State<FavoriteCard>
                             top: 10,
                             right: 10,
                             child: FavoriteButton(
-                              productId: data['id'],
+                              productId: productData.id,
                               iconSize: 18,
                               height: 40,
                               width: 40,
@@ -144,7 +137,7 @@ class FavoriteCardState extends State<FavoriteCard>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            data['name'],
+                            productData.name,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: textTheme.bodyMedium?.copyWith(
@@ -156,7 +149,7 @@ class FavoriteCardState extends State<FavoriteCard>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "\$${data['price']}",
+                                "\$${productData.price}",
                                 style: textTheme.bodyMedium?.copyWith(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.w700,

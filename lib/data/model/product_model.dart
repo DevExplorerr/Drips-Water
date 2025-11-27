@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Product {
+class ProductModel {
   final String id;
   final String name;
   final String imageUrl;
@@ -13,7 +13,7 @@ class Product {
   final bool isFavorite;
   final int stock;
 
-  Product({
+  ProductModel({
     required this.id,
     required this.name,
     required this.imageUrl,
@@ -28,38 +28,21 @@ class Product {
   });
 
   // Firestore to Model
-  factory Product.fromFirestore(DocumentSnapshot doc) {
+  factory ProductModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
 
-    return Product(
+    return ProductModel(
       id: doc.id,
-      name: data['name'],
-      imageUrl: data['imageUrl'],
-      category: data['category'],
-      description: data['description'],
-      sizes: List<String>.from(data['sizes']),
-      price: data['price'],
-      reviews: data['reviews'],
-      rating: data['rating'],
-      isFavorite: data['isFavorite'],
-      stock: data['stock'],
-    );
-  }
-
-  // Map to Model
-  factory Product.fromMap(Map<String, dynamic> data, String documentId) {
-    return Product(
-      id: documentId,
-      name: data['name'],
-      imageUrl: data['imageUrl'],
-      category: data['category'],
-      description: data['description'],
-      sizes: List<String>.from(data['sizes']),
-      price: (data['price']),
-      reviews: data['reviews'],
-      rating: data['rating'],
-      isFavorite: data['isFavorite'],
-      stock: data['stock'],
+      name: data['name'] ?? '',
+      imageUrl: data['imageUrl'] ?? '',
+      category: data['category'] ?? '',
+      description: data['description'] ?? '',
+      sizes: List<String>.from(data['sizes'] ?? []),
+      price: (data['price'] ?? 0).toDouble(),
+      rating: (data['rating'] ?? 0).toDouble(),
+      reviews: (data['reviews'] ?? 0).toDouble(),
+      isFavorite: data['isFavorite'] ?? false,
+      stock: data['stock'] ?? 0,
     );
   }
 
@@ -79,8 +62,26 @@ class Product {
     };
   }
 
+  // Map to Model
+  factory ProductModel.fromMap(Map<String, dynamic> data, String documentId) {
+    return ProductModel(
+      id: documentId,
+      name: data['name'],
+      imageUrl: data['imageUrl'],
+      category: data['category'],
+      description: data['description'],
+      sizes: List<String>.from(data['sizes']),
+      price: (data['price']),
+      reviews: data['reviews'],
+      rating: data['rating'],
+      isFavorite: data['isFavorite'],
+      stock: data['stock'],
+    );
+  }
+
+
   // Copy With
-  Product copyWith({
+  ProductModel copyWith({
     String? id,
     String? name,
     String? imageUrl,
@@ -93,7 +94,7 @@ class Product {
     bool? isFavorite,
     int? stock,
   }) {
-    return Product(
+    return ProductModel(
       id: id ?? this.id,
       name: name ?? this.name,
       imageUrl: imageUrl ?? this.imageUrl,

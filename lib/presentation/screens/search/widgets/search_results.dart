@@ -15,7 +15,8 @@ class SearchResults extends StatelessWidget {
         : 0.62;
 
     // Showing Loader while Typing
-    if (viewModel.isTyping && viewModel.searchController.text.isNotEmpty) {
+    if (viewModel.isTyping &&
+        viewModel.searchController.text.trim().isNotEmpty) {
       return const Padding(
         padding: EdgeInsets.only(top: 20, left: 20, right: 20),
         child: ProductCardLoadingIndicator(),
@@ -23,7 +24,7 @@ class SearchResults extends StatelessWidget {
     }
 
     // No text typed yet
-    if (viewModel.searchController.text.isEmpty) {
+    if (viewModel.searchController.text.trim().isEmpty) {
       return Center(
         child: Text(
           "Start typing to search products",
@@ -55,10 +56,10 @@ class SearchResults extends StatelessWidget {
           childAspectRatio: childAspectRatio,
         ),
         itemBuilder: (context, index) {
-          final product = viewModel.filteredProducts[index];
-          final data = product.data();
-          data['id'] = product.id;
-          return ProductCard(data: data);
+          // final product = viewModel.filteredProducts[index];
+          // final data = product.data();
+          // data['id'] = product.id;
+          return ProductCard(product: viewModel.filteredProducts[index]);
         },
       ),
     );

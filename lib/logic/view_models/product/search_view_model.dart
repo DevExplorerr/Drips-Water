@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drips_water/data/model/product_model.dart';
 import 'package:drips_water/data/services/search_service.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +14,8 @@ class SearchViewModel extends ChangeNotifier {
 
   final TextEditingController searchController = TextEditingController();
 
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> allProducts = [];
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> filteredProducts = [];
+  List<ProductModel> allProducts = [];
+  List<ProductModel> filteredProducts = [];
 
   Timer? _debounce;
   bool isTyping = false;
@@ -54,9 +54,7 @@ class SearchViewModel extends ChangeNotifier {
       } else {
         filteredProducts = allProducts
             .where(
-              (doc) => doc.data()['name'].toString().toLowerCase().contains(
-                query.toLowerCase(),
-              ),
+              (doc) => doc.name.toLowerCase().contains(query.toLowerCase()),
             )
             .toList();
       }
