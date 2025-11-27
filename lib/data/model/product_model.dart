@@ -45,20 +45,4 @@ class ProductModel {
       stock: data['stock'] ?? 0,
     );
   }
-
-  // Model to Map
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'imageUrl': imageUrl,
-      'category': category,
-      'description': description,
-      'sizes': sizes,
-      'price': price,
-      'reviews': reviews,
-      'rating': rating,
-      'isFavorite': isFavorite,
-      'stock': stock,
-    };
-  }
 }
