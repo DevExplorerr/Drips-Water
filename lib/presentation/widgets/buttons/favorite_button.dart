@@ -22,38 +22,40 @@ class FavoriteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.read<FavoriteProvider>();
-    final isFavorite = context.watch<FavoriteProvider>().isFavorite(productId);
-
-    return GestureDetector(
-      onTap: () async {
-        final success = await provider.toggleFavorite(productId);
-        if (!success) {
-          showDialog(
-            // ignore: use_build_context_synchronously
-            context: context,
-            animationStyle: AnimationStyle(
-              curve: Curves.ease,
-              duration: const Duration(milliseconds: 300),
-              reverseDuration: const Duration(milliseconds: 200),
+    return Consumer<FavoriteProvider>(
+      builder: (context, fav, _) {
+        final isFavorite = fav.isFavorite(productId);
+        return GestureDetector(
+          onTap: () async {
+            final success = await fav.toggleFavorite(productId);
+            if (!success) {
+              showDialog(
+                // ignore: use_build_context_synchronously
+                context: context,
+                animationStyle: AnimationStyle(
+                  curve: Curves.ease,
+                  duration: const Duration(milliseconds: 300),
+                  reverseDuration: const Duration(milliseconds: 200),
+                ),
+                builder: (context) => const CustomLoginPromptDialog(),
+              );
+            }
+          },
+          child: Container(
+            height: height,
+            width: width,
+            decoration: BoxDecoration(
+              color: AppColors.white.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(6),
             ),
-            builder: (context) => const CustomLoginPromptDialog(),
-          );
-        }
+            child: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: AppColors.favorite,
+              size: iconSize,
+            ),
+          ),
+        );
       },
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: AppColors.white.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Icon(
-          isFavorite ? Icons.favorite : Icons.favorite_border,
-          color: AppColors.favorite,
-          size: iconSize,
-        ),
-      ),
     );
   }
 }
