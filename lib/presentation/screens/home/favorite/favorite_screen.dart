@@ -11,20 +11,19 @@ class FavoriteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final favoriteProvider = Provider.of<FavoriteProvider>(context);
-    final favoriteIds = favoriteProvider.favorites;
+    final favorites = context.watch<FavoriteProvider>().favorites;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(centerTitle: true, title: const Text("Favorites")),
-      body: favoriteIds.isEmpty
+      body: favorites.isEmpty
           ? const AppEmptyState(
               title: "No favorites yet",
               description:
                   "Tap the heart icon on any item to save it here for later.",
               icon: Icons.favorite_border,
             )
-          : FavoriteGrid(favoriteIds: favoriteIds),
+          : FavoriteGrid(favorites: favorites),
     );
   }
 }

@@ -6,18 +6,24 @@ import 'package:drips_water/presentation/widgets/shared/product_card_loading_ind
 import 'package:flutter/material.dart';
 
 class FavoriteGrid extends StatelessWidget {
-  final List<String> favoriteIds;
-  const FavoriteGrid({super.key, required this.favoriteIds});
+  final List<String> favorites;
+  const FavoriteGrid({super.key, required this.favorites});
 
   @override
   Widget build(BuildContext context) {
+    if (favorites.isEmpty) {
+      return const AppEmptyState(
+        title: "No favorites yet",
+        description: "Add some products you love",
+        icon: Icons.favorite_outline,
+      );
+    }
+
     final width = MediaQuery.of(context).size.width;
     double childAspectRatio = width < 380 ? 0.58 : 0.64;
+
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('products')
-          .where(FieldPath.documentId, whereIn: favoriteIds.toList())
-          .snapshots(),
+      stream: _favoritesStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Padding(
@@ -34,7 +40,9 @@ class FavoriteGrid extends StatelessWidget {
           );
         }
 
-        final products = snapshot.data!.docs;
+        final products = snapshot.data!.docs
+            .map((doc) => ProductModel.fromFirestore(doc))
+            .toList();
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
@@ -53,14 +61,19 @@ class FavoriteGrid extends StatelessWidget {
               mainAxisSpacing: 20,
               childAspectRatio: childAspectRatio,
             ),
-            itemBuilder: (context, index) {
-              final productDoc = products[index];
-              final product = ProductModel.fromFirestore(productDoc);
-              return FavoriteCard(product: product);
+            itemBuilder: (_, index) {
+              return FavoriteCard(product: products[index]);
             },
           ),
         );
       },
     );
+  }
+
+  Stream<QuerySnapshot> _favoritesStream() {
+    return FirebaseFirestore.instance
+        .collection('products')
+        .where(FieldPath.documentId, whereIn: favorites)
+        .snapshots();
   }
 }
