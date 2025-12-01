@@ -8,6 +8,7 @@ class ProductImageSection extends StatelessWidget {
   final String productId;
   final String image;
   final VoidCallback onBack;
+  final VoidCallback onNavigate;
   final String heroTag;
 
   const ProductImageSection({
@@ -16,6 +17,7 @@ class ProductImageSection extends StatelessWidget {
     required this.onBack,
     required this.productId,
     required this.heroTag,
+    required this.onNavigate,
   });
 
   @override
@@ -70,7 +72,7 @@ class ProductImageSection extends StatelessWidget {
           Positioned(
             bottom: 20,
             right: 15,
-            child: _buildIconButton(Icons.shopping_bag_outlined, () {}),
+            child: _buildIconButton(Icons.shopping_bag_outlined, onNavigate),
           ),
         ],
       ),

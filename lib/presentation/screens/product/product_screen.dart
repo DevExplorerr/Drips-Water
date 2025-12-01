@@ -1,10 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:drips_water/data/model/product_model.dart';
+import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_image_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_info_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_option_section.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -33,6 +35,12 @@ class _ProductScreenState extends State<ProductScreen> {
             image: widget.product.imageUrl,
             heroTag: widget.heroTag ?? "",
             onBack: () => Navigator.pop(context),
+            onNavigate: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => const CartScreen()),
+              );
+            },
           ),
 
           // Product Info

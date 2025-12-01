@@ -22,6 +22,9 @@ class AppColors {
   // Card
   static const card = Color(0xffF8F8F8);
 
+  // Button
+  static const actionButton = Color(0xffE3E3E3);
+
   // Chat Bot Color
   static const bot = Color(0xffF1F1F1);
 

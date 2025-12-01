@@ -96,7 +96,7 @@ class ProductOptionSection extends StatelessWidget {
         height: 45,
         width: 45,
         decoration: BoxDecoration(
-          color: AppColors.card,
+          color: AppColors.actionButton,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Icon(icon, color: Theme.of(context).iconTheme.color, size: 25),

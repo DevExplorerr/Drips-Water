@@ -38,7 +38,10 @@ class ProductInfoSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 10),
-        Text('\$$price', style: textTheme.titleSmall),
+        Text(
+          '\$$price',
+          style: textTheme.titleSmall?.copyWith(color: AppColors.secondaryText),
+        ),
         const SizedBox(height: 25),
         Text(description, style: textTheme.bodyMedium),
         const SizedBox(height: 25),
