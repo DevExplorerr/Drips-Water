@@ -2,10 +2,10 @@
 
 import 'package:drips_water/data/model/product_model.dart';
 import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
+import 'package:drips_water/presentation/screens/product/widgets/product_bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_image_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_info_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_option_section.dart';
-import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -86,15 +86,7 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-        child: CustomButton(
-          onPressed: () {},
-          height: 50,
-          width: double.infinity,
-          text: "BUY",
-        ),
-      ),
+      bottomNavigationBar: const ProductBottomNavbar(),
     );
   }
 }
