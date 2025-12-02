@@ -30,10 +30,7 @@ void main() async {
           create: (_) =>
               FavoriteProvider(FavoriteService(FavoriteRepository())),
         ),
-        ChangeNotifierProvider(
-          create: (_) =>
-              CartProvider()
-        ),
+        ChangeNotifierProvider(create: (_) => CartProvider()..listenToCart()),
       ],
       child: const DripsWater(),
     ),

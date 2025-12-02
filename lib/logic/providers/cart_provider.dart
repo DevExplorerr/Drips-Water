@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../data/models/cart_item_model.dart';
@@ -19,6 +21,15 @@ class CartProvider with ChangeNotifier {
     });
   }
 
+  Future<ProductModel> getProduct(String productId) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('products')
+        .doc(productId)
+        .get();
+
+    return ProductModel.fromFirestore(doc);
+  }
+
   Future<void> addToCart(String productId) async {
     await _repo.addItem(_uid, CartItemModel(productId: productId, quantity: 1));
   }
@@ -35,6 +46,6 @@ class CartProvider with ChangeNotifier {
     await _repo.clearCart(_uid);
   }
 
-  int get totalQuantity =>
-      cartItems.fold(0, (sum, item) => sum + item.quantity);
+  double get totalPrice =>
+      cartItems.fold(0, (double sum, item) => sum + item.quantity);
 }

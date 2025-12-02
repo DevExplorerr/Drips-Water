@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drips_water/data/models/product_model.dart';
+
 class CartItemModel {
   final String productId;
   int quantity;
@@ -13,5 +16,14 @@ class CartItemModel {
       productId: map['productId'],
       quantity: map['quantity'],
     );
+  }
+
+  Future<ProductModel> fetchProduct() async {
+    final doc = await FirebaseFirestore.instance
+        .collection('products')
+        .doc(productId)
+        .get();
+
+    return ProductModel.fromFirestore(doc);
   }
 }

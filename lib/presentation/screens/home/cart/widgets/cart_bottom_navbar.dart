@@ -36,14 +36,14 @@ class CartBottomNavbar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'TOTAL',
+                'SUBTOTAL',
                 style: Theme.of(
                   context,
                 ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 5),
               Text(
-                '${context.watch<CartProvider>().totalQuantity}',
+                '${context.watch<CartProvider>().totalPrice}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.secondaryText,
                   fontWeight: FontWeight.w600,
