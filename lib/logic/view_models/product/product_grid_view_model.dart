@@ -1,4 +1,4 @@
-import 'package:drips_water/data/model/product_model.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/data/repositories/product_repository.dart';
 import 'package:flutter/material.dart';
 

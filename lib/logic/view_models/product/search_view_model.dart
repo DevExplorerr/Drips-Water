@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
-import 'package:drips_water/data/model/product_model.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/data/services/search_service.dart';
 import 'package:flutter/material.dart';
 

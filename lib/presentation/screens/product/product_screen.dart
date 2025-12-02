@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:drips_water/data/model/product_model.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_image_section.dart';

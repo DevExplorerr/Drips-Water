@@ -2,7 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/data/model/product_model.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/screens/product/product_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';

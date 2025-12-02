@@ -1,5 +1,5 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/data/model/product_model.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 
 class MyCartProductCard extends StatelessWidget {
