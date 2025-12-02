@@ -1,8 +1,10 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/checkout_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartBottomNavbar extends StatelessWidget {
   const CartBottomNavbar({super.key});
@@ -41,7 +43,7 @@ class CartBottomNavbar extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                '\$100',
+                '${context.watch<CartProvider>().totalQuantity}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.secondaryText,
                   fontWeight: FontWeight.w600,

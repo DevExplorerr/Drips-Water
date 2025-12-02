@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/app_theme.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
+import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
 import 'package:drips_water/data/repositories/favorite_repository.dart';
 import 'package:drips_water/data/services/auth_service.dart';
@@ -23,8 +24,17 @@ void main() async {
   );
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => FavoriteProvider(FavoriteService(FavoriteRepository())),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) =>
+              FavoriteProvider(FavoriteService(FavoriteRepository())),
+        ),
+        ChangeNotifierProvider(
+          create: (_) =>
+              CartProvider()
+        ),
+      ],
       child: const DripsWater(),
     ),
   );

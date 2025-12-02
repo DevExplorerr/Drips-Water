@@ -1,21 +1,26 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
-import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/home/cart/widgets/cart_bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/home/cart/widgets/mycart_product_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
-  final ProductModel? product;
-  const CartScreen({super.key, this.product});
+  const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<CartProvider>();
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(centerTitle: true, title: const Text("My Cart")),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: MyCartProductCard(product: product),
+      body: ListView.builder(
+        itemCount: cart.cartItems.length,
+        itemBuilder: (context, index) {
+          final cartItem = cart.cartItems[index];
+          return MyCartProductCard(product: cartItem);
+        },
       ),
 
       bottomNavigationBar: const CartBottomNavbar(),

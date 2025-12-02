@@ -1,9 +1,13 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductBottomNavbar extends StatelessWidget {
-  const ProductBottomNavbar({super.key});
+  final ProductModel product;
+  const ProductBottomNavbar({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,9 @@ class ProductBottomNavbar extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: CustomButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<CartProvider>().addToCart(product.id);
+              },
               height: 50,
               width: double.infinity,
               text: "Add to Cart",

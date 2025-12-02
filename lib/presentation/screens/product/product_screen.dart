@@ -86,7 +86,7 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const ProductBottomNavbar(),
+      bottomNavigationBar: ProductBottomNavbar(product: widget.product),
     );
   }
 }

@@ -1,10 +1,10 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:flutter/material.dart';
 
 class MyCartProductCard extends StatelessWidget {
-  final ProductModel? product;
-  const MyCartProductCard({super.key, this.product});
+  final CartItemModel product;
+  const MyCartProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
