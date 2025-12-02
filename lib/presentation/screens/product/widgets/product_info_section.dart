@@ -6,7 +6,7 @@ class ProductInfoSection extends StatelessWidget {
   final double price;
   final String description;
   final double rating;
-  final double reviews;
+  final int reviews;
 
   const ProductInfoSection({
     super.key,

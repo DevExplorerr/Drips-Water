@@ -9,7 +9,7 @@ class ProductModel {
   final List<String> sizes;
   final double price;
   final double rating;
-  final double reviews;
+  final int reviews;
   final bool isFavorite;
   final int stock;
 
@@ -40,7 +40,7 @@ class ProductModel {
       sizes: List<String>.from(data['sizes'] ?? []),
       price: (data['price'] ?? 0).toDouble(),
       rating: (data['rating'] ?? 0).toDouble(),
-      reviews: (data['reviews'] ?? 0).toDouble(),
+      reviews: data['reviews'],
       isFavorite: data['isFavorite'] ?? false,
       stock: data['stock'] ?? 0,
     );
