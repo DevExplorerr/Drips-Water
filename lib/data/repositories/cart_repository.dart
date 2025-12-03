@@ -1,52 +1,73 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import '../models/cart_item_model.dart';
 
 class CartRepository {
-  final _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  CollectionReference getCartRef(String uid) =>
-      _firestore.collection('users').doc(uid).collection('cart');
+  CollectionReference<Map<String, dynamic>> cartRef(String uid) {
+    return _firestore.collection('users').doc(uid).collection('cart');
+  }
+
+  String itemKey(String productId, String size) => "${productId}_$size";
 
   // Add Item to Cart
-  Future<void> addItem(String uid, CartItemModel item) async {
-    final ref = getCartRef(uid).doc(item.productId);
-
+  Future<void> addToCart({
+    required String uid,
+    required ProductModel product,
+    required String size,
+  }) async {
+    final ref = cartRef(uid).doc(itemKey(product.id, size));
     final doc = await ref.get();
+
     if (doc.exists) {
-      await ref.update({
-        'quantity': FieldValue.increment(1),
-      });
+      await ref.update({'quantity': FieldValue.increment(1)});
     } else {
+      final item = CartItemModel(
+        productId: product.id,
+        name: product.name,
+        imageUrl: product.imageUrl,
+        price: product.price,
+        selectedSize: size,
+        quantity: 1,
+      );
       await ref.set(item.toMap());
     }
   }
 
   // Remove Quantity from Cart
-  Future<void> removeItem(String uid, String productId) async {
-    final ref = getCartRef(uid).doc(productId);
-
+  Future<void> decrease({
+    required String uid,
+    required String productId,
+    required String size,
+  }) async {
+    final ref = cartRef(uid).doc(itemKey(productId, size));
     final doc = await ref.get();
+
     if (!doc.exists) return;
+    final qty = doc['quantity'];
 
-    final currentQty = doc['quantity'] as int;
-
-    if (currentQty > 1) {
-      await ref.update({'quantity': currentQty - 1});
+    if (qty > 1) {
+      await ref.update({"quantity": qty - 1});
     } else {
       await ref.delete();
     }
   }
 
   // Delete Item from Cart
-  Future<void> deleteProduct(String uid, String productId) async {
-    await getCartRef(uid).doc(productId).delete();
+  Future<void> deleteItem({
+    required String uid,
+    required String productId,
+    required String size,
+  }) async {
+    await cartRef(uid).doc(itemKey(productId, size)).delete();
   }
 
-  // Clear Whole Cart 
+  // Clear Whole Cart
   Future<void> clearCart(String uid) async {
-    final snapshot = await getCartRef(uid).get();
+    final snapshot = await cartRef(uid).get();
     for (var doc in snapshot.docs) {
-      doc.reference.delete();
+      await doc.reference.delete();
     }
   }
 }

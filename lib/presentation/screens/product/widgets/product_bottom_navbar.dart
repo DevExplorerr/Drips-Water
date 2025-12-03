@@ -27,8 +27,11 @@ class ProductBottomNavbar extends StatelessWidget {
           const SizedBox(width: 10),
           Expanded(
             child: CustomButton(
-              onPressed: () {
-                context.read<CartProvider>().addToCart(product.id);
+              onPressed: () async {
+                String size = product.sizes.isNotEmpty
+                    ? product.sizes.first
+                    : "Default";
+                await context.read<CartProvider>().addToCart(product, size);
               },
               height: 50,
               width: double.infinity,

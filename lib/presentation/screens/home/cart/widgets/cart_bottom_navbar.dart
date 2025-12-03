@@ -11,6 +11,8 @@ class CartBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<CartProvider>();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
@@ -43,7 +45,7 @@ class CartBottomNavbar extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                '${context.watch<CartProvider>().totalPrice}',
+                cart.totalPrice.toStringAsFixed(0),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.secondaryText,
                   fontWeight: FontWeight.w600,
@@ -53,6 +55,9 @@ class CartBottomNavbar extends StatelessWidget {
           ),
           CustomButton(
             onPressed: () {
+              // onPressed: cart.cartItems.isEmpty
+              //     ? null
+              //     : () {
               Navigator.push(
                 context,
                 CupertinoPageRoute(

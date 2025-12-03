@@ -17,7 +17,7 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(centerTitle: true, title: const Text("My Cart")),
       body: ListView.builder(
         itemCount: cart.cartItems.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (_, index) {
           final cartItem = cart.cartItems[index];
           return MyCartProductCard(product: cartItem);
         },
