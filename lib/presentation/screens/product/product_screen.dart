@@ -86,7 +86,7 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: ProductBottomNavbar(product: widget.product),
+      bottomNavigationBar: ProductBottomNavbar(product: widget.product, selectedSize: selectedSize),
     );
   }
 }

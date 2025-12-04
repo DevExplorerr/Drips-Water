@@ -1,5 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,12 @@ import 'package:provider/provider.dart';
 
 class ProductBottomNavbar extends StatelessWidget {
   final ProductModel product;
-  const ProductBottomNavbar({super.key, required this.product});
+  final String selectedSize;
+  const ProductBottomNavbar({
+    super.key,
+    required this.product,
+    required this.selectedSize,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +34,19 @@ class ProductBottomNavbar extends StatelessWidget {
           Expanded(
             child: CustomButton(
               onPressed: () async {
-                String size = product.sizes.isNotEmpty
-                    ? product.sizes.first
-                    : "Default";
-                await context.read<CartProvider>().addToCart(product, size);
+                if (selectedSize.isEmpty) {
+                  showFloatingSnackBar(
+                    context,
+                    message: "Please select a size",
+                    duration: const Duration(seconds: 1),
+                    backgroundColor: AppColors.primary,
+                  );
+                  return;
+                }
+                await context.read<CartProvider>().addToCart(
+                  product,
+                  selectedSize,
+                );
               },
               height: 50,
               width: double.infinity,
