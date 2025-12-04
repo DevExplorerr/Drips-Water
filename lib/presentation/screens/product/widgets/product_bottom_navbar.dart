@@ -4,6 +4,7 @@ import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProductBottomNavbar extends StatelessWidget {
@@ -19,6 +20,7 @@ class ProductBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isAdding = context.watch<CartProvider>().isAdding;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       child: Row(
@@ -34,35 +36,40 @@ class ProductBottomNavbar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: CustomButton(
-              onPressed: () async {
-                if (selectedSize.isEmpty) {
-                  showFloatingSnackBar(
-                    context,
-                    message: "Please select a size",
-                    duration: const Duration(seconds: 1),
-                    backgroundColor: AppColors.primary,
-                  );
-                  return;
-                }
-                await context.read<CartProvider>().addToCart(
-                  product,
-                  selectedSize,
-                  quantity,
-                );
+            child: isAdding
+                ? LoadingAnimationWidget.threeRotatingDots(
+                    color: AppColors.primary,
+                    size: 45,
+                  )
+                : CustomButton(
+                    onPressed: () async {
+                      if (selectedSize.isEmpty) {
+                        showFloatingSnackBar(
+                          context,
+                          message: "Please select a size",
+                          duration: const Duration(seconds: 1),
+                          backgroundColor: AppColors.primary,
+                        );
+                        return;
+                      }
+                      await context.read<CartProvider>().addToCart(
+                        product,
+                        selectedSize,
+                        quantity,
+                      );
 
-                showFloatingSnackBar(
-                  // ignore: use_build_context_synchronously
-                  context,
-                  message: "Added to cart",
-                  duration: const Duration(seconds: 1),
-                  backgroundColor: AppColors.primary,
-                );
-              },
-              height: 50,
-              width: double.infinity,
-              text: "Add to Cart",
-            ),
+                      showFloatingSnackBar(
+                        // ignore: use_build_context_synchronously
+                        context,
+                        message: "Added to cart",
+                        duration: const Duration(seconds: 1),
+                        backgroundColor: AppColors.primary,
+                      );
+                    },
+                    height: 50,
+                    width: double.infinity,
+                    text: "Add to Cart",
+                  ),
           ),
         ],
       ),

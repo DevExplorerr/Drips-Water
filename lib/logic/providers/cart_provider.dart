@@ -12,6 +12,9 @@ class CartProvider with ChangeNotifier {
   }
 
   List<CartItemModel> cartItems = [];
+  bool _isAdding = false;
+
+  bool get isAdding => _isAdding;
 
   // Real-time listener
   void listenToCart() {
@@ -28,12 +31,21 @@ class CartProvider with ChangeNotifier {
     String size,
     int quantity,
   ) async {
-    await repo.addToCart(
-      uid: uid,
-      product: product,
-      size: size,
-      quantity: quantity,
-    );
+    if (_isAdding) return;
+    _isAdding = true;
+    notifyListeners();
+
+    try {
+      await repo.addToCart(
+        uid: uid,
+        product: product,
+        size: size,
+        quantity: quantity,
+      );
+    } finally {
+      _isAdding = false;
+      notifyListeners();
+    }
   }
 
   Future<void> decrease(String productId, String size) async {
