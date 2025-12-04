@@ -16,12 +16,13 @@ class CartRepository {
     required String uid,
     required ProductModel product,
     required String size,
+    required int quantity,
   }) async {
     final ref = cartRef(uid).doc(itemKey(product.id, size));
     final doc = await ref.get();
 
     if (doc.exists) {
-      await ref.update({'quantity': FieldValue.increment(1)});
+      await ref.update({'quantity': FieldValue.increment(quantity)});
     } else {
       final item = CartItemModel(
         productId: product.id,
@@ -29,7 +30,7 @@ class CartRepository {
         imageUrl: product.imageUrl,
         price: product.price,
         selectedSize: size,
-        quantity: 1,
+        quantity: quantity,
       );
       await ref.set(item.toMap());
     }

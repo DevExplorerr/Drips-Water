@@ -23,8 +23,8 @@ class CartProvider with ChangeNotifier {
     });
   }
 
-  Future<void> addToCart(ProductModel product, String size) async {
-    await repo.addToCart(uid: uid, product: product, size: size);
+  Future<void> addToCart(ProductModel product, String size, int quantity) async {
+    await repo.addToCart(uid: uid, product: product, size: size, quantity: quantity);
   }
 
   Future<void> decrease(String productId, String size) async {

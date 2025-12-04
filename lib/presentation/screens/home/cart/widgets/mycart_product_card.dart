@@ -103,6 +103,7 @@ class MyCartProductCard extends StatelessWidget {
                           stock: 0,
                         ),
                         product.selectedSize,
+                        product.quantity,
                       );
                     },
                     child: Container(

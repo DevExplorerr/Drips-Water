@@ -9,10 +9,11 @@ import 'package:provider/provider.dart';
 class ProductBottomNavbar extends StatelessWidget {
   final ProductModel product;
   final String selectedSize;
+  final int quantity;
   const ProductBottomNavbar({
     super.key,
     required this.product,
-    required this.selectedSize,
+    required this.selectedSize, required this.quantity,
   });
 
   @override
@@ -46,6 +47,7 @@ class ProductBottomNavbar extends StatelessWidget {
                 await context.read<CartProvider>().addToCart(
                   product,
                   selectedSize,
+                  quantity,
                 );
               },
               height: 50,
