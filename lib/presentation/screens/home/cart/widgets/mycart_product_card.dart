@@ -87,7 +87,7 @@ class MyCartProductCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 13),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       cart.addToCart(
                         ProductModel(
                           id: product.productId,
@@ -103,7 +103,7 @@ class MyCartProductCard extends StatelessWidget {
                           stock: 0,
                         ),
                         product.selectedSize,
-                        product.quantity,
+                        1,
                       );
                     },
                     child: Container(

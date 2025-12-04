@@ -14,7 +14,7 @@ class CartBottomNavbar extends StatelessWidget {
     final cart = context.watch<CartProvider>();
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
         borderRadius: const BorderRadius.only(
@@ -55,9 +55,7 @@ class CartBottomNavbar extends StatelessWidget {
           ),
           CustomButton(
             onPressed: () {
-              // onPressed: cart.cartItems.isEmpty
-              //     ? null
-              //     : () {
+              if (cart.cartItems.isEmpty) return;
               Navigator.push(
                 context,
                 CupertinoPageRoute(
@@ -65,6 +63,10 @@ class CartBottomNavbar extends StatelessWidget {
                 ),
               );
             },
+            color: cart.cartItems.isEmpty
+                // ignore: deprecated_member_use
+                ? AppColors.grey.withOpacity(0.3)
+                : AppColors.primary,
             height: 50,
             width: 150,
             text: "CHECKOUT",

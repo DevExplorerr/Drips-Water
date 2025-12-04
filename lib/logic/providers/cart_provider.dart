@@ -23,8 +23,17 @@ class CartProvider with ChangeNotifier {
     });
   }
 
-  Future<void> addToCart(ProductModel product, String size, int quantity) async {
-    await repo.addToCart(uid: uid, product: product, size: size, quantity: quantity);
+  Future<void> addToCart(
+    ProductModel product,
+    String size,
+    int quantity,
+  ) async {
+    await repo.addToCart(
+      uid: uid,
+      product: product,
+      size: size,
+      quantity: quantity,
+    );
   }
 
   Future<void> decrease(String productId, String size) async {
@@ -38,23 +47,8 @@ class CartProvider with ChangeNotifier {
   Future<void> clear() async => await repo.clearCart(uid);
 
   double get totalPrice {
-    return cartItems.fold(
-      0,
-      (double sum, item) => sum + (item.quantity * item.price),
-    );
+    return cartItems.fold(0, (sum, item) => sum + (item.quantity * item.price));
   }
 
-  int get totalItems =>
-      cartItems.fold(0, (int sum, item) => sum + item.quantity);
+  int get totalItems => cartItems.fold(0, (sum, item) => sum + item.quantity);
 }
-
-
-
-  // Future<ProductModel> getProduct(String productId) async {
-  //   final doc = await FirebaseFirestore.instance
-  //       .collection('products')
-  //       .doc(productId)
-  //       .get();
-
-  //   return ProductModel.fromFirestore(doc);
-  // }

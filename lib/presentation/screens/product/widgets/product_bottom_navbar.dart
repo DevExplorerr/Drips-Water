@@ -13,7 +13,8 @@ class ProductBottomNavbar extends StatelessWidget {
   const ProductBottomNavbar({
     super.key,
     required this.product,
-    required this.selectedSize, required this.quantity,
+    required this.selectedSize,
+    required this.quantity,
   });
 
   @override
@@ -48,6 +49,14 @@ class ProductBottomNavbar extends StatelessWidget {
                   product,
                   selectedSize,
                   quantity,
+                );
+
+                showFloatingSnackBar(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  message: "Added to cart",
+                  duration: const Duration(seconds: 1),
+                  backgroundColor: AppColors.primary,
                 );
               },
               height: 50,
