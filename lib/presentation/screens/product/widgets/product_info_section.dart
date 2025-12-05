@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 
 class ProductInfoSection extends StatelessWidget {
   final String productName;
-  final double price;
   final String description;
+  final double price;
   final double rating;
   final int reviews;
+  final int stock;
 
   const ProductInfoSection({
     super.key,
     required this.productName,
-    required this.price,
     required this.description,
+    required this.price,
     required this.rating,
     required this.reviews,
+    required this.stock,
   });
 
   @override
@@ -30,7 +32,7 @@ class ProductInfoSection extends StatelessWidget {
           children: [
             Text(productName, style: textTheme.titleLarge),
             Text(
-              "(In Stock)",
+              "Stock: $stock",
               style: textTheme.bodySmall?.copyWith(
                 color: AppColors.secondaryText,
               ),

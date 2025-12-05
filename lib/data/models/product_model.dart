@@ -10,7 +10,6 @@ class ProductModel {
   final double price;
   final double rating;
   final int reviews;
-  final bool isFavorite;
   final int stock;
 
   ProductModel({
@@ -23,7 +22,6 @@ class ProductModel {
     required this.price,
     required this.rating,
     required this.reviews,
-    required this.isFavorite,
     required this.stock,
   });
 
@@ -41,7 +39,6 @@ class ProductModel {
       price: (data['price'] ?? 0).toDouble(),
       rating: (data['rating'] ?? 0).toDouble(),
       reviews: data['reviews'],
-      isFavorite: data['isFavorite'] ?? false,
       stock: data['stock'] ?? 0,
     );
   }

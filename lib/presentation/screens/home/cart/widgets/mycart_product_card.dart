@@ -99,7 +99,6 @@ class MyCartProductCard extends StatelessWidget {
                           price: product.price,
                           rating: 0,
                           reviews: 0,
-                          isFavorite: false,
                           stock: 0,
                         ),
                         product.selectedSize,

@@ -60,10 +60,11 @@ class _ProductScreenState extends State<ProductScreen> {
                     // Product Info Section
                     ProductInfoSection(
                       productName: widget.product.name,
-                      price: widget.product.price,
                       description: widget.product.description,
+                      price: widget.product.price,
                       rating: widget.product.rating,
                       reviews: widget.product.reviews,
+                      stock: widget.product.stock,
                     ),
 
                     const SizedBox(height: 25),
