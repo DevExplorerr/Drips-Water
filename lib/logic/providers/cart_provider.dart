@@ -1,20 +1,20 @@
 import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/data/services/cart_service.dart';
 import 'package:flutter/material.dart';
 import '../../data/models/cart_item_model.dart';
 import '../../data/repositories/cart_repository.dart';
 
 class CartProvider with ChangeNotifier {
   final CartRepository repo;
+  final CartService service;
   final String uid;
 
-  CartProvider(this.repo, this.uid) {
+  CartProvider({required this.repo, required this.uid, required this.service}) {
     listenToCart();
   }
 
   List<CartItemModel> cartItems = [];
-  bool _isAdding = false;
-
-  bool get isAdding => _isAdding;
+  bool get isAdding => service.isProcessing;
 
   // Real-time listener
   void listenToCart() {
@@ -26,37 +26,31 @@ class CartProvider with ChangeNotifier {
     });
   }
 
-  Future<void> addToCart(
+  Future<String> addToCart(
     ProductModel product,
     String size,
     int quantity,
   ) async {
-    if (_isAdding) return;
-    _isAdding = true;
+    notifyListeners();
+    final msg = await service.addToCart(
+      product: product,
+      size: size,
+      quantity: quantity,
+    );
     notifyListeners();
 
-    try {
-      await repo.addToCart(
-        uid: uid,
-        product: product,
-        size: size,
-        quantity: quantity,
-      );
-    } finally {
-      _isAdding = false;
-      notifyListeners();
-    }
+    return msg;
   }
 
   Future<void> decrease(String productId, String size) async {
-    await repo.decrease(uid: uid, productId: productId, size: size);
+    await service.decrease(productId, size);
   }
 
   Future<void> deleteItem(String productId, String size) async {
-    await repo.deleteItem(uid: uid, productId: productId, size: size);
+    await service.deleteItem(productId, size);
   }
 
-  Future<void> clear() async => await repo.clearCart(uid);
+  Future<void> clear() async => await service.clearCart();
 
   double get totalPrice {
     return cartItems.fold(0, (sum, item) => sum + (item.quantity * item.price));

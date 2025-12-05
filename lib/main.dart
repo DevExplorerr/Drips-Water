@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/app_theme.dart';
 import 'package:drips_water/data/repositories/cart_repository.dart';
+import 'package:drips_water/data/services/cart_service.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
@@ -25,25 +26,28 @@ void main() async {
   );
 
   runApp(
-    StreamBuilder<User?>(
-      stream: authService.value.authStateChanges,
-      builder: (context, snapshot) {
-        final uid = snapshot.data?.uid;
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (_) =>
-                  FavoriteProvider(FavoriteService(FavoriteRepository())),
-            ),
-            if (uid != null)
-              ChangeNotifierProvider(
-                create: (_) => CartProvider(CartRepository(), uid),
-              ),
-          ],
-          child: const DripsWater(),
-        );
-      },
-    ),
+    const DripsWater(),
+    // StreamBuilder<User?>(
+    //   stream: authService.value.authStateChanges,
+    //   builder: (context, snapshot) {
+    //     final uid = snapshot.data?.uid;
+    //     return MultiProvider(
+    //       providers: [
+    //         ChangeNotifierProvider(
+    //           create: (_) =>
+    //               FavoriteProvider(FavoriteService(FavoriteRepository())),
+    //         ),
+    //         if (uid != null)
+    //           ChangeNotifierProvider(
+    //             create: (_) => CartProvider(CartRepository(), uid),
+    //           ),
+    //         if (uid != null)
+    //           Provider(create: (_) => CartService(CartRepository())),
+    //       ],
+    //       child: const DripsWater(),
+    //     );
+    //   },
+    // ),
   );
 }
 
@@ -52,29 +56,52 @@ class DripsWater extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Drips Water",
-      theme: AppTheme.appTheme,
-      debugShowCheckedModeBanner: false,
-      home: StreamBuilder<User?>(
-        stream: authService.value.authStateChanges,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Scaffold(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              body: Center(
-                child: LoadingAnimationWidget.waveDots(
-                  color: AppColors.primary,
-                  size: 45,
-                ),
-              ),
+    final cartRepo = CartRepository();
+    return MultiProvider(
+      providers: [
+        // Favorite Provider
+        ChangeNotifierProvider(
+          create: (_) =>
+              FavoriteProvider(FavoriteService(FavoriteRepository())),
+        ),
+
+        // Cart Provider
+        Provider<CartService>(create: (_) => CartService(cartRepo)),
+        ChangeNotifierProvider<CartProvider>(
+          create: (ctx) {
+            final uid = FirebaseAuth.instance.currentUser?.uid ?? "";
+            return CartProvider(
+              repo: cartRepo,
+              uid: uid,
+              service: ctx.read<CartService>(),
             );
-          } else if (snapshot.hasData) {
-            return const HomeScreen();
-          } else {
-            return const SplashScreen();
-          }
-        },
+          },
+        ),
+      ],
+      child: MaterialApp(
+        title: "Drips Water",
+        theme: AppTheme.appTheme,
+        debugShowCheckedModeBanner: false,
+        home: StreamBuilder<User?>(
+          stream: authService.value.authStateChanges,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Scaffold(
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                body: Center(
+                  child: LoadingAnimationWidget.waveDots(
+                    color: AppColors.primary,
+                    size: 45,
+                  ),
+                ),
+              );
+            } else if (snapshot.hasData) {
+              return const HomeScreen();
+            } else {
+              return const SplashScreen();
+            }
+          },
+        ),
       ),
     );
   }

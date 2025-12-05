@@ -52,16 +52,18 @@ class ProductBottomNavbar extends StatelessWidget {
                         );
                         return;
                       }
-                      await context.read<CartProvider>().addToCart(
+
+                      final msg = await context.read<CartProvider>().addToCart(
                         product,
                         selectedSize,
                         quantity,
                       );
 
+                      if (!context.mounted) return;
+
                       showFloatingSnackBar(
-                        // ignore: use_build_context_synchronously
                         context,
-                        message: "Added to cart",
+                        message: msg,
                         duration: const Duration(seconds: 1),
                         backgroundColor: AppColors.primary,
                       );
