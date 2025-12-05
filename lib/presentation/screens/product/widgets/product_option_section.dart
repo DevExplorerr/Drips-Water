@@ -1,7 +1,9 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 
 class ProductOptionSection extends StatelessWidget {
+  final ProductModel product;
   final int quantity;
   final String selectedSize;
   final ValueChanged<int> onQuantityChanged;
@@ -9,6 +11,7 @@ class ProductOptionSection extends StatelessWidget {
 
   const ProductOptionSection({
     super.key,
+    required this.product,
     required this.quantity,
     required this.selectedSize,
     required this.onQuantityChanged,
@@ -39,18 +42,21 @@ class ProductOptionSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: DropdownButton<String>(
-                value: selectedSize,
                 dropdownColor: AppColors.white,
                 underline: const SizedBox(),
                 icon: const Icon(Icons.keyboard_arrow_down),
+                hint: const Text("Select size"),
                 style: textTheme.bodyMedium?.copyWith(
                   color: AppColors.secondaryText,
                   fontWeight: FontWeight.w500,
                 ),
-                items: ["100ml", "500ml", "1L", "5L"]
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                value: selectedSize,
+                items: product.sizes
+                    .map((s) => DropdownMenuItem(value: s, child: Text(s)))
                     .toList(),
-                onChanged: (val) => onSizeChanged(val!),
+                onChanged: (val) {
+                  if (val != null) onSizeChanged(val);
+                },
               ),
             ),
           ],

@@ -20,7 +20,15 @@ class ProductScreen extends StatefulWidget {
 
 class _ProductScreenState extends State<ProductScreen> {
   int quantity = 1;
-  String selectedSize = "100ml";
+  String? selectedSize;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedSize = widget.product.sizes.isNotEmpty
+        ? widget.product.sizes.first
+        : null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +79,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
                     // Options (Bottle Size + Quantity)
                     ProductOptionSection(
+                      product: widget.product,
                       quantity: quantity,
-                      selectedSize: selectedSize,
+                      selectedSize: selectedSize ?? "",
                       onQuantityChanged: (newQty) {
                         setState(() => quantity = newQty);
                       },
@@ -89,7 +98,7 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       bottomNavigationBar: ProductBottomNavbar(
         product: widget.product,
-        selectedSize: selectedSize,
+        selectedSize: selectedSize ?? "",
         quantity: quantity,
       ),
     );
