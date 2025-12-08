@@ -1,7 +1,8 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/home/cart/widgets/cart_bottom_navbar.dart';
-import 'package:drips_water/presentation/screens/home/cart/widgets/mycart_product_card.dart';
+import 'package:drips_water/presentation/screens/home/cart/widgets/cart_product_card.dart';
+import 'package:drips_water/presentation/widgets/dialog/confirm_clear_cart_dialog.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,13 +10,36 @@ import 'package:provider/provider.dart';
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
+    void _showClearDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ConfirmClearCartDialog(
+        onConfirm: () {
+          context.read<CartProvider>().clear();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<CartProvider>();
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(centerTitle: true, title: const Text("My Cart")),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("My Cart"),
+        actions: [
+          if (cart.cartItems.isNotEmpty)
+            IconButton(
+              onPressed: () {
+                _showClearDialog(context);
+              },
+              icon: const Icon(Icons.delete_outline),
+            ),
+        ],
+      ),
       body: cart.cartItems.isEmpty
           ? const AppEmptyState(
               title: "Cart is empty",
@@ -25,13 +49,38 @@ class CartScreen extends StatelessWidget {
           : ListView.builder(
               itemCount: cart.cartItems.length,
               physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(vertical: 15),
               itemBuilder: (_, index) {
                 final cartItem = cart.cartItems[index];
-                return MyCartProductCard(product: cartItem);
+                return CartProductCard(product: cartItem);
               },
             ),
 
       bottomNavigationBar: const CartBottomNavbar(),
     );
   }
+
+  // 🔥 Confirmation Dialog (so user doesn't wipe cart by mistake)
+  // void _showClearDialog(BuildContext context, CartProvider cart) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => AlertDialog(
+  //       title: const Text("Clear Cart"),
+  //       content: const Text("Are you sure you want to remove all items?"),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: const Text("Cancel"),
+  //         ),
+  //         TextButton(
+  //           onPressed: () {
+  //             cart.clear();
+  //             Navigator.pop(context);
+  //           },
+  //           child: const Text("Clear", style: TextStyle(color: Colors.red)),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
