@@ -38,6 +38,12 @@ class _FadeSlideWrapperState extends State<FadeSlideWrapper>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _opacity,

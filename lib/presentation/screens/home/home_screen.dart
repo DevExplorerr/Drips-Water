@@ -53,9 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
           body: IndexedStack(
             index: _currentSelectedIndex,
             children: const [
-              CartScreen(),
-              FavoriteScreen(),
               HomeContent(),
+              FavoriteScreen(),
+              CartScreen(),
               ProfileScreen(),
             ],
           ),
