@@ -64,7 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
             updateCurrentIndex: (i) =>
                 setState(() => _currentSelectedIndex = i),
           ),
-          floatingActionButton: const ChatBotFloatingButton(),
+          floatingActionButton: _currentSelectedIndex == 0
+              ? const ChatBotFloatingButton()
+              : null,
         ),
       ),
     );
@@ -76,36 +78,36 @@ class ChatBotFloatingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: const Duration(milliseconds: 500),
-            reverseTransitionDuration: const Duration(milliseconds: 400),
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const ChatBotScreen(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-                  final fadeAnimation = CurvedAnimation(
-                    parent: animation,
-                    curve: Curves.easeInOut,
-                  );
-
-                  return FadeTransition(opacity: fadeAnimation, child: child);
-                },
-          ),
-        );
-      },
-      child: Container(
-        height: 60,
-        width: 60,
-        decoration: BoxDecoration(
-          color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
-          shape: BoxShape.circle,
-          boxShadow: [const BoxShadow(color: AppColors.grey, blurRadius: 5)],
+    return Material(
+      elevation: 6,
+      shape: const CircleBorder(),
+      color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 500),
+              reverseTransitionDuration: const Duration(milliseconds: 400),
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ChatBotScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                    final fadeAnimation = CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInOut,
+                    );
+                    return FadeTransition(opacity: fadeAnimation, child: child);
+                  },
+            ),
+          );
+        },
+        child: const SizedBox(
+          height: 60,
+          width: 60,
+          child: Icon(Icons.chat, color: AppColors.white, size: 30),
         ),
-        child: const Icon(Icons.chat, color: AppColors.white, size: 30),
       ),
     );
   }
