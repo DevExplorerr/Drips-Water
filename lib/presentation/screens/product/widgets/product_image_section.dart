@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/presentation/screens/home/cart/widgets/cart_icon_badge.dart';
 import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -72,7 +73,31 @@ class ProductImageSection extends StatelessWidget {
           Positioned(
             bottom: 20,
             right: 15,
-            child: _buildIconButton(Icons.shopping_bag_outlined, onNavigate),
+            child: GestureDetector(
+              onTap: onNavigate,
+              child: Container(
+                height: 45,
+                width: 45,
+                decoration: BoxDecoration(
+                  // ignore: deprecated_member_use
+                  color: AppColors.white.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const CartIconBadge(
+                  icon: Icons.shopping_bag_outlined,
+                  iconColor: AppColors.primary,
+                  badgeColor: AppColors.red,
+                  textColor: AppColors.textDark,
+                  width: 18,
+                  height: 18,
+                ),
+              ),
+            ),
+            // _buildIconButton(Icons.shopping_bag_outlined, onNavigate),
+            // GestureDetector(
+            //   onTap: onNavigate,
+
+            // ),
           ),
         ],
       ),
