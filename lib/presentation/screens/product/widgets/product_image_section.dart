@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/home/cart/widgets/cart_icon_badge.dart';
@@ -79,25 +81,23 @@ class ProductImageSection extends StatelessWidget {
                 height: 45,
                 width: 45,
                 decoration: BoxDecoration(
-                  // ignore: deprecated_member_use
                   color: AppColors.white.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const CartIconBadge(
-                  icon: Icons.shopping_bag_outlined,
-                  iconColor: AppColors.primary,
-                  badgeColor: AppColors.red,
-                  textColor: AppColors.textDark,
-                  width: 18,
-                  height: 18,
+                child: const Center(
+                  child: CartIconBadge(
+                    icon: Icons.shopping_bag_outlined,
+                    iconColor: AppColors.primary,
+                    badgeColor: AppColors.primary,
+                    textColor: AppColors.textDark,
+                    width: 20,
+                    height: 20,
+                    left: 20,
+                    bottom: 20,
+                  ),
                 ),
               ),
             ),
-            // _buildIconButton(Icons.shopping_bag_outlined, onNavigate),
-            // GestureDetector(
-            //   onTap: onNavigate,
-
-            // ),
           ),
         ],
       ),
@@ -115,7 +115,6 @@ class ProductImageSection extends StatelessWidget {
         height: 45,
         width: 45,
         decoration: BoxDecoration(
-          // ignore: deprecated_member_use
           color: AppColors.white.withOpacity(0.4),
           borderRadius: BorderRadius.circular(10),
         ),

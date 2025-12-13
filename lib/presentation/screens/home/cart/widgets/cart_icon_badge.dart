@@ -27,7 +27,7 @@ class CartIconBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<CartProvider>(
-      builder: (context, cartProvider, __) {
+      builder: (_, cartProvider, __) {
         return Stack(
           clipBehavior: Clip.none,
           children: [
@@ -44,16 +44,15 @@ class CartIconBadge extends StatelessWidget {
                     color: badgeColor,
                     shape: BoxShape.circle,
                   ),
-                  child: Center(
-                    child: Text(
-                      cartProvider.totalItems.toString(),
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
+                  alignment: Alignment.center,
+                  child: Text(
+                    cartProvider.totalItems.toString(),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: textColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

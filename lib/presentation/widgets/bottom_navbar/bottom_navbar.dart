@@ -51,15 +51,28 @@ class _BottomNavbarState extends State<BottomNavbar> {
                 onTap: () {
                   widget.updateCurrentIndex(index);
                 },
-                child: CartIconBadge(
-                  icon: Icons.shopping_cart_outlined,
-                  iconColor: isSelected ? AppColors.black : AppColors.grey,
-                  badgeColor: Colors.red,
-                  textColor: Colors.white,
-                  width: 16,
-                  height: 16,
-                  left: 20,
-                  bottom: 20,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CartIconBadge(
+                      icon: Icons.shopping_cart_outlined,
+                      iconColor: isSelected ? AppColors.black : AppColors.grey,
+                      badgeColor: AppColors.primary,
+                      textColor: AppColors.textDark,
+                      width: 20,
+                      height: 20,
+                    ),
+                    const SizedBox(height: 4),
+                    if (isSelected)
+                      Container(
+                        width: 7,
+                        height: 7,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                  ],
                 ),
               );
             } else {
