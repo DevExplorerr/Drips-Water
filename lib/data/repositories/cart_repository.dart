@@ -67,8 +67,11 @@ class CartRepository {
   // Clear Whole Cart
   Future<void> clearCart(String uid) async {
     final snapshot = await cartRef(uid).get();
-    for (var doc in snapshot.docs) {
-      await doc.reference.delete();
+    final batch = _firestore.batch();
+    for (final doc in snapshot.docs) {
+      batch.delete(doc.reference);
     }
+
+    await batch.commit();
   }
 }

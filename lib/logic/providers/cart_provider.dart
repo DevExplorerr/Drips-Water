@@ -13,7 +13,10 @@ class CartProvider with ChangeNotifier {
     listenToCart();
   }
 
+  bool _isLoading = false;
   List<CartItemModel> cartItems = [];
+
+  bool get isLoading => _isLoading;
   bool get isAdding => service.isProcessing;
 
   // Real-time listener
@@ -50,7 +53,16 @@ class CartProvider with ChangeNotifier {
     await service.deleteItem(productId, size);
   }
 
-  Future<void> clear() async => await service.clearCart();
+  Future<void> clearCart() async {
+    _isLoading = true;
+    notifyListeners();
+
+    await service.clearCart();
+
+    cartItems.clear();
+    _isLoading = false;
+    notifyListeners();
+  }
 
   double get totalPrice {
     return cartItems.fold(0, (sum, item) => sum + (item.quantity * item.price));

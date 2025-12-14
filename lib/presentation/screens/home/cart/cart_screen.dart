@@ -10,12 +10,12 @@ import 'package:provider/provider.dart';
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
-    void _showClearDialog(BuildContext context) {
+  void _showClearDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => ConfirmClearCartDialog(
         onConfirm: () {
-          context.read<CartProvider>().clear();
+          context.read<CartProvider>().clearCart();
         },
       ),
     );
@@ -59,28 +59,4 @@ class CartScreen extends StatelessWidget {
       bottomNavigationBar: const CartBottomNavbar(),
     );
   }
-
-  // 🔥 Confirmation Dialog (so user doesn't wipe cart by mistake)
-  // void _showClearDialog(BuildContext context, CartProvider cart) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (_) => AlertDialog(
-  //       title: const Text("Clear Cart"),
-  //       content: const Text("Are you sure you want to remove all items?"),
-  //       actions: [
-  //         TextButton(
-  //           onPressed: () => Navigator.pop(context),
-  //           child: const Text("Cancel"),
-  //         ),
-  //         TextButton(
-  //           onPressed: () {
-  //             cart.clear();
-  //             Navigator.pop(context);
-  //           },
-  //           child: const Text("Clear", style: TextStyle(color: Colors.red)),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
