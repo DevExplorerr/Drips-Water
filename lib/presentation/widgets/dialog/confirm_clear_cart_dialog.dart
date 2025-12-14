@@ -2,16 +2,21 @@
 
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
+import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 
 class ConfirmClearCartDialog extends StatelessWidget {
-  final VoidCallback onConfirm;
-
+  final Future<void> Function() onConfirm;
   const ConfirmClearCartDialog({super.key, required this.onConfirm});
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = context.watch<CartProvider>();
+    final isLoading = cartProvider.isLoading;
+
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     return AlertDialog(
@@ -62,9 +67,7 @@ class ConfirmClearCartDialog extends StatelessWidget {
             children: [
               Expanded(
                 child: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: isLoading ? null : () => Navigator.pop(context),
                   child: Text(
                     "Cancel",
                     style: textTheme.bodySmall?.copyWith(
@@ -76,20 +79,27 @@ class ConfirmClearCartDialog extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: CustomButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    showFloatingSnackBar(
-                      context,
-                      message: "Cart Cleared Successfully",
-                      backgroundColor: theme.primaryColor,
-                    );
-                    onConfirm();
-                  },
-                  height: 40,
-                  width: 40,
-                  text: "Clear",
-                ),
+                child: isLoading
+                    ? LoadingAnimationWidget.threeRotatingDots(
+                        color: AppColors.primary,
+                        size: 35,
+                      )
+                    : CustomButton(
+                        height: 40,
+                        width: 40,
+                        text: "Clear",
+                        onPressed: () async {
+                          await onConfirm();
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                            showFloatingSnackBar(
+                              context,
+                              message: "Cart cleared successfully",
+                              backgroundColor: theme.primaryColor,
+                            );
+                          }
+                        },
+                      ),
               ),
             ],
           ),

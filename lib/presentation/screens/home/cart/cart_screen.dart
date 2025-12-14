@@ -14,8 +14,8 @@ class CartScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => ConfirmClearCartDialog(
-        onConfirm: () {
-          context.read<CartProvider>().clearCart();
+        onConfirm: () async {
+          await context.read<CartProvider>().clearCart();
         },
       ),
     );

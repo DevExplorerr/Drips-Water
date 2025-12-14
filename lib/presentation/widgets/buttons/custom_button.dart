@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double height;
   final double width;
   final String text;
@@ -22,6 +22,7 @@ class CustomButton extends StatelessWidget {
       height: height,
       width: width,
       child: ElevatedButton(
+        onPressed: onPressed,
         style: ButtonStyle(
           backgroundColor: WidgetStatePropertyAll(
             color ??
@@ -30,7 +31,6 @@ class CustomButton extends StatelessWidget {
                 ).elevatedButtonTheme.style?.backgroundColor?.resolve({}),
           ),
         ),
-        onPressed: onPressed,
         child: Text(
           text,
           style: theme.elevatedButtonTheme.style!.textStyle?.resolve({}),
