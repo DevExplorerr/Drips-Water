@@ -13,11 +13,15 @@ class CartProvider with ChangeNotifier {
     listenToCart();
   }
 
-  bool _isLoading = false;
   List<CartItemModel> cartItems = [];
 
-  bool get isLoading => _isLoading;
-  bool get isAdding => service.isProcessing;
+  bool _isAdding = false;
+  bool _isUpdatingQty = false;
+  bool _isClearingCart = false;
+
+  bool get isAdding => _isAdding;
+  bool get isUpdatingQty => _isUpdatingQty;
+  bool get isClearingCart => _isClearingCart;
 
   // Real-time listener
   void listenToCart() {
@@ -34,19 +38,35 @@ class CartProvider with ChangeNotifier {
     String size,
     int quantity,
   ) async {
+    if (_isAdding) return "Please wait...";
+
+    _isAdding = true;
+    _isUpdatingQty = true;
     notifyListeners();
+
     final msg = await service.addToCart(
       product: product,
       size: size,
       quantity: quantity,
     );
+
+    _isAdding = false;
+    _isUpdatingQty = false;
     notifyListeners();
 
     return msg;
   }
 
   Future<void> decrease(String productId, String size) async {
+    if (_isUpdatingQty) return;
+
+    _isUpdatingQty = true;
+    notifyListeners();
+
     await service.decrease(productId, size);
+
+    _isUpdatingQty = false;
+    notifyListeners();
   }
 
   Future<void> deleteItem(String productId, String size) async {
@@ -54,13 +74,13 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> clearCart() async {
-    _isLoading = true;
+    _isClearingCart = true;
     notifyListeners();
 
     await service.clearCart();
 
     cartItems.clear();
-    _isLoading = false;
+    _isClearingCart = false;
     notifyListeners();
   }
 

@@ -10,23 +10,14 @@ class CartService {
 
   String? get uid => _auth.currentUser?.uid;
 
-  bool _isProcessing = false;
-  bool get isProcessing => _isProcessing;
-
   Future<String> addToCart({
     required ProductModel product,
     required String size,
     required int quantity,
   }) async {
     if (uid == null) return "Please login to continue";
-
-    if (_isProcessing) return "Please wait...";
-
     if (size.isEmpty) return "Please select a size";
-
     if (quantity < 1) return "Invalid quantity";
-
-    _isProcessing = true;
 
     try {
       await _repo.addToCart(
@@ -35,12 +26,9 @@ class CartService {
         size: size,
         quantity: quantity,
       );
-
       return "Added to cart";
     } catch (_) {
       return "Failed to add item";
-    } finally {
-      _isProcessing = false;
     }
   }
 

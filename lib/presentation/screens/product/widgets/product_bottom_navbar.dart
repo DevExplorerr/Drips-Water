@@ -20,7 +20,7 @@ class ProductBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAdding = context.watch<CartProvider>().isAdding;
+    final cart = context.watch<CartProvider>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       child: Row(
@@ -36,7 +36,7 @@ class ProductBottomNavbar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: isAdding
+            child: cart.isAdding
                 ? LoadingAnimationWidget.threeRotatingDots(
                     color: AppColors.primary,
                     size: 45,

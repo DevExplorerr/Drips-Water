@@ -14,8 +14,7 @@ class ConfirmClearCartDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartProvider = context.watch<CartProvider>();
-    final isLoading = cartProvider.isLoading;
+    final cart = context.watch<CartProvider>();
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
@@ -36,10 +35,10 @@ class ConfirmClearCartDialog extends StatelessWidget {
               color: theme.primaryColor.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(
+            child: const Icon(
               Icons.delete_forever_rounded,
               size: 34,
-              color: theme.primaryColor,
+              color: AppColors.primary,
             ),
           ),
 
@@ -67,7 +66,9 @@ class ConfirmClearCartDialog extends StatelessWidget {
             children: [
               Expanded(
                 child: TextButton(
-                  onPressed: isLoading ? null : () => Navigator.pop(context),
+                  onPressed: cart.isClearingCart
+                      ? null
+                      : () => Navigator.pop(context),
                   child: Text(
                     "Cancel",
                     style: textTheme.bodySmall?.copyWith(
@@ -79,7 +80,7 @@ class ConfirmClearCartDialog extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: isLoading
+                child: cart.isClearingCart
                     ? LoadingAnimationWidget.threeRotatingDots(
                         color: AppColors.primary,
                         size: 35,
