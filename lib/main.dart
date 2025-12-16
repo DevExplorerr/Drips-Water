@@ -25,30 +25,7 @@ void main() async {
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
 
-  runApp(
-    const DripsWater(),
-    // StreamBuilder<User?>(
-    //   stream: authService.value.authStateChanges,
-    //   builder: (context, snapshot) {
-    //     final uid = snapshot.data?.uid;
-    //     return MultiProvider(
-    //       providers: [
-    //         ChangeNotifierProvider(
-    //           create: (_) =>
-    //               FavoriteProvider(FavoriteService(FavoriteRepository())),
-    //         ),
-    //         if (uid != null)
-    //           ChangeNotifierProvider(
-    //             create: (_) => CartProvider(CartRepository(), uid),
-    //           ),
-    //         if (uid != null)
-    //           Provider(create: (_) => CartService(CartRepository())),
-    //       ],
-    //       child: const DripsWater(),
-    //     );
-    //   },
-    // ),
-  );
+  runApp(const DripsWater());
 }
 
 class DripsWater extends StatelessWidget {
@@ -56,53 +33,63 @@ class DripsWater extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartRepo = CartRepository();
-    return MultiProvider(
-      providers: [
-        // Favorite Provider
-        ChangeNotifierProvider(
-          create: (_) =>
-              FavoriteProvider(FavoriteService(FavoriteRepository())),
-        ),
+    return StreamBuilder<User?>(
+      stream: authService.value.authStateChanges,
+      builder: (context, snapshot) {
+        final user = snapshot.data;
+        return MultiProvider(
+          providers: [
+            // Favorite Provider
+            ChangeNotifierProvider(
+              create: (_) =>
+                  FavoriteProvider(FavoriteService(FavoriteRepository())),
+            ),
 
-        // Cart Provider
-        Provider<CartService>(create: (_) => CartService(cartRepo)),
-        ChangeNotifierProvider<CartProvider>(
-          create: (ctx) {
-            final uid = FirebaseAuth.instance.currentUser?.uid ?? "";
-            return CartProvider(
-              repo: cartRepo,
-              uid: uid,
-              service: ctx.read<CartService>(),
-            );
-          },
-        ),
-      ],
-      child: MaterialApp(
-        title: "Drips Water",
-        theme: AppTheme.appTheme,
-        debugShowCheckedModeBanner: false,
-        home: StreamBuilder<User?>(
-          stream: authService.value.authStateChanges,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Scaffold(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                body: Center(
-                  child: LoadingAnimationWidget.waveDots(
-                    color: AppColors.primary,
-                    size: 45,
-                  ),
-                ),
-              );
-            } else if (snapshot.hasData) {
-              return const HomeScreen();
-            } else {
-              return const SplashScreen();
-            }
-          },
-        ),
-      ),
+            // Cart Provider
+            if (user != null) ...[
+              Provider<CartRepository>(create: (_) => CartRepository()),
+              Provider<CartService>(
+                create: (ctx) => CartService(ctx.read<CartRepository>()),
+              ),
+              ChangeNotifierProvider<CartProvider>(
+                key: ValueKey(user.uid),
+                create: (ctx) {
+                  return CartProvider(
+                    repo: ctx.read<CartRepository>(),
+                    uid: user.uid,
+                    service: ctx.read<CartService>(),
+                  );
+                },
+              ),
+            ],
+          ],
+          child: MaterialApp(
+            title: "Drips Water",
+            theme: AppTheme.appTheme,
+            debugShowCheckedModeBanner: false,
+            home: StreamBuilder<User?>(
+              stream: authService.value.authStateChanges,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Scaffold(
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    body: Center(
+                      child: LoadingAnimationWidget.waveDots(
+                        color: AppColors.primary,
+                        size: 45,
+                      ),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  return const HomeScreen();
+                } else {
+                  return const SplashScreen();
+                }
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

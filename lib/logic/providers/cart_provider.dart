@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/data/services/cart_service.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ class CartProvider with ChangeNotifier {
   final CartRepository repo;
   final CartService service;
   final String uid;
+  late final StreamSubscription _cartSub;
 
   CartProvider({required this.repo, required this.uid, required this.service}) {
     listenToCart();
@@ -25,12 +28,18 @@ class CartProvider with ChangeNotifier {
 
   // Real-time listener
   void listenToCart() {
-    repo.cartRef(uid).snapshots().listen((snapshot) {
+    _cartSub = repo.cartRef(uid).snapshots().listen((snapshot) {
       cartItems = snapshot.docs
           .map((e) => CartItemModel.fromMap(e.data()))
           .toList();
       notifyListeners();
     });
+  }
+
+  @override
+  void dispose() {
+    _cartSub.cancel();
+    super.dispose();
   }
 
   Future<String> addToCart(
