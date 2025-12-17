@@ -46,22 +46,20 @@ class DripsWater extends StatelessWidget {
             ),
 
             // Cart Provider
-            if (user != null) ...[
-              Provider<CartRepository>(create: (_) => CartRepository()),
-              Provider<CartService>(
-                create: (ctx) => CartService(ctx.read<CartRepository>()),
-              ),
-              ChangeNotifierProvider<CartProvider>(
-                key: ValueKey(user.uid),
-                create: (ctx) {
-                  return CartProvider(
-                    repo: ctx.read<CartRepository>(),
-                    uid: user.uid,
-                    service: ctx.read<CartService>(),
-                  );
-                },
-              ),
-            ],
+            Provider<CartRepository>(create: (_) => CartRepository()),
+            Provider<CartService>(
+              create: (ctx) => CartService(ctx.read<CartRepository>()),
+            ),
+            ChangeNotifierProvider<CartProvider>(
+              key: ValueKey(user?.uid ?? 'guest'),
+              create: (ctx) {
+                return CartProvider(
+                  repo: ctx.read<CartRepository>(),
+                  service: ctx.read<CartService>(),
+                  uid: user?.uid ?? '',
+                );
+              },
+            ),
           ],
           child: MaterialApp(
             title: "Drips Water",

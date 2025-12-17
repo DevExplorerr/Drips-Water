@@ -10,7 +10,8 @@ class CartProvider with ChangeNotifier {
   final CartRepository repo;
   final CartService service;
   final String uid;
-  late final StreamSubscription _cartSub;
+
+  StreamSubscription? _cartSub;
 
   CartProvider({required this.repo, required this.uid, required this.service}) {
     listenToCart();
@@ -28,6 +29,11 @@ class CartProvider with ChangeNotifier {
 
   // Real-time listener
   void listenToCart() {
+    if (uid.isEmpty) {
+      cartItems = [];
+      notifyListeners();
+      return;
+    }
     _cartSub = repo.cartRef(uid).snapshots().listen((snapshot) {
       cartItems = snapshot.docs
           .map((e) => CartItemModel.fromMap(e.data()))
@@ -38,7 +44,7 @@ class CartProvider with ChangeNotifier {
 
   @override
   void dispose() {
-    _cartSub.cancel();
+    _cartSub?.cancel();
     super.dispose();
   }
 
@@ -53,17 +59,20 @@ class CartProvider with ChangeNotifier {
     _isUpdatingQty = true;
     notifyListeners();
 
-    final msg = await service.addToCart(
-      product: product,
-      size: size,
-      quantity: quantity,
-    );
-
-    _isAdding = false;
-    _isUpdatingQty = false;
-    notifyListeners();
-
-    return msg;
+    try {
+      final msg = await service.addToCart(
+        product: product,
+        size: size,
+        quantity: quantity,
+      );
+      return msg;
+    } catch (e) {
+      return "Error adding to cart";
+    } finally {
+      _isAdding = false;
+      _isUpdatingQty = false;
+      notifyListeners();
+    }
   }
 
   Future<void> decrease(String productId, String size) async {

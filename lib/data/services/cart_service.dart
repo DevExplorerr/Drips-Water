@@ -15,7 +15,7 @@ class CartService {
     required String size,
     required int quantity,
   }) async {
-    if (uid == null) return "Please login to continue";
+    if (uid == null) return "Please login to add items to cart";
     if (size.isEmpty) return "Please select a size";
     if (quantity < 1) return "Invalid quantity";
 
