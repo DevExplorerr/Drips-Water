@@ -2,8 +2,8 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/presentation/screens/home/cart/widgets/cart_icon_badge.dart';
 import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
+import 'package:drips_water/presentation/widgets/icon_badge/cart_icon_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 

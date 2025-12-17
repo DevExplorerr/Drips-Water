@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use, must_be_immutable
 
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/presentation/screens/home/cart/widgets/cart_icon_badge.dart';
+import 'package:drips_water/presentation/widgets/icon_badge/cart_icon_badge.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavbar extends StatefulWidget {
