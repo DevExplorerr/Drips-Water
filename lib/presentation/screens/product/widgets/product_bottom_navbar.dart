@@ -3,6 +3,7 @@ import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
+import 'package:drips_water/presentation/widgets/dialog/custom_login_prompt_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,9 @@ class ProductBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<CartProvider>();
+    final isAdding = context.select<CartProvider, bool>(
+      (cart) => cart.isAdding,
+    );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       child: Row(
@@ -36,12 +39,15 @@ class ProductBottomNavbar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: cart.isAdding
+            child: isAdding
                 ? LoadingAnimationWidget.threeRotatingDots(
                     color: AppColors.primary,
                     size: 45,
                   )
                 : CustomButton(
+                    height: 50,
+                    width: double.infinity,
+                    text: "Add to Cart",
                     onPressed: () async {
                       if (selectedSize.isEmpty) {
                         showFloatingSnackBar(
@@ -53,24 +59,33 @@ class ProductBottomNavbar extends StatelessWidget {
                         return;
                       }
 
-                      final msg = await context.read<CartProvider>().addToCart(
-                        product,
-                        selectedSize,
-                        quantity,
-                      );
+                      final response = await context
+                          .read<CartProvider>()
+                          .addToCart(product, selectedSize, quantity);
 
                       if (!context.mounted) return;
 
                       showFloatingSnackBar(
                         context,
-                        message: msg,
+                        message: response.message,
                         duration: const Duration(seconds: 1),
                         backgroundColor: AppColors.primary,
                       );
+
+                      if (response.status == CartStatus.guestBlocked) {
+                        showDialog(
+                          context: context,
+                          animationStyle: AnimationStyle(
+                            curve: Curves.ease,
+                            duration: const Duration(milliseconds: 300),
+                            reverseDuration: const Duration(milliseconds: 200),
+                          ),
+                          builder: (_) => CustomLoginPromptDialog(
+                            message: response.message,
+                          ),
+                        );
+                      }
                     },
-                    height: 50,
-                    width: double.infinity,
-                    text: "Add to Cart",
                   ),
           ),
         ],

@@ -48,26 +48,34 @@ class CartProvider with ChangeNotifier {
     super.dispose();
   }
 
-  Future<String> addToCart(
+  Future<CartResponse> addToCart(
     ProductModel product,
     String size,
     int quantity,
   ) async {
-    if (_isAdding) return "Please wait...";
-
-    _isAdding = true;
-    _isUpdatingQty = true;
-    notifyListeners();
+    if (uid.isEmpty) {
+      return CartResponse(
+        status: CartStatus.guestBlocked,
+        message: "Please sign in to add items to cart",
+      );
+    }
 
     try {
+      _isAdding = true;
+      _isUpdatingQty = true;
+      notifyListeners();
+
       final msg = await service.addToCart(
         product: product,
         size: size,
         quantity: quantity,
       );
-      return msg;
+      return CartResponse(status: CartStatus.success, message: msg);
     } catch (e) {
-      return "Error adding to cart";
+      return CartResponse(
+        status: CartStatus.error,
+        message: "Something went wrong. Try again",
+      );
     } finally {
       _isAdding = false;
       _isUpdatingQty = false;
@@ -107,4 +115,13 @@ class CartProvider with ChangeNotifier {
   }
 
   int get totalItems => cartItems.fold(0, (sum, item) => sum + item.quantity);
+}
+
+enum CartStatus { success, guestBlocked, error }
+
+class CartResponse {
+  final CartStatus status;
+  final String message;
+
+  CartResponse({required this.status, required this.message});
 }

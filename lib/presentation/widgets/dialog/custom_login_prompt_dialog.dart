@@ -9,7 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomLoginPromptDialog extends StatelessWidget {
-  const CustomLoginPromptDialog({super.key});
+  final String message;
+  const CustomLoginPromptDialog({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class CustomLoginPromptDialog extends StatelessWidget {
             color: AppColors.primary,
           ),
           content: Text(
-            "You need to sign in to add products to your favorites.",
+            message,
             style: textTheme.bodyMedium?.copyWith(
               color: AppColors.secondaryText,
             ),
