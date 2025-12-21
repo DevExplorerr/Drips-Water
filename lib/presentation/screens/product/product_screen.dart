@@ -5,7 +5,6 @@ import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_image_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_info_section.dart';
-import 'package:drips_water/presentation/screens/product/widgets/product_option_section.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -73,21 +72,6 @@ class _ProductScreenState extends State<ProductScreen> {
                       rating: widget.product.rating,
                       reviews: widget.product.reviews,
                       stock: widget.product.stock,
-                    ),
-
-                    const SizedBox(height: 25),
-
-                    // Options (Bottle Size + Quantity)
-                    ProductOptionSection(
-                      product: widget.product,
-                      quantity: quantity,
-                      selectedSize: selectedSize ?? "",
-                      onQuantityChanged: (newQty) {
-                        setState(() => quantity = newQty);
-                      },
-                      onSizeChanged: (size) {
-                        setState(() => selectedSize = size);
-                      },
                     ),
                   ],
                 ),

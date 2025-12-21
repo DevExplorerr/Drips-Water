@@ -2,13 +2,14 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
+import 'package:drips_water/presentation/screens/product/widgets/product_bottom_sheet.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/dialog/custom_login_prompt_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
-class ProductBottomNavbar extends StatelessWidget {
+class ProductBottomNavbar extends StatefulWidget {
   final ProductModel product;
   final String selectedSize;
   final int quantity;
@@ -18,6 +19,22 @@ class ProductBottomNavbar extends StatelessWidget {
     required this.selectedSize,
     required this.quantity,
   });
+
+  @override
+  State<ProductBottomNavbar> createState() => _ProductBottomNavbarState();
+}
+
+class _ProductBottomNavbarState extends State<ProductBottomNavbar> {
+  int quantity = 1;
+  String? selectedSize;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedSize = widget.product.sizes.isNotEmpty
+        ? widget.product.sizes.first
+        : null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +48,26 @@ class ProductBottomNavbar extends StatelessWidget {
           Expanded(
             child: CustomButton(
               color: AppColors.grey,
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ProductBottomSheet(
+                      product: widget.product,
+                      image: widget.product.imageUrl,
+                      price: widget.product.price,
+                      quantity: quantity,
+                      selectedSize: selectedSize ?? "",
+                      onQuantityChanged: (newQty) {
+                        setState(() => quantity = newQty);
+                      },
+                      onSizeChanged: (size) {
+                        setState(() => selectedSize = size);
+                      },
+                    );
+                  },
+                );
+              },
               height: 50,
               width: double.infinity,
               text: "Buy Now",
@@ -49,7 +85,7 @@ class ProductBottomNavbar extends StatelessWidget {
                     width: double.infinity,
                     text: "Add to Cart",
                     onPressed: () async {
-                      if (selectedSize.isEmpty) {
+                      if (widget.selectedSize.isEmpty) {
                         showFloatingSnackBar(
                           context,
                           message: "Please select a size",
@@ -61,7 +97,11 @@ class ProductBottomNavbar extends StatelessWidget {
 
                       final response = await context
                           .read<CartProvider>()
-                          .addToCart(product, selectedSize, quantity);
+                          .addToCart(
+                            widget.product,
+                            widget.selectedSize,
+                            widget.quantity,
+                          );
 
                       if (!context.mounted) return;
 
