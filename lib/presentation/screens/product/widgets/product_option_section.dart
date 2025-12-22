@@ -22,24 +22,21 @@ class ProductOptionSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: .start,
       children: [
         // Bottle Size
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
+          crossAxisAlignment: .center,
           children: [
-            Text(
-              "Bottle size",
-              style: textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 8),
+            Text("Bottle size", style: textTheme.titleSmall),
+            const Spacer(),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const .symmetric(horizontal: 10),
               height: 40,
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primary),
-                borderRadius: BorderRadius.circular(5),
+                border: .all(color: AppColors.primary),
+                borderRadius: .circular(5),
               ),
               child: DropdownButton<String>(
                 dropdownColor: AppColors.white,
@@ -48,7 +45,7 @@ class ProductOptionSection extends StatelessWidget {
                 hint: const Text("Select size"),
                 style: textTheme.bodyMedium?.copyWith(
                   color: AppColors.secondaryText,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: .w500,
                 ),
                 value: selectedSize,
                 items: product.sizes
@@ -62,15 +59,16 @@ class ProductOptionSection extends StatelessWidget {
           ],
         ),
 
+        const SizedBox(height: 15),
+        const Divider(),
+        const SizedBox(height: 25),
+
         // Quantity Selector
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
+          crossAxisAlignment: .center,
           children: [
-            Text(
-              "Quantity",
-              style: textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 8),
+            Text("Quantity", style: textTheme.titleSmall),
+            const Spacer(),
             Row(
               children: [
                 _qtyButton(context, Icons.remove, () {

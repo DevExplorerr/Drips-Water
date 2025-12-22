@@ -8,39 +8,23 @@ import 'package:drips_water/presentation/screens/product/widgets/product_info_se
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProductScreen extends StatefulWidget {
+class ProductScreen extends StatelessWidget {
   final ProductModel product;
   final String? heroTag;
   const ProductScreen({super.key, this.heroTag, required this.product});
-
-  @override
-  State<ProductScreen> createState() => _ProductScreenState();
-}
-
-class _ProductScreenState extends State<ProductScreen> {
-  int quantity = 1;
-  String? selectedSize;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedSize = widget.product.sizes.isNotEmpty
-        ? widget.product.sizes.first
-        : null;
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           // Product Image Section
           ProductImageSection(
-            productId: widget.product.id,
-            image: widget.product.imageUrl,
-            heroTag: widget.heroTag ?? "",
+            productId: product.id,
+            image: product.imageUrl,
+            heroTag: heroTag ?? "",
             onBack: () => Navigator.pop(context),
             onNavigate: () {
               Navigator.push(
@@ -55,23 +39,18 @@ class _ProductScreenState extends State<ProductScreen> {
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 15,
-                  right: 15,
-                  top: 20,
-                  bottom: 50,
-                ),
+                padding: const .only(left: 15, right: 15, top: 20, bottom: 50),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: .start,
                   children: [
                     // Product Info Section
                     ProductInfoSection(
-                      productName: widget.product.name,
-                      description: widget.product.description,
-                      price: widget.product.price,
-                      rating: widget.product.rating,
-                      reviews: widget.product.reviews,
-                      stock: widget.product.stock,
+                      productName: product.name,
+                      description: product.description,
+                      price: product.price,
+                      rating: product.rating,
+                      reviews: product.reviews,
+                      stock: product.stock,
                     ),
                   ],
                 ),
@@ -80,11 +59,7 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: ProductBottomNavbar(
-        product: widget.product,
-        selectedSize: selectedSize ?? "",
-        quantity: quantity,
-      ),
+      bottomNavigationBar: ProductBottomNavbar(product: product),
     );
   }
 }
