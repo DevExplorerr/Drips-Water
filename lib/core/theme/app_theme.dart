@@ -42,7 +42,7 @@ class AppTheme {
 
     // App bar
     appBarTheme: const AppBarThemeData(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.background,
       elevation: 0,
       scrolledUnderElevation: 0,
       iconTheme: IconThemeData(color: AppColors.primary),
@@ -102,7 +102,13 @@ class AppTheme {
     ),
 
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: AppColors.white
-    )
+      backgroundColor: AppColors.background,
+    ),
+
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: AppColors.background,
+      showDragHandle: true,
+      dragHandleColor: AppColors.primary,
+    ),
   );
 }

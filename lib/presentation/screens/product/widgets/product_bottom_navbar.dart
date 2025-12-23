@@ -22,6 +22,9 @@ class ProductBottomNavbar extends StatelessWidget {
               color: AppColors.primary,
               onPressed: () {
                 showModalBottomSheet(
+                  isDismissible: true,
+                  enableDrag: true,
+                  isScrollControlled: true,
                   context: context,
                   builder: (_) {
                     return ProductBottomSheet(
@@ -41,6 +44,9 @@ class ProductBottomNavbar extends StatelessWidget {
               text: "Add to Cart",
               onPressed: () {
                 showModalBottomSheet(
+                  isDismissible: true,
+                  enableDrag: true,
+                  isScrollControlled: true,
                   context: context,
                   builder: (_) {
                     return ProductBottomSheet(
