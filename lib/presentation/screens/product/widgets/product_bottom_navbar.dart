@@ -63,5 +63,3 @@ class ProductBottomNavbar extends StatelessWidget {
     );
   }
 }
-
-enum ProductAction { addToCart, buyNow }

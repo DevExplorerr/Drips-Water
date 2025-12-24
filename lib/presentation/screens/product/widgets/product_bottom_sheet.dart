@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/core/enums/commerce_enums.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/checkout_screen.dart';
-import 'package:drips_water/presentation/screens/product/widgets/product_bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_option_section.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/dialog/custom_login_prompt_dialog.dart';

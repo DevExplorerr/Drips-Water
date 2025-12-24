@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:drips_water/core/enums/commerce_enums.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/data/services/cart_service.dart';
 import 'package:flutter/material.dart';
@@ -116,8 +117,6 @@ class CartProvider with ChangeNotifier {
 
   int get totalItems => cartItems.fold(0, (sum, item) => sum + item.quantity);
 }
-
-enum CartStatus { success, guestBlocked, error }
 
 class CartResponse {
   final CartStatus status;
