@@ -30,6 +30,7 @@ class CartRepository {
         imageUrl: product.imageUrl,
         price: product.price,
         selectedSize: size,
+        selectedPrice: product.pricePerSize[size]!,
         quantity: quantity,
       );
       await ref.set(item.toMap());

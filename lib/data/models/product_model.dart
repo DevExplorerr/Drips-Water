@@ -7,6 +7,7 @@ class ProductModel {
   final String category;
   final String description;
   final List<String> sizes;
+  final Map<String, int> pricePerSize;
   final double price;
   final double rating;
   final int reviews;
@@ -19,6 +20,7 @@ class ProductModel {
     required this.category,
     required this.description,
     required this.sizes,
+    required this.pricePerSize,
     required this.price,
     required this.rating,
     required this.reviews,
@@ -36,6 +38,7 @@ class ProductModel {
       category: data['category'] ?? '',
       description: data['description'] ?? '',
       sizes: List<String>.from(data['sizes'] ?? []),
+      pricePerSize: Map<String, int>.from(data['pricePerSize'] ?? []),
       price: (data['price'] ?? 0).toDouble(),
       rating: (data['rating'] ?? 0).toDouble(),
       reviews: data['reviews'],

@@ -3,6 +3,7 @@ class CartItemModel {
   final String name;
   final String imageUrl;
   final String selectedSize;
+  final int selectedPrice;
   final double price;
   final int quantity;
 
@@ -11,6 +12,7 @@ class CartItemModel {
     required this.name,
     required this.imageUrl,
     required this.selectedSize,
+    required this.selectedPrice,
     required this.price,
     required this.quantity,
   });
@@ -21,6 +23,7 @@ class CartItemModel {
       'name': name,
       'imageUrl': imageUrl,
       'selectedSize': selectedSize,
+      'selectedPrice': selectedPrice,
       'price': price,
       'quantity': quantity,
     };
@@ -32,17 +35,9 @@ class CartItemModel {
       name: map['name'],
       imageUrl: map['imageUrl'],
       selectedSize: map['selectedSize'],
+      selectedPrice: map['productPerSize'],
       price: (map['price'] as num).toDouble(),
       quantity: map['quantity'],
     );
   }
-
-  // Future<ProductModel> fetchProduct() async {
-  //   final doc = await FirebaseFirestore.instance
-  //       .collection('products')
-  //       .doc(productId)
-  //       .get();
-
-  //   return ProductModel.fromFirestore(doc);
-  // }
 }

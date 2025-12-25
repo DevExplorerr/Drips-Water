@@ -156,6 +156,9 @@ class CartProductCard extends StatelessWidget {
                             category: '',
                             description: '',
                             sizes: [product.selectedSize],
+                            pricePerSize: {
+                              product.selectedSize: product.selectedPrice
+                            },
                             price: product.price,
                             rating: 0,
                             reviews: 0,

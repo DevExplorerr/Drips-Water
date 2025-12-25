@@ -38,6 +38,11 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
         : null;
   }
 
+  int get selectedPrice {
+    if (selectedSize == null) return 0;
+    return widget.product.pricePerSize[selectedSize!]!;
+  }
+
   String get buttonLabel {
     switch (widget.action) {
       case ProductAction.buyNow:
@@ -144,7 +149,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                   mainAxisAlignment: .center,
                   children: [
                     Text(
-                      "\$${widget.product.price}",
+                      "\$${selectedPrice * quantity}",
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: .w700,
                       ),
