@@ -35,7 +35,7 @@ class CartItemModel {
       name: map['name'],
       imageUrl: map['imageUrl'],
       selectedSize: map['selectedSize'],
-      selectedPrice: map['productPerSize'],
+      selectedPrice: map['selectedPrice'],
       price: (map['price'] as num).toDouble(),
       quantity: map['quantity'],
     );

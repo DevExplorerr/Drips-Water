@@ -11,7 +11,7 @@ class ProductGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    double childAspectRatio = width < 380 ? 0.52 : 0.62;
+    double childAspectRatio = width < 380 ? 0.55 : 0.65;
 
     return Consumer<ProductGridViewModel>(
       builder: (context, productGridViewModel, _) {
@@ -20,7 +20,7 @@ class ProductGrid extends StatelessWidget {
         }
 
         if (productGridViewModel.products.isEmpty) {
-          return AppEmptyState(
+          return const AppEmptyState(
             title: "No Products Found",
             description:
                 "We can't find any items in this section right now. Check out other categories!",
