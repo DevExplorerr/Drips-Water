@@ -172,7 +172,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
           const Divider(),
           const SizedBox(height: 25),
           Padding(
-            padding: const .symmetric(horizontal: 15),
+            padding: const .only(left: 15, right: 25),
             child: ProductOptionSection(
               product: widget.product,
               quantity: quantity,
