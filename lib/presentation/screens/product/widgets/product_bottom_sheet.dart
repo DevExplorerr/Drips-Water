@@ -16,10 +16,13 @@ import 'package:provider/provider.dart';
 class ProductBottomSheet extends StatefulWidget {
   final ProductModel product;
   final ProductAction action;
+  final Function(String size) onSizeChanged;
+
   const ProductBottomSheet({
     super.key,
     required this.product,
     required this.action,
+    required this.onSizeChanged,
   });
 
   @override
@@ -149,7 +152,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
                   mainAxisAlignment: .center,
                   children: [
                     Text(
-                      "\$${selectedPrice * quantity}",
+                      "\$$selectedPrice",
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: .w700,
                       ),
@@ -182,6 +185,7 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
               },
               onSizeChanged: (size) {
                 setState(() => selectedSize = size);
+                widget.onSizeChanged(size);
               },
             ),
           ),

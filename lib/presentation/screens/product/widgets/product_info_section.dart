@@ -1,22 +1,17 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 
 class ProductInfoSection extends StatelessWidget {
-  final String productName;
-  final String description;
-  final double price;
-  final double rating;
-  final int reviews;
-  final int stock;
+  final ProductModel product;
+  final int price;
+  final String selectedSize;
 
   const ProductInfoSection({
     super.key,
-    required this.productName,
-    required this.description,
+    required this.product,
     required this.price,
-    required this.rating,
-    required this.reviews,
-    required this.stock,
+    required this.selectedSize,
   });
 
   @override
@@ -30,9 +25,9 @@ class ProductInfoSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(productName, style: textTheme.titleLarge),
+            Text(product.name, style: textTheme.titleLarge),
             Text(
-              "Stock: $stock",
+              "Stock: ${product.stock}",
               style: textTheme.bodySmall?.copyWith(
                 color: AppColors.secondaryText,
               ),
@@ -40,24 +35,46 @@ class ProductInfoSection extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 10),
-        Text(
-          '\$$price',
-          style: textTheme.titleSmall?.copyWith(color: AppColors.secondaryText),
+        Row(
+          children: [
+            Text(
+              '\$$price',
+              style: textTheme.titleSmall?.copyWith(
+                color: AppColors.secondaryText,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                // ignore: deprecated_member_use
+                color: AppColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                selectedSize,
+                style: textTheme.bodySmall?.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 25),
-        Text(description, style: textTheme.bodyMedium),
+        Text(product.description, style: textTheme.bodyMedium),
         const SizedBox(height: 25),
         Row(
           children: [
             const Icon(Icons.star, color: AppColors.review, size: 25),
             const SizedBox(width: 4),
             Text(
-              rating.toString(),
+              product.rating.toString(),
               style: textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
             ),
             const SizedBox(width: 4),
             Text(
-              "($reviews)",
+              "(${product.reviews})",
               style: textTheme.bodySmall?.copyWith(
                 color: AppColors.secondaryText,
               ),

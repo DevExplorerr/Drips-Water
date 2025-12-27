@@ -8,10 +8,32 @@ import 'package:drips_water/presentation/screens/product/widgets/product_info_se
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   final ProductModel product;
   final String? heroTag;
   const ProductScreen({super.key, this.heroTag, required this.product});
+
+  @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  late String selectedSize;
+  late int selectedPrice;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedSize = widget.product.sizes.first;
+    selectedPrice = widget.product.pricePerSize[selectedSize]!;
+  }
+
+  void onSizeChanged(String size) {
+    setState(() {
+      selectedSize = size;
+      selectedPrice = widget.product.pricePerSize[size]!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +44,9 @@ class ProductScreen extends StatelessWidget {
         children: [
           // Product Image Section
           ProductImageSection(
-            productId: product.id,
-            image: product.imageUrl,
-            heroTag: heroTag ?? "",
+            productId: widget.product.id,
+            image: widget.product.imageUrl,
+            heroTag: widget.heroTag ?? "",
             onBack: () => Navigator.pop(context),
             onNavigate: () {
               Navigator.push(
@@ -45,12 +67,9 @@ class ProductScreen extends StatelessWidget {
                   children: [
                     // Product Info Section
                     ProductInfoSection(
-                      productName: product.name,
-                      description: product.description,
-                      price: product.price,
-                      rating: product.rating,
-                      reviews: product.reviews,
-                      stock: product.stock,
+                      product: widget.product,
+                      price: selectedPrice,
+                      selectedSize: selectedSize,
                     ),
                   ],
                 ),
@@ -59,7 +78,10 @@ class ProductScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: ProductBottomNavbar(product: product),
+      bottomNavigationBar: ProductBottomNavbar(
+        product: widget.product,
+        onSizeChanged: onSizeChanged,
+      ),
     );
   }
 }

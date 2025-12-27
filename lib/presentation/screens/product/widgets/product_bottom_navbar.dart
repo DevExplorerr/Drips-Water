@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 
 class ProductBottomNavbar extends StatelessWidget {
   final ProductModel product;
-  const ProductBottomNavbar({super.key, required this.product});
+  final Function(String size) onSizeChanged;
+  const ProductBottomNavbar({
+    super.key,
+    required this.product,
+    required this.onSizeChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +35,7 @@ class ProductBottomNavbar extends StatelessWidget {
                     return ProductBottomSheet(
                       product: product,
                       action: .buyNow,
+                      onSizeChanged: onSizeChanged,
                     );
                   },
                 );
@@ -52,6 +58,7 @@ class ProductBottomNavbar extends StatelessWidget {
                     return ProductBottomSheet(
                       product: product,
                       action: .addToCart,
+                      onSizeChanged: onSizeChanged,
                     );
                   },
                 );
