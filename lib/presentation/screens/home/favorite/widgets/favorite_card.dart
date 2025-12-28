@@ -6,6 +6,7 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/screens/product/product_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/favorite_button.dart';
+import 'package:drips_water/presentation/widgets/common/app_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -152,33 +153,21 @@ class FavoriteCardState extends State<FavoriteCard>
                                 "\$${productData.price}",
                                 style: textTheme.bodyMedium?.copyWith(
                                   color: AppColors.primary,
-                                  fontWeight: FontWeight.w700,
+                                  fontWeight: .w700,
                                 ),
                               ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
+                              AppBadge(
+                                text: "🤍 Favorite",
+                                padding: const .symmetric(
                                   horizontal: 8,
                                   vertical: 3,
                                 ),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      AppColors.primary.withOpacity(0.9),
-                                      AppColors.primary.withOpacity(0.7),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  "❤️ Favorite",
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: AppColors.textDark,
-                                    fontSize: 12,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                borderRadius: .circular(12),
+                                color: AppColors.primary.withOpacity(0.7),
+                                textStyle: textTheme.bodySmall?.copyWith(
+                                  fontSize: 12,
+                                  color: AppColors.textDark,
+                                  fontWeight: .w600,
                                 ),
                               ),
                             ],

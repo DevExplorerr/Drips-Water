@@ -1,5 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/presentation/widgets/common/app_badge.dart';
 import 'package:flutter/material.dart';
 
 class ProductInfoSection extends StatelessWidget {
@@ -44,21 +45,31 @@ class ProductInfoSection extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                // ignore: deprecated_member_use
-                color: AppColors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                selectedSize,
-                style: textTheme.bodySmall?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w600,
-                ),
+            AppBadge(
+              text: selectedSize,
+              padding: const .symmetric(horizontal: 10, vertical: 4),
+              // ignore: deprecated_member_use
+              color: AppColors.primary.withOpacity(0.1),
+              textStyle: textTheme.bodySmall?.copyWith(
+                color: AppColors.primary,
+                fontWeight: .w600,
               ),
             ),
+            // Container(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            //   decoration: BoxDecoration(
+            //     // ignore: deprecated_member_use
+            //     color: AppColors.primary.withOpacity(0.1),
+            //     borderRadius: BorderRadius.circular(8),
+            //   ),
+            //   child: Text(
+            //     selectedSize,
+            //     style: textTheme.bodySmall?.copyWith(
+            //       color: AppColors.primary,
+            //       fontWeight: FontWeight.w600,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
         const SizedBox(height: 25),
