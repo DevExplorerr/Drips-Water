@@ -1,6 +1,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/widgets/common/app_badge.dart';
+import 'package:drips_water/presentation/widgets/common/info_tile.dart';
 import 'package:flutter/material.dart';
 
 class ProductInfoSection extends StatelessWidget {
@@ -55,23 +56,27 @@ class ProductInfoSection extends StatelessWidget {
                 fontWeight: .w600,
               ),
             ),
-            // Container(
-            //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-            //   decoration: BoxDecoration(
-            //     // ignore: deprecated_member_use
-            //     color: AppColors.primary.withOpacity(0.1),
-            //     borderRadius: BorderRadius.circular(8),
-            //   ),
-            //   child: Text(
-            //     selectedSize,
-            //     style: textTheme.bodySmall?.copyWith(
-            //       color: AppColors.primary,
-            //       fontWeight: FontWeight.w600,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
+        const SizedBox(height: 25),
+        InfoTile(
+          icon: Icons.local_shipping_outlined,
+          title: "Guaranteed by 3-5 Jan",
+          subtitle: "Standard Delivery",
+          trailingText: "Rs. 165",
+          onTap: () {},
+        ),
+
+        const InfoTile(
+          icon: Icons.verified_outlined,
+          title: "14 days easy return",
+        ),
+        const InfoTile(
+          icon: Icons.inventory_2_outlined,
+          title: 'Size: Int:S, Yellow Black',
+          showArrow: true,
+        ),
+
         const SizedBox(height: 25),
         Text(product.description, style: textTheme.bodyMedium),
         const SizedBox(height: 25),
