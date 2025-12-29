@@ -1,3 +1,4 @@
+import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class InfoTile extends StatelessWidget {
@@ -7,6 +8,10 @@ class InfoTile extends StatelessWidget {
   final String? trailingText;
   final VoidCallback? onTap;
   final bool showArrow;
+  final Radius topLeft;
+  final Radius topRight;
+  final Radius bottomLeft;
+  final Radius bottomRight;
 
   const InfoTile({
     super.key,
@@ -16,43 +21,53 @@ class InfoTile extends StatelessWidget {
     this.trailingText,
     this.onTap,
     this.showArrow = true,
+    required this.topLeft,
+    required this.topRight,
+    required this.bottomLeft,
+    required this.bottomRight,
   });
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: .circular(12),
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: const .all(14),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(12),
+          color: theme.cardColor,
+          borderRadius: .only(
+            topLeft: topLeft,
+            topRight: topRight,
+            bottomLeft: bottomLeft,
+            bottomRight: bottomRight,
+          ),
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
-            Icon(icon, size: 22, color: Theme.of(context).primaryColor),
+            Icon(icon, size: 22, color: theme.primaryColor),
             const SizedBox(width: 12),
 
             // Main text
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
                 children: [
                   Text(
                     title,
-                    style: textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: textTheme.bodyMedium?.copyWith(fontWeight: .w500),
                   ),
                   if (subtitle != null) ...[
                     const SizedBox(height: 4),
                     Text(
                       subtitle!,
-                      style: textTheme.bodySmall?.copyWith(color: Colors.grey),
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.secondaryText,
+                      ),
                     ),
                   ],
                 ],
@@ -61,17 +76,19 @@ class InfoTile extends StatelessWidget {
 
             // Trailing
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: .end,
               children: [
                 if (trailingText != null)
                   Text(
                     trailingText!,
-                    style: textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: textTheme.bodyMedium?.copyWith(fontWeight: .w500),
                   ),
                 if (showArrow)
-                  const Icon(Icons.chevron_right, size: 20, color: Colors.grey),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 20,
+                    color: theme.iconTheme.color,
+                  ),
               ],
             ),
           ],

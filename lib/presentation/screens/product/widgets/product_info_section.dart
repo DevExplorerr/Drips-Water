@@ -21,11 +21,11 @@ class ProductInfoSection extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         const SizedBox(height: 10),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: .spaceBetween,
           children: [
             Text(product.name, style: textTheme.titleLarge),
             Text(
@@ -36,12 +36,12 @@ class ProductInfoSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 15),
         Row(
           children: [
             Text(
               '\$$price',
-              style: textTheme.titleSmall?.copyWith(
+              style: textTheme.titleMedium?.copyWith(
                 color: AppColors.secondaryText,
               ),
             ),
@@ -58,28 +58,7 @@ class ProductInfoSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 25),
-        InfoTile(
-          icon: Icons.local_shipping_outlined,
-          title: "Guaranteed by 3-5 Jan",
-          subtitle: "Standard Delivery",
-          trailingText: "Rs. 165",
-          onTap: () {},
-        ),
-
-        const InfoTile(
-          icon: Icons.verified_outlined,
-          title: "14 days easy return",
-        ),
-        const InfoTile(
-          icon: Icons.inventory_2_outlined,
-          title: 'Size: Int:S, Yellow Black',
-          showArrow: true,
-        ),
-
-        const SizedBox(height: 25),
-        Text(product.description, style: textTheme.bodyMedium),
-        const SizedBox(height: 25),
+        const SizedBox(height: 30),
         Row(
           children: [
             const Icon(Icons.star, color: AppColors.review, size: 25),
@@ -97,6 +76,41 @@ class ProductInfoSection extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 30),
+
+        InfoTile(
+          icon: Icons.verified_outlined,
+          title: "14 days easy return",
+          topLeft: .circular(0),
+          topRight: .circular(0),
+          bottomLeft: .circular(0),
+          bottomRight: .circular(0),
+          onTap: () {},
+        ),
+        InfoTile(
+          icon: Icons.local_shipping_outlined,
+          title: "Guaranteed by 3-5 Jan",
+          subtitle: "Standard Delivery",
+          trailingText: "\$30",
+          topLeft: .circular(12),
+          topRight: .circular(12),
+          bottomLeft: .circular(0),
+          bottomRight: .circular(0),
+          onTap: () {},
+        ),
+        InfoTile(
+          icon: Icons.inventory_2_outlined,
+          title: 'Size: 100ml',
+          showArrow: true,
+          topLeft: .circular(0),
+          topRight: .circular(0),
+          bottomLeft: .circular(12),
+          bottomRight: .circular(12),
+          onTap: () {},
+        ),
+
+        const SizedBox(height: 30),
+        Text(product.description, style: textTheme.bodyMedium),
       ],
     );
   }
