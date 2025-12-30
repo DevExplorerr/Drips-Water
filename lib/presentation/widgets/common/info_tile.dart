@@ -6,8 +6,7 @@ class InfoTile extends StatelessWidget {
   final String title;
   final String? subtitle;
   final String? trailingText;
-  final VoidCallback? onTap;
-  final bool showArrow;
+  final VoidCallback onTap;
   final Radius topLeft;
   final Radius topRight;
   final Radius bottomLeft;
@@ -19,8 +18,7 @@ class InfoTile extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.trailingText,
-    this.onTap,
-    this.showArrow = true,
+    required this.onTap,
     required this.topLeft,
     required this.topRight,
     required this.bottomLeft,
@@ -83,12 +81,11 @@ class InfoTile extends StatelessWidget {
                     trailingText!,
                     style: textTheme.bodyMedium?.copyWith(fontWeight: .w500),
                   ),
-                if (showArrow)
-                  Icon(
-                    Icons.chevron_right,
-                    size: 20,
-                    color: theme.iconTheme.color,
-                  ),
+                Icon(
+                  Icons.chevron_right,
+                  size: 20,
+                  color: theme.iconTheme.color,
+                ),
               ],
             ),
           ],

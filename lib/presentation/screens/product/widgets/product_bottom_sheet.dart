@@ -97,7 +97,6 @@ class _ProductBottomSheetState extends State<ProductBottomSheet> {
 
     if (action == ProductAction.buyNow) {
       Navigator.pop(context);
-      await Future.microtask(() {});
       if (!context.mounted) return;
       Navigator.push(
         context,
