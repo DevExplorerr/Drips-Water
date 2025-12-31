@@ -10,41 +10,41 @@ class DeliveryBottomSheet extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const .only(right: 15, left: 15, top: 5, bottom: 25),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: .min,
+          crossAxisAlignment: .start,
           children: [
             const SheetHeader(title: "Delivery"),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
 
             const _RowItem(
               title: "Deliver To",
-              value: "Block 15",
+              value: "XYZ",
               icon: Icons.location_on_outlined,
             ),
 
             const Divider(height: 30),
 
-            Text("Delivery Fee", style: textTheme.titleMedium),
-            const SizedBox(height: 10),
+            Text("Delivery Fee", style: textTheme.titleSmall),
+            const SizedBox(height: 15),
 
             const _RowItem(
               title: "Standard Delivery",
               subtitle: "Guaranteed by 3-5 Jan",
-              value: "Rs. 165",
+              value: "\$30",
             ),
             const SizedBox(height: 12),
             const _RowItem(
               title: "Standard Collection Point",
               subtitle: "Guaranteed by 3-5 Jan",
-              value: "Rs. 50",
+              value: "\$10",
             ),
 
             const Divider(height: 30),
 
-            Text("Delivery Service", style: textTheme.titleMedium),
+            Text("Delivery Service", style: textTheme.titleSmall),
             const SizedBox(height: 10),
             const Text("Cash on Delivery available"),
           ],
@@ -67,25 +67,22 @@ class _RowItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
-        if (icon != null) ...[Icon(icon, size: 20), const SizedBox(width: 12)],
+        if (icon != null) ...[
+          Icon(icon, color: Theme.of(context).iconTheme.color),
+          const SizedBox(width: 12),
+        ],
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: textTheme.bodyLarge),
-              if (subtitle != null) ...[
-                const SizedBox(height: 4),
-                Text(subtitle!, style: textTheme.bodySmall),
-              ],
-            ],
+            crossAxisAlignment: .start,
+            children: [Text(title, style: textTheme.bodyMedium)],
           ),
         ),
         if (value != null)
           Text(
             value!,
-            style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+            style: textTheme.bodyMedium?.copyWith(fontWeight: .w600),
           ),
       ],
     );

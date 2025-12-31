@@ -7,13 +7,23 @@ class SheetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Row(
       children: [
+        const SizedBox(width: 40), // symmetry
         Expanded(
-          child: Text(title, style: Theme.of(context).textTheme.titleLarge),
+          child: Center(
+            child: Text(
+              title,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
         ),
         IconButton(
-          icon: const Icon(Icons.close),
+          icon: const Icon(Icons.close, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ],
