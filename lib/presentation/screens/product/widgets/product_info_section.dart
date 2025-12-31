@@ -1,9 +1,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/core/enums/commerce_enums.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/screens/product/bottom_sheets/delivery_bottom_sheet.dart';
 import 'package:drips_water/presentation/screens/product/bottom_sheets/service_bottom_sheet.dart';
-import 'package:drips_water/presentation/screens/product/widgets/product_bottom_sheet.dart';
 import 'package:drips_water/presentation/widgets/common/app_badge.dart';
 import 'package:drips_water/presentation/widgets/common/info_tile.dart';
 import 'package:flutter/material.dart';
@@ -91,8 +89,10 @@ class ProductInfoSection extends StatelessWidget {
           bottomRight: .circular(0),
           onTap: () {
             showModalBottomSheet(
-              context: context,
+              isDismissible: true,
+              enableDrag: true,
               isScrollControlled: true,
+              context: context,
               builder: (_) => const ServiceBottomSheet(),
             );
           },
@@ -108,8 +108,10 @@ class ProductInfoSection extends StatelessWidget {
           bottomRight: .circular(0),
           onTap: () {
             showModalBottomSheet(
-              context: context,
+              isDismissible: true,
+              enableDrag: true,
               isScrollControlled: true,
+              context: context,
               builder: (_) => const DeliveryBottomSheet(),
             );
           },
@@ -121,16 +123,7 @@ class ProductInfoSection extends StatelessWidget {
           topRight: .circular(0),
           bottomLeft: .circular(12),
           bottomRight: .circular(12),
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (_) => ProductBottomSheet(
-                product: product,
-                action: ProductAction.addToCart,
-                onSizeChanged: (_) {},
-              ),
-            );
-          },
+          onTap: () {},
         ),
 
         const SizedBox(height: 30),
