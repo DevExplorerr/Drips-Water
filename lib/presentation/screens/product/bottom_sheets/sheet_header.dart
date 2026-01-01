@@ -11,7 +11,7 @@ class SheetHeader extends StatelessWidget {
 
     return Row(
       children: [
-        const SizedBox(width: 40), // symmetry
+        const SizedBox(width: 40),
         Expanded(
           child: Center(
             child: Text(

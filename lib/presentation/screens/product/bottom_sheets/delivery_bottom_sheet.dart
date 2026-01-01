@@ -70,7 +70,7 @@ class _RowItem extends StatelessWidget {
       crossAxisAlignment: .start,
       children: [
         if (icon != null) ...[
-          Icon(icon, color: Theme.of(context).iconTheme.color),
+          Icon(icon, color: Theme.of(context).primaryColor),
           const SizedBox(width: 12),
         ],
         Expanded(
