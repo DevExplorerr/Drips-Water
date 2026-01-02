@@ -4,7 +4,7 @@ import 'package:drips_water/core/enums/commerce_enums.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_bottom_navbar.dart';
-import 'package:drips_water/presentation/screens/product/widgets/product_bottom_sheet.dart';
+import 'package:drips_water/presentation/screens/product/bottom_sheets/product_bottom_sheet/product_bottom_sheet.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_image_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_info_section.dart';
 import 'package:flutter/cupertino.dart';
