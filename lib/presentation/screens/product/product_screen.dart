@@ -1,8 +1,10 @@
-// ignore_for_file: deprecated_member_use
+// product_screen.dart
 
+import 'package:drips_water/core/enums/commerce_enums.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_bottom_navbar.dart';
+import 'package:drips_water/presentation/screens/product/widgets/product_bottom_sheet.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_image_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_info_section.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +22,7 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   late String selectedSize;
   late int selectedPrice;
+  int quantity = 1;
 
   @override
   void initState() {
@@ -35,6 +38,24 @@ class _ProductScreenState extends State<ProductScreen> {
     });
   }
 
+  void _openBottomSheet(ProductAction action) {
+    showModalBottomSheet(
+      isDismissible: true,
+      enableDrag: true,
+      isScrollControlled: true,
+      context: context,
+      builder: (_) {
+        return ProductBottomSheet(
+          product: widget.product,
+          initialSize: selectedSize,
+          initialQuantity: quantity,
+          action: action,
+          onSizeChanged: onSizeChanged,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,21 +63,17 @@ class _ProductScreenState extends State<ProductScreen> {
       body: Column(
         crossAxisAlignment: .start,
         children: [
-          // Product Image Section
           ProductImageSection(
             productId: widget.product.id,
             image: widget.product.imageUrl,
             heroTag: widget.heroTag ?? "",
             onBack: () => Navigator.pop(context),
-            onNavigate: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute(builder: (context) => const CartScreen()),
-              );
-            },
+            onNavigate: () => Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => const CartScreen()),
+            ),
           ),
 
-          // Product Info
           Expanded(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -65,11 +82,12 @@ class _ProductScreenState extends State<ProductScreen> {
                 child: Column(
                   crossAxisAlignment: .start,
                   children: [
-                    // Product Info Section
                     ProductInfoSection(
                       product: widget.product,
                       price: selectedPrice,
                       selectedSize: selectedSize,
+                      onSizeTap: () => _openBottomSheet(ProductAction.all),
+                      onSizeChanged: onSizeChanged,
                     ),
                   ],
                 ),
@@ -79,8 +97,8 @@ class _ProductScreenState extends State<ProductScreen> {
         ],
       ),
       bottomNavigationBar: ProductBottomNavbar(
-        product: widget.product,
-        onSizeChanged: onSizeChanged,
+        onBuyNowPressed: () => _openBottomSheet(ProductAction.buyNow),
+        onAddToCartPressed: () => _openBottomSheet(ProductAction.addToCart),
       ),
     );
   }

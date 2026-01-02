@@ -15,12 +15,16 @@ import 'package:provider/provider.dart';
 
 class ProductBottomSheet extends StatefulWidget {
   final ProductModel product;
+  final String initialSize;
+  final int initialQuantity;
   final ProductAction action;
-  final Function(String size) onSizeChanged;
+  final ValueChanged<String> onSizeChanged;
 
   const ProductBottomSheet({
     super.key,
     required this.product,
+    required this.initialSize,
+    required this.initialQuantity,
     required this.action,
     required this.onSizeChanged,
   });
@@ -30,195 +34,191 @@ class ProductBottomSheet extends StatefulWidget {
 }
 
 class _ProductBottomSheetState extends State<ProductBottomSheet> {
-  int quantity = 1;
-  String? selectedSize;
+  late String selectedSize;
+  late int quantity;
 
   @override
   void initState() {
     super.initState();
-    selectedSize = widget.product.sizes.isNotEmpty
-        ? widget.product.sizes.first
-        : null;
+    selectedSize = widget.initialSize;
+    quantity = widget.initialQuantity;
   }
 
-  int get selectedPrice {
-    if (selectedSize == null) return 0;
-    return widget.product.pricePerSize[selectedSize!]!;
+  int get selectedPrice => widget.product.pricePerSize[selectedSize]!;
+
+  void _updateSize(String size) {
+    setState(() {
+      selectedSize = size;
+    });
+    widget.onSizeChanged(size);
   }
 
-  String get buttonLabel {
-    switch (widget.action) {
-      case ProductAction.buyNow:
-        return "Buy Now";
-      case ProductAction.addToCart:
-        return "Add To Cart";
-    }
+  void _updateQuantity(int value) {
+    setState(() {
+      quantity = value;
+    });
   }
 
-  Future<void> handleProductAction({
-    required BuildContext context,
-    required ProductAction action,
-    required ProductModel product,
-    required String size,
-    required int quantity,
-  }) async {
-    if (action == ProductAction.addToCart) {
-      final response = await context.read<CartProvider>().addToCart(
-        product,
-        size,
-        quantity,
-      );
+  Future<void> _handleAddToCart() async {
+    final cartProvider = context.read<CartProvider>();
 
-      if (!context.mounted) return;
-      Navigator.pop(context);
+    final response = await cartProvider.addToCart(
+      widget.product,
+      selectedSize,
+      quantity,
+    );
 
-      if (response.status == CartStatus.success ||
-          response.status == CartStatus.error) {
-        showFloatingSnackBar(
-          context,
-          message: response.message,
-          duration: const Duration(seconds: 1),
-          backgroundColor: AppColors.primary,
-        );
-      }
+    if (!mounted) return;
+    Navigator.pop(context);
 
-      if (response.status == CartStatus.guestBlocked) {
-        showDialog(
-          context: context,
-          animationStyle: AnimationStyle(
-            curve: Curves.ease,
-            duration: const Duration(milliseconds: 300),
-            reverseDuration: const Duration(milliseconds: 200),
-          ),
-          builder: (_) => CustomLoginPromptDialog(message: response.message),
-        );
-      }
-    }
-
-    if (action == ProductAction.buyNow) {
-      Navigator.pop(context);
-      if (!context.mounted) return;
-      Navigator.push(
+    if (response.status == CartStatus.success ||
+        response.status == CartStatus.error) {
+      showFloatingSnackBar(
         context,
-        CupertinoPageRoute(builder: (context) => const CheckoutScreen()),
+        message: response.message,
+        duration: const Duration(seconds: 2),
+        backgroundColor: response.status == CartStatus.success
+            ? AppColors.primary
+            : Colors.red,
       );
     }
+
+    if (response.status == CartStatus.guestBlocked) {
+      showDialog(
+        context: context,
+        builder: (_) => CustomLoginPromptDialog(message: response.message),
+      );
+    }
+  }
+
+  void _handleBuyNow() {
+    Navigator.pop(context);
+
+    Navigator.push(
+      context,
+      CupertinoPageRoute(builder: (context) => const CheckoutScreen()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final showAddToCart =
+        widget.action == ProductAction.addToCart ||
+        widget.action == ProductAction.all;
+    final showBuyNow =
+        widget.action == ProductAction.buyNow ||
+        widget.action == ProductAction.all;
+
     final isAdding = context.select<CartProvider, bool>(
       (cart) => cart.isAdding,
     );
 
     return SizedBox(
-      height: 450,
+      height: 460,
       child: Column(
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: const .only(left: 15.0, top: 15),
-                child: ClipRRect(
+          Padding(
+            padding: const .only(left: 15.0, top: 20),
+            child: Row(
+              children: [
+                ClipRRect(
                   borderRadius: .circular(20.0),
                   child: CachedNetworkImage(
                     width: 90,
                     height: 90,
                     fit: .cover,
-                    imageUrl: widget.product.imageUrl,
                     filterQuality: .high,
-                    colorBlendMode: .darken,
+                    imageUrl: widget.product.imageUrl,
                     placeholder: (context, url) => Center(
                       child: LoadingAnimationWidget.threeArchedCircle(
                         color: AppColors.primary,
-                        size: 50,
+                        size: 30,
                       ),
                     ),
                     errorWidget: (_, __, ___) => const Icon(
                       Icons.broken_image,
                       color: AppColors.icon,
-                      size: 50,
+                      size: 40,
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 15),
-              Padding(
-                padding: const .only(top: 15),
-                child: Column(
+                const SizedBox(width: 15),
+                Column(
                   crossAxisAlignment: .start,
-                  mainAxisAlignment: .center,
                   children: [
                     Text(
                       "\$$selectedPrice",
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: .w700,
+                        fontSize: 18,
                       ),
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      selectedSize.toString(),
+                      selectedSize,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).primaryColor,
+                        color: theme.primaryColor,
                         fontWeight: .w600,
-                        fontFamily: 'Inter',
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+
           const SizedBox(height: 15),
           const Divider(),
-          const SizedBox(height: 25),
+
           Padding(
-            padding: const .only(left: 15, right: 25),
+            padding: const .only(left: 15, right: 25, top: 15),
             child: ProductOptionSection(
               product: widget.product,
               quantity: quantity,
-              selectedSize: selectedSize ?? "",
-              onQuantityChanged: (newQty) {
-                setState(() => quantity = newQty);
-              },
-              onSizeChanged: (size) {
-                setState(() => selectedSize = size);
-                widget.onSizeChanged(size);
-              },
+              selectedSize: selectedSize,
+              onQuantityChanged: _updateQuantity,
+              onSizeChanged: _updateSize,
             ),
           ),
+
           const Spacer(),
+
           Padding(
             padding: const .symmetric(horizontal: 15, vertical: 20),
             child: isAdding
-                ? LoadingAnimationWidget.threeRotatingDots(
-                    color: theme.primaryColor,
-                    size: 40,
+                ? Center(
+                    child: LoadingAnimationWidget.threeRotatingDots(
+                      color: AppColors.primary,
+                      size: 40,
+                    ),
                   )
-                : CustomButton(
-                    height: 50,
-                    width: .infinity,
-                    text: buttonLabel,
-                    onPressed: () async {
-                      if (selectedSize == null) {
-                        showFloatingSnackBar(
-                          context,
-                          message: "Please select a size",
-                          duration: const Duration(seconds: 1),
-                          backgroundColor: AppColors.primary,
-                        );
-                        return;
-                      }
+                : Row(
+                    children: [
+                      if (showAddToCart)
+                        Expanded(
+                          child: CustomButton(
+                            height: 50,
+                            width: double.infinity,
+                            color: AppColors.primary,
+                            text: "Add to Cart",
+                            onPressed: _handleAddToCart,
+                          ),
+                        ),
+                      if (showAddToCart && showBuyNow)
+                        const SizedBox(width: 10),
 
-                      handleProductAction(
-                        context: context,
-                        action: widget.action,
-                        product: widget.product,
-                        size: selectedSize ?? "",
-                        quantity: quantity,
-                      );
-                    },
+                      if (showBuyNow)
+                        Expanded(
+                          child: CustomButton(
+                            height: 50,
+                            width: double.infinity,
+                            color: AppColors.primary,
+                            text: "Buy Now",
+                            onPressed: _handleBuyNow,
+                          ),
+                        ),
+                    ],
                   ),
           ),
         ],

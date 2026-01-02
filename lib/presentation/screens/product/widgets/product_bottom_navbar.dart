@@ -1,16 +1,16 @@
+// product_bottom_navbar.dart
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/data/models/product_model.dart';
-import 'package:drips_water/presentation/screens/product/widgets/product_bottom_sheet.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class ProductBottomNavbar extends StatelessWidget {
-  final ProductModel product;
-  final Function(String size) onSizeChanged;
+  final VoidCallback onBuyNowPressed;
+  final VoidCallback onAddToCartPressed;
+
   const ProductBottomNavbar({
     super.key,
-    required this.product,
-    required this.onSizeChanged,
+    required this.onBuyNowPressed,
+    required this.onAddToCartPressed,
   });
 
   @override
@@ -25,21 +25,7 @@ class ProductBottomNavbar extends StatelessWidget {
               width: .infinity,
               text: "Buy Now",
               color: AppColors.primary,
-              onPressed: () {
-                showModalBottomSheet(
-                  isDismissible: true,
-                  enableDrag: true,
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (_) {
-                    return ProductBottomSheet(
-                      product: product,
-                      action: .buyNow,
-                      onSizeChanged: onSizeChanged,
-                    );
-                  },
-                );
-              },
+              onPressed: onBuyNowPressed,
             ),
           ),
           const SizedBox(width: 10),
@@ -48,21 +34,7 @@ class ProductBottomNavbar extends StatelessWidget {
               height: 50,
               width: .infinity,
               text: "Add to Cart",
-              onPressed: () {
-                showModalBottomSheet(
-                  isDismissible: true,
-                  enableDrag: true,
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (_) {
-                    return ProductBottomSheet(
-                      product: product,
-                      action: .addToCart,
-                      onSizeChanged: onSizeChanged,
-                    );
-                  },
-                );
-              },
+              onPressed: onAddToCartPressed,
             ),
           ),
         ],

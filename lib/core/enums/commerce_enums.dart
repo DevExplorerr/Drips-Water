@@ -1,3 +1,3 @@
 enum CartStatus { success, guestBlocked, error }
 
-enum ProductAction { addToCart, buyNow }
+enum ProductAction { addToCart, buyNow, all }

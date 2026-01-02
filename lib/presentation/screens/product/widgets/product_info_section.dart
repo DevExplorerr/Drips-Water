@@ -10,12 +10,16 @@ class ProductInfoSection extends StatelessWidget {
   final ProductModel product;
   final int price;
   final String selectedSize;
+  final VoidCallback onSizeTap;
+  final ValueChanged<String> onSizeChanged;
 
   const ProductInfoSection({
     super.key,
     required this.product,
     required this.price,
     required this.selectedSize,
+    required this.onSizeTap,
+    required this.onSizeChanged,
   });
 
   @override
@@ -51,8 +55,7 @@ class ProductInfoSection extends StatelessWidget {
             AppBadge(
               text: selectedSize,
               padding: const .symmetric(horizontal: 10, vertical: 4),
-              // ignore: deprecated_member_use
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               textStyle: textTheme.bodySmall?.copyWith(
                 color: AppColors.primary,
                 fontWeight: .w600,
@@ -118,12 +121,12 @@ class ProductInfoSection extends StatelessWidget {
         ),
         InfoTile(
           icon: Icons.inventory_2_outlined,
-          title: 'Size: 100ml',
+          title: selectedSize,
           topLeft: .circular(0),
           topRight: .circular(0),
           bottomLeft: .circular(12),
           bottomRight: .circular(12),
-          onTap: () {},
+          onTap: onSizeTap,
         ),
 
         const SizedBox(height: 30),
