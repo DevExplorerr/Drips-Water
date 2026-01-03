@@ -54,7 +54,7 @@ class ProductBottomSheet extends StatelessWidget {
                 Padding(
                   padding: const .only(left: 15, right: 25, top: 20),
                   child: ProductOptionSection(
-                    product: product,
+                    product: controller.product,
                     quantity: controller.quantity,
                     selectedSize: controller.selectedSize,
                     onQuantityChanged: controller.updateQuantity,
