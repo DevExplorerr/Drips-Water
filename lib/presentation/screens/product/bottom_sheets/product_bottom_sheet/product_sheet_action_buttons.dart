@@ -41,7 +41,13 @@ class ProductSheetActionButtons extends StatelessWidget {
             child: CustomButton(
               height: 50,
               width: .infinity,
-              color: AppColors.primary,
+              color: AppColors.white,
+              textColor: AppColors.primary,
+              elevation: 0,
+              borderSide: const BorderSide(
+                color: AppColors.primary,
+                width: 1.5,
+              ),
               text: "Buy Now",
               onPressed: onBuyNow,
             ),
@@ -54,7 +60,6 @@ class ProductSheetActionButtons extends StatelessWidget {
             child: CustomButton(
               height: 50,
               width: .infinity,
-              // Todo: will add a outlined border
               color: AppColors.primary,
               text: "Add to Cart",
               onPressed: onAddToCart,

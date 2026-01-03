@@ -23,13 +23,6 @@ class AppTheme {
         shape: const WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         ),
-        textStyle: const WidgetStatePropertyAll(
-          TextStyle(
-            fontSize: 18,
-            color: AppColors.textDark,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
       ),
     ),
 

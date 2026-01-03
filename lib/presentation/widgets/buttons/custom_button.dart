@@ -1,3 +1,4 @@
+import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
@@ -6,6 +7,10 @@ class CustomButton extends StatelessWidget {
   final double width;
   final String text;
   final Color? color;
+  final Color? textColor;
+  final BorderSide? borderSide;
+  final double? elevation;
+
   const CustomButton({
     super.key,
     required this.onPressed,
@@ -13,6 +18,9 @@ class CustomButton extends StatelessWidget {
     required this.width,
     required this.text,
     this.color,
+    this.textColor,
+    this.borderSide,
+    this.elevation,
   });
 
   @override
@@ -24,16 +32,23 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
+          elevation: WidgetStatePropertyAll(elevation),
           backgroundColor: WidgetStatePropertyAll(
             color ??
-                Theme.of(
-                  context,
-                ).elevatedButtonTheme.style?.backgroundColor?.resolve({}),
+                theme.elevatedButtonTheme.style?.backgroundColor?.resolve({}),
           ),
+          overlayColor: WidgetStatePropertyAll(
+            textColor ??
+                theme.elevatedButtonTheme.style?.overlayColor?.resolve({}),
+          ),
+          side: WidgetStatePropertyAll(borderSide),
         ),
         child: Text(
           text,
-          style: theme.elevatedButtonTheme.style!.textStyle?.resolve({}),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: textColor ?? AppColors.textDark,
+            fontWeight: .w700,
+          ),
         ),
       ),
     );
