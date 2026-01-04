@@ -21,7 +21,7 @@ class AppTheme {
           AppColors.white.withValues(alpha: 0.1),
         ),
         shape: const WidgetStatePropertyAll(
-          RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+          RoundedRectangleBorder(borderRadius: .zero),
         ),
       ),
     ),
@@ -45,7 +45,7 @@ class AppTheme {
         fontFamily: "Poppins",
         color: AppColors.primary,
         fontSize: 20,
-        fontWeight: FontWeight.w700,
+        fontWeight: .w700,
       ),
     ),
 
@@ -70,11 +70,11 @@ class AppTheme {
         color: AppColors.secondaryText,
       ),
       enabledBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.zero,
+        borderRadius: .zero,
         borderSide: BorderSide(color: AppColors.enabledBorder),
       ),
       focusedBorder: const OutlineInputBorder(
-        borderRadius: BorderRadius.zero,
+        borderRadius: .zero,
         borderSide: BorderSide(color: AppColors.focusedBorder),
       ),
     ),
@@ -83,9 +83,9 @@ class AppTheme {
     searchBarTheme: SearchBarThemeData(
       backgroundColor: const WidgetStatePropertyAll(AppColors.background),
       elevation: const WidgetStatePropertyAll(3),
-      padding: const WidgetStatePropertyAll(EdgeInsets.only(left: 15)),
+      padding: const WidgetStatePropertyAll(.only(left: 15)),
       shape: const WidgetStatePropertyAll(
-        RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        RoundedRectangleBorder(borderRadius: .zero),
       ),
       hintStyle: WidgetStatePropertyAll(
         appTextTheme.bodySmall?.copyWith(color: AppColors.secondaryText),
