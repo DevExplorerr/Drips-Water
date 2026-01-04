@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/text_theme.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +17,9 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: const WidgetStatePropertyAll(AppColors.primary),
-        overlayColor: WidgetStatePropertyAll(AppColors.white.withOpacity(0.1)),
+        overlayColor: WidgetStatePropertyAll(
+          AppColors.white.withValues(alpha: 0.1),
+        ),
         shape: const WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         ),
@@ -29,7 +29,9 @@ class AppTheme {
     // Text Button
     textButtonTheme: TextButtonThemeData(
       style: ButtonStyle(
-        overlayColor: WidgetStatePropertyAll(AppColors.black.withOpacity(0.1)),
+        overlayColor: WidgetStatePropertyAll(
+          AppColors.black.withValues(alpha: 0.1),
+        ),
       ),
     ),
 
@@ -51,14 +53,16 @@ class AppTheme {
     iconTheme: const IconThemeData(color: AppColors.icon),
     iconButtonTheme: IconButtonThemeData(
       style: ButtonStyle(
-        overlayColor: WidgetStatePropertyAll(AppColors.black.withOpacity(0.1)),
+        overlayColor: WidgetStatePropertyAll(
+          AppColors.black.withValues(alpha: 0.1),
+        ),
       ),
     ),
 
     // TextField
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppColors.primary,
-      selectionColor: AppColors.grey.withOpacity(0.5),
+      selectionColor: AppColors.grey.withValues(alpha: 0.5),
       selectionHandleColor: AppColors.primary,
     ),
     inputDecorationTheme: InputDecorationThemeData(
@@ -98,7 +102,7 @@ class AppTheme {
       backgroundColor: AppColors.background,
     ),
 
-    bottomSheetTheme: BottomSheetThemeData(
+    bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: AppColors.background,
       showDragHandle: true,
       dragHandleColor: AppColors.primary,

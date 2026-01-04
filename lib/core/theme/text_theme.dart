@@ -1,6 +1,8 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
+// Todo: Dot Short handed in text theme and app theme.
+
 const TextTheme appTextTheme = TextTheme(
   bodySmall: TextStyle(
     fontSize: 14,
