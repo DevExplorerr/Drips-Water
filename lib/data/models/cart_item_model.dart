@@ -37,7 +37,7 @@ class CartItemModel {
       selectedSize: map['selectedSize'],
       selectedPrice: map['selectedPrice'],
       price: (map['price'] as num).toDouble(),
-      quantity: map['quantity'],
+      quantity: (map['quantity'] ?? 1),
     );
   }
 }
