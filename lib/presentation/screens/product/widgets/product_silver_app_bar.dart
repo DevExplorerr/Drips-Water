@@ -1,6 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
-import 'package:drips_water/presentation/screens/checkout/checkout_screen.dart';
+import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/product/widgets/header_icon.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_image_section.dart';
 import 'package:drips_water/presentation/widgets/icon_badge/cart_icon_badge.dart';
@@ -39,13 +39,15 @@ class ProductSilverAppBar extends StatelessWidget {
               iconColor: AppColors.primary,
               badgeColor: AppColors.primary,
               textColor: AppColors.white,
-              width: 25,
-              height: 25,
+              width: 20,
+              height: 20,
+              left: 20,
+              bottom: 20,
             ),
             onTap: () {
               Navigator.push(
                 context,
-                CupertinoPageRoute(builder: (_) => const CheckoutScreen()),
+                CupertinoPageRoute(builder: (_) => const CartScreen()),
               );
             },
           ),

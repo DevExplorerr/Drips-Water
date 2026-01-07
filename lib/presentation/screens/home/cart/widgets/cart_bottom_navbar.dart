@@ -11,20 +11,20 @@ class CartBottomNavbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final cart = context.watch<CartProvider>();
 
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const .all(15),
       decoration: BoxDecoration(
-        color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        color: theme.bottomNavigationBarTheme.backgroundColor,
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: .circular(20),
+          topRight: .circular(20),
         ),
         boxShadow: [
           BoxShadow(
-            // ignore: deprecated_member_use
-            color: AppColors.black.withOpacity(0.05),
+            color: AppColors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -34,44 +34,45 @@ class CartBottomNavbar extends StatelessWidget {
         children: [
           Expanded(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: .min,
+              crossAxisAlignment: .start,
               children: [
                 Text(
                   "SUBTOTAL (${cart.cartItems.length} items)",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: .w700,
                     color: AppColors.secondaryText,
                   ),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   "\$${cart.totalPrice.toStringAsFixed(0)}",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     color: AppColors.primary,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: .w700,
                   ),
                 ),
               ],
             ),
           ),
-          CustomButton(
-            onPressed: () {
-              if (cart.cartItems.isEmpty) return;
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const CheckoutScreen(),
-                ),
-              );
-            },
-            color: cart.cartItems.isEmpty
-                // ignore: deprecated_member_use
-                ? AppColors.grey.withOpacity(0.3)
-                : AppColors.primary,
-            height: 50,
-            width: 150,
-            text: "CHECKOUT",
+          Expanded(
+            child: CustomButton(
+              onPressed: () {
+                if (cart.cartItems.isEmpty) return;
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const CheckoutScreen(),
+                  ),
+                );
+              },
+              color: cart.cartItems.isEmpty
+                  ? AppColors.grey.withValues(alpha: 0.3)
+                  : AppColors.primary,
+              height: 50,
+              width: .infinity,
+              text: "CHECKOUT",
+            ),
           ),
         ],
       ),
