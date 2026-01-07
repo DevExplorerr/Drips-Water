@@ -1,41 +1,21 @@
 import 'package:drips_water/core/enums/commerce_enums.dart';
 import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/presentation/screens/product/controllers/product_controller.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/product/bottom_sheets/product_bottom_sheet/product_bottom_sheet.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_info_section.dart';
 import 'package:drips_water/presentation/screens/product/widgets/product_silver_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProductScreen extends StatefulWidget {
+class ProductScreen extends StatelessWidget {
   final ProductModel product;
   final String? heroTag;
 
   const ProductScreen({super.key, this.heroTag, required this.product});
 
-  @override
-  State<ProductScreen> createState() => _ProductScreenState();
-}
-
-class _ProductScreenState extends State<ProductScreen> {
-  late String selectedSize;
-  late int selectedPrice;
-  int quantity = 1;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedSize = widget.product.sizes.first;
-    selectedPrice = widget.product.pricePerSize[selectedSize]!;
-  }
-
-  void onSizeChanged(String size) {
-    setState(() {
-      selectedSize = size;
-      selectedPrice = widget.product.pricePerSize[size]!;
-    });
-  }
-
-  void _openBottomSheet(ProductAction action) {
+  void _openBottomSheet(BuildContext context, ProductAction action) {
+    final controller = context.read<ProductController>();
     showModalBottomSheet(
       isDismissible: true,
       enableDrag: true,
@@ -43,11 +23,11 @@ class _ProductScreenState extends State<ProductScreen> {
       context: context,
       builder: (_) {
         return ProductBottomSheet(
-          product: widget.product,
-          initialSize: selectedSize,
-          initialQuantity: quantity,
+          product: product,
+          initialSize: controller.selectedSize,
+          initialQuantity: controller.quantity,
           action: action,
-          onSizeChanged: onSizeChanged,
+          onSizeChanged: controller.changeSize,
         );
       },
     );
@@ -55,29 +35,39 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          ProductSilverAppBar(product: widget.product, heroTag: widget.heroTag),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(15, 20, 15, 50),
-            sliver: SliverToBoxAdapter(
-              child: ProductInfoSection(
-                product: widget.product,
-                price: selectedPrice,
-                selectedSize: selectedSize,
-                onSizeTap: () => _openBottomSheet(ProductAction.all),
-                onSizeChanged: onSizeChanged,
-              ),
+    return ChangeNotifierProvider(
+      create: (_) => ProductController(product),
+      child: Consumer<ProductController>(
+        builder: (context, controller, _) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                ProductSilverAppBar(product: product, heroTag: heroTag),
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(15, 20, 15, 50),
+                  sliver: SliverToBoxAdapter(
+                    child: ProductInfoSection(
+                      product: product,
+                      price: controller.selectedPrice,
+                      selectedSize: controller.selectedSize,
+                      onSizeTap: () =>
+                          _openBottomSheet(context, ProductAction.all),
+                      onSizeChanged: controller.changeSize,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: ProductBottomNavbar(
-        onBuyNowPressed: () => _openBottomSheet(ProductAction.buyNow),
-        onAddToCartPressed: () => _openBottomSheet(ProductAction.addToCart),
+            bottomNavigationBar: ProductBottomNavbar(
+              onBuyNowPressed: () =>
+                  _openBottomSheet(context, ProductAction.buyNow),
+              onAddToCartPressed: () =>
+                  _openBottomSheet(context, ProductAction.addToCart),
+            ),
+          );
+        },
       ),
     );
   }
