@@ -20,7 +20,7 @@ class CheckoutScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Checkout")),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: const .symmetric(horizontal: 15, vertical: 25),
+        padding: const .all(15),
         child: Column(
           crossAxisAlignment: .start,
           children: [
@@ -43,28 +43,31 @@ class CheckoutScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const DeliveryAddressSection(),
-            const SizedBox(height: 20),
-            const Row(
-              children: [
-                DeliveryTimeSelectionCard(
-                  width: 143,
-                  text: 'Standard',
-                  time: '10-12 Min',
-                  value: 'standard',
-                ),
-                SizedBox(width: 10),
-                DeliveryTimeSelectionCard(
-                  width: 210,
-                  text: 'Schedule Ahead',
-                  time: 'Choose Your Time',
-                  value: 'schedule',
-                ),
-              ],
+            const SizedBox(height: 25),
+            const SingleChildScrollView(
+              scrollDirection: .horizontal,
+              child: Row(
+                children: [
+                  DeliveryTimeSelectionCard(
+                    width: 143,
+                    text: 'Standard',
+                    time: '10-12 Min',
+                    value: 'standard',
+                  ),
+                  SizedBox(width: 10),
+                  DeliveryTimeSelectionCard(
+                    width: 210,
+                    text: 'Schedule Ahead',
+                    time: 'Choose Your Time',
+                    value: 'schedule',
+                  ),
+                ],
+              ),
             ),
             // if (showCalendar)
-            const SizedBox(height: 30),
+            const SizedBox(height: 25),
             const CheckoutCalendar(),
-            const SizedBox(height: 30),
+            const SizedBox(height: 25),
             Row(
               mainAxisAlignment: .spaceBetween,
               children: [
@@ -93,12 +96,11 @@ class CheckoutScreen extends StatelessWidget {
             const Center(child: CreditCard()),
             const SizedBox(height: 50),
             const TotalSection(),
-            const SizedBox(height: 50),
           ],
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        padding: const .symmetric(horizontal: 15, vertical: 15),
+        padding: const .all(15),
         height: 80,
         color: Colors.transparent,
         elevation: 0,
