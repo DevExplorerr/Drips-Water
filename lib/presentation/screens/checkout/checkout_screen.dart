@@ -20,32 +20,39 @@ class CheckoutScreen extends StatelessWidget {
       appBar: AppBar(title: const Text("Checkout")),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: const .all(15),
         child: Column(
           crossAxisAlignment: .start,
           children: [
-            Row(
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                Text(
-                  "Delivery Address",
-                  style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
-                ),
-                TextButton(
-                  style: theme.textButtonTheme.style,
-                  onPressed: () {},
-                  child: Text(
-                    "Change",
-                    style: textTheme.bodySmall?.copyWith(fontWeight: .w500),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const .symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  Text(
+                    "Delivery Address",
+                    style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
                   ),
-                ),
-              ],
+                  TextButton(
+                    style: theme.textButtonTheme.style,
+                    onPressed: () {},
+                    child: Text(
+                      "Change",
+                      style: textTheme.bodySmall?.copyWith(fontWeight: .w500),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
-            const DeliveryAddressSection(),
+            const Padding(
+              padding: .symmetric(horizontal: 15),
+              child: DeliveryAddressSection(),
+            ),
             const SizedBox(height: 25),
             const SingleChildScrollView(
               scrollDirection: .horizontal,
+              padding: .symmetric(horizontal: 15),
               child: Row(
                 children: [
                   DeliveryTimeSelectionCard(
@@ -66,36 +73,45 @@ class CheckoutScreen extends StatelessWidget {
             ),
             // if (showCalendar)
             const SizedBox(height: 25),
-            const CheckoutCalendar(),
+            const Padding(
+              padding: .symmetric(horizontal: 15),
+              child: CheckoutCalendar(),
+            ),
             const SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                Text(
-                  "Payment",
-                  style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-                      const Icon(Icons.add, color: AppColors.icon, size: 15),
-                      const SizedBox(width: 5),
-                      Text(
-                        "Add New Card",
-                        style: textTheme.bodySmall?.copyWith(
-                          color: AppColors.secondaryText,
-                        ),
-                      ),
-                    ],
+            Padding(
+              padding: .symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  Text(
+                    "Payment",
+                    style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
                   ),
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () {},
+                    child: Row(
+                      children: [
+                        const Icon(Icons.add, color: AppColors.icon, size: 15),
+                        const SizedBox(width: 5),
+                        Text(
+                          "Add New Card",
+                          style: textTheme.bodySmall?.copyWith(
+                            color: AppColors.secondaryText,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 25),
             const Center(child: CreditCard()),
             const SizedBox(height: 50),
-            const TotalSection(),
+            const Padding(
+              padding: .only(left: 15, right: 15, bottom: 15),
+              child: TotalSection(),
+            ),
           ],
         ),
       ),

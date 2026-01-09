@@ -23,7 +23,7 @@ class _CheckoutCalendarState extends State<CheckoutCalendar> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         Text("Date", style: textTheme.bodyMedium?.copyWith(fontWeight: .w700)),
         TableCalendar(
