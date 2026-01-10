@@ -1,5 +1,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/checkout_product_card.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/credit_card.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/delivery_address_section.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/delivery_time_selection_card.dart';
@@ -8,7 +10,15 @@ import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
+  final ProductModel? product;
+  final int? quantity;
+  final String? selectedSize;
+  const CheckoutScreen({
+    super.key,
+    this.product,
+    this.quantity,
+    this.selectedSize,
+  });
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -38,6 +48,25 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           crossAxisAlignment: .start,
           children: [
             const SizedBox(height: 10),
+            Padding(
+              padding: const .symmetric(horizontal: 15),
+              child: Column(
+                crossAxisAlignment: .start,
+                children: [
+                  Text(
+                    "Order Summary",
+                    style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
+                  ),
+                  const SizedBox(height: 10),
+                  CheckoutProductCard(
+                    product: widget.product!,
+                    quantity: widget.quantity ?? 1,
+                    selectedSize: widget.selectedSize ?? "",
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
             Padding(
               padding: const .symmetric(horizontal: 15),
               child: Row(
@@ -79,7 +108,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   const SizedBox(width: 10),
                   DeliveryTimeSelectionCard(
-                    width: 210,
+                    width: 190,
                     text: 'Schedule Ahead',
                     time: 'Choose Your Time',
                     value: 'schedule',
