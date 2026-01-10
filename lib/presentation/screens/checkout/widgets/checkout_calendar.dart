@@ -12,13 +12,22 @@ class CheckoutCalendar extends StatefulWidget {
 
 class _CheckoutCalendarState extends State<CheckoutCalendar> {
   DateTime today = DateTime.now();
+  String defaultTime = "13:00";
+
+  final List<String> timeSlots = ["13:00", "15:45", "13:15", "17:35", "18:50"];
+
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
       today = day;
     });
   }
 
-  String selectedTime = "13:00";
+  void _onTimeSelected(String time) {
+    setState(() {
+      defaultTime = time;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -80,19 +89,18 @@ class _CheckoutCalendarState extends State<CheckoutCalendar> {
         const SizedBox(height: 10),
         SizedBox(
           height: 50,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              const TimeContainer(time: "13:00"),
-              const SizedBox(width: 10),
-              const TimeContainer(time: "15:45"),
-              const SizedBox(width: 10),
-              const TimeContainer(time: "13:15"),
-              const SizedBox(width: 10),
-              const TimeContainer(time: "17:35"),
-              const SizedBox(width: 10),
-              const TimeContainer(time: "18:50"),
-            ],
+          child: ListView.separated(
+            scrollDirection: .horizontal,
+            itemCount: timeSlots.length,
+            separatorBuilder: (context, index) => const SizedBox(width: 10),
+            itemBuilder: (context, index) {
+              final time = timeSlots[index];
+              return TimeContainer(
+                time: time,
+                isSelected: defaultTime == time,
+                onTap: () => _onTimeSelected(time),
+              );
+            },
           ),
         ),
       ],

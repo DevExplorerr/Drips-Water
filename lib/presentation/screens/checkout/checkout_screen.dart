@@ -7,8 +7,22 @@ import 'package:drips_water/presentation/screens/checkout/widgets/total_section.
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
 
-class CheckoutScreen extends StatelessWidget {
+class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
+
+  @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  String defaultDeliveryOption = "standard";
+  bool get showCalendar => defaultDeliveryOption == 'schedule';
+
+  void _onOptionSelected(String value) {
+    setState(() {
+      defaultDeliveryOption = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,33 +64,37 @@ class CheckoutScreen extends StatelessWidget {
               child: DeliveryAddressSection(),
             ),
             const SizedBox(height: 25),
-            const SingleChildScrollView(
+            SingleChildScrollView(
               scrollDirection: .horizontal,
-              padding: .symmetric(horizontal: 15),
+              padding: const .symmetric(horizontal: 15),
               child: Row(
                 children: [
                   DeliveryTimeSelectionCard(
                     width: 143,
                     text: 'Standard',
-                    time: '10-12 Min',
+                    time: '20-30 Min',
                     value: 'standard',
+                    isSelected: defaultDeliveryOption == 'standard',
+                    onTap: () => _onOptionSelected("standard"),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   DeliveryTimeSelectionCard(
                     width: 210,
                     text: 'Schedule Ahead',
                     time: 'Choose Your Time',
                     value: 'schedule',
+                    isSelected: defaultDeliveryOption == 'schedule',
+                    onTap: () => _onOptionSelected("schedule"),
                   ),
                 ],
               ),
             ),
-            // if (showCalendar)
             const SizedBox(height: 25),
-            const Padding(
-              padding: .symmetric(horizontal: 15),
-              child: CheckoutCalendar(),
-            ),
+            if (showCalendar)
+              const Padding(
+                padding: .symmetric(horizontal: 15),
+                child: CheckoutCalendar(),
+              ),
             const SizedBox(height: 25),
             Padding(
               padding: .symmetric(horizontal: 15),
@@ -130,5 +148,3 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 }
-
-bool showCalendar = false;

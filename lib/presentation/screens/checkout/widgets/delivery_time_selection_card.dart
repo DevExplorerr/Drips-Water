@@ -1,44 +1,33 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/presentation/screens/checkout/checkout_screen.dart';
 import 'package:flutter/material.dart';
 
-class DeliveryTimeSelectionCard extends StatefulWidget {
+class DeliveryTimeSelectionCard extends StatelessWidget {
   final double width;
   final String text;
   final String time;
   final String value;
+  final bool isSelected;
+  final VoidCallback onTap;
   const DeliveryTimeSelectionCard({
     super.key,
     required this.width,
     required this.text,
     required this.time,
     required this.value,
+    required this.isSelected,
+    required this.onTap,
   });
-
-  @override
-  State<DeliveryTimeSelectionCard> createState() =>
-      _DeliveryTimeSelectionCardState();
-}
-
-class _DeliveryTimeSelectionCardState extends State<DeliveryTimeSelectionCard> {
-  String deliveryOption = "standard";
-  bool get isSelected => deliveryOption == widget.value;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          deliveryOption = widget.value;
-          showCalendar = widget.value == "schedule";
-        });
-      },
+      onTap: onTap,
       child: Container(
         padding: const .all(6),
         height: 60,
-        width: widget.width,
+        width: width,
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: .circular(10),
@@ -52,11 +41,11 @@ class _DeliveryTimeSelectionCardState extends State<DeliveryTimeSelectionCard> {
               mainAxisAlignment: .center,
               children: [
                 Text(
-                  widget.text,
+                  text,
                   style: textTheme.bodySmall?.copyWith(fontWeight: .w500),
                 ),
                 Text(
-                  widget.time,
+                  time,
                   style: textTheme.bodySmall?.copyWith(fontFamily: 'Inter'),
                 ),
               ],
