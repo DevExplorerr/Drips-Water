@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/presentation/widgets/buttons/quantity_action_button.dart';
 import 'package:drips_water/presentation/widgets/common/app_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -9,12 +10,16 @@ class CheckoutProductCard extends StatelessWidget {
   final ProductModel product;
   final int quantity;
   final String selectedSize;
+  final VoidCallback? onIncrement;
+  final VoidCallback? onDecrement;
 
   const CheckoutProductCard({
     super.key,
     required this.product,
     required this.quantity,
     required this.selectedSize,
+    this.onIncrement,
+    this.onDecrement,
   });
 
   @override
@@ -64,6 +69,7 @@ class CheckoutProductCard extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: .start,
+              mainAxisAlignment: .center,
               children: [
                 Text(
                   product.name,
@@ -97,20 +103,33 @@ class CheckoutProductCard extends StatelessWidget {
             ),
           ),
 
-          Container(
-            padding: const .symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.background,
-              borderRadius: .circular(20),
-              border: .all(color: AppColors.icon.withValues(alpha: 0.2)),
-            ),
-            child: Text(
-              "x$quantity",
-              style: textTheme.bodySmall?.copyWith(
-                fontWeight: .w500,
-                color: AppColors.secondaryText,
+          Row(
+            children: [
+              QuantityActionButton(
+                icon: Icons.remove,
+                onTap: onDecrement ?? () {},
+                size: 30,
+                iconSize: 15,
               ),
-            ),
+              SizedBox(
+                width: 30,
+                child: Center(
+                  child: Text(
+                    "$quantity",
+                    style: textTheme.bodySmall?.copyWith(
+                      fontWeight: .w500,
+                      color: AppColors.secondaryText,
+                    ),
+                  ),
+                ),
+              ),
+              QuantityActionButton(
+                icon: Icons.add,
+                onTap: onIncrement ?? () {},
+                size: 30,
+                iconSize: 15,
+              ),
+            ],
           ),
         ],
       ),
