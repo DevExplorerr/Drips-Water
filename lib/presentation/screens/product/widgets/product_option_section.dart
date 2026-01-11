@@ -1,5 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/presentation/widgets/buttons/quantity_action_button.dart';
 import 'package:flutter/material.dart';
 
 class ProductOptionSection extends StatelessWidget {
@@ -71,9 +72,12 @@ class ProductOptionSection extends StatelessWidget {
             const Spacer(),
             Row(
               children: [
-                _qtyButton(context, Icons.remove, () {
-                  if (quantity > 1) onQuantityChanged(quantity - 1);
-                }),
+                QuantityActionButton(
+                  icon: Icons.remove,
+                  onTap: () {
+                    if (quantity > 1) onQuantityChanged(quantity - 1);
+                  },
+                ),
                 const SizedBox(width: 20),
                 Text(
                   quantity.toString(),
@@ -82,9 +86,12 @@ class ProductOptionSection extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 20),
-                _qtyButton(context, Icons.add, () {
-                  onQuantityChanged(quantity + 1);
-                }),
+                QuantityActionButton(
+                  icon: Icons.add,
+                  onTap: () {
+                    onQuantityChanged(quantity + 1);
+                  },
+                ),
               ],
             ),
           ],
@@ -92,19 +99,20 @@ class ProductOptionSection extends StatelessWidget {
       ],
     );
   }
-
-  Widget _qtyButton(BuildContext context, IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 45,
-        width: 45,
-        decoration: BoxDecoration(
-          color: AppColors.actionButton,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Icon(icon, color: Theme.of(context).iconTheme.color, size: 25),
-      ),
-    );
-  }
 }
+
+//   Widget _qtyButton(BuildContext context, IconData icon, VoidCallback onTap) {
+//     return GestureDetector(
+//       onTap: onTap,
+//       child: Container(
+//         height: 45,
+//         width: 45,
+//         decoration: BoxDecoration(
+//           color: AppColors.actionButton,
+//           borderRadius: BorderRadius.circular(5),
+//         ),
+//         child: Icon(icon, color: Theme.of(context).iconTheme.color, size: 25),
+//       ),
+//     );
+//   }
+// }

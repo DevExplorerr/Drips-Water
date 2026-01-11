@@ -7,8 +7,8 @@ import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/home/cart/widgets/fade_slide_wrapper.dart';
-import 'package:drips_water/presentation/screens/home/cart/widgets/qty_button.dart';
 import 'package:drips_water/presentation/screens/home/cart/widgets/scale_button.dart';
+import 'package:drips_water/presentation/widgets/buttons/quantity_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -134,7 +134,14 @@ class CartProductCard extends StatelessWidget {
                         product.productId,
                         product.selectedSize,
                       ),
-                      child: const QtyButton(icon: Icons.remove),
+                      child: AbsorbPointer(
+                        child: QuantityActionButton(
+                          icon: Icons.remove,
+                          size: 30,
+                          iconSize: 20,
+                          onTap: () {},
+                        ),
+                      ),
                     ),
 
                     const SizedBox(width: 14),
@@ -157,7 +164,7 @@ class CartProductCard extends StatelessWidget {
                             description: '',
                             sizes: [product.selectedSize],
                             pricePerSize: {
-                              product.selectedSize: product.selectedPrice
+                              product.selectedSize: product.selectedPrice,
                             },
                             price: product.price,
                             rating: 0,
@@ -168,7 +175,14 @@ class CartProductCard extends StatelessWidget {
                           1,
                         );
                       },
-                      child: const QtyButton(icon: Icons.add),
+                      child: AbsorbPointer(
+                        child: QuantityActionButton(
+                          icon: Icons.add,
+                          size: 30,
+                          iconSize: 20,
+                          onTap: () {},
+                        ),
+                      ),
                     ),
                   ],
                 ),
