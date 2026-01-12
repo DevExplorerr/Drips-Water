@@ -1,5 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
+import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_product_card.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/credit_card.dart';
@@ -8,17 +9,10 @@ import 'package:drips_water/presentation/screens/checkout/widgets/delivery_time_
 import 'package:drips_water/presentation/screens/checkout/widgets/total_section.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  final ProductModel? product;
-  final int? quantity;
-  final String? selectedSize;
-  const CheckoutScreen({
-    super.key,
-    this.product,
-    this.quantity,
-    this.selectedSize,
-  });
+  const CheckoutScreen({super.key});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -38,6 +32,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final cartProvider = context.watch<CartProvider>();
+    final cartItems = cartProvider.cartItems;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -58,10 +54,50 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
                   ),
                   const SizedBox(height: 10),
-                  CheckoutProductCard(
-                    product: widget.product!,
-                    quantity: widget.quantity ?? 1,
-                    selectedSize: widget.selectedSize ?? "",
+
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: cartItems.length,
+                    itemBuilder: (context, index) {
+                      final cartItem = cartItems[index];
+                      final product = ProductModel(
+                        id: cartItem.productId,
+                        name: cartItem.name,
+                        imageUrl: cartItem.imageUrl,
+                        category: '',
+                        description: '',
+                        sizes: [cartItem.selectedSize],
+                        pricePerSize: {
+                          cartItem.selectedSize: cartItem.selectedPrice,
+                        },
+                        price: cartItem.price,
+                        rating: 0,
+                        reviews: 0,
+                        stock: 0,
+                      );
+
+                      return CheckoutProductCard(
+                        image: cartItem.imageUrl,
+                        productName: cartItem.name,
+                        price: cartItem.price,
+                        quantity: cartItem.quantity,
+                        selectedSize: cartItem.selectedSize,
+                        onIncrement: () {
+                          context.read<CartProvider>().addToCart(
+                            product,
+                            cartItem.selectedSize,
+                            1,
+                          );
+                        },
+                        onDecrement: () {
+                          context.read<CartProvider>().decrease(
+                            cartItem.productId,
+                            cartItem.selectedSize,
+                          );
+                        },
+                      );
+                    },
                   ),
                 ],
               ),

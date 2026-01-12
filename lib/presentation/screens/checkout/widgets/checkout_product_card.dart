@@ -1,25 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/presentation/widgets/buttons/quantity_action_button.dart';
 import 'package:drips_water/presentation/widgets/common/app_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CheckoutProductCard extends StatelessWidget {
-  final ProductModel product;
+  final String image;
+  final String productName;
+  final double price;
   final int quantity;
   final String selectedSize;
-  final VoidCallback? onIncrement;
-  final VoidCallback? onDecrement;
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
 
   const CheckoutProductCard({
     super.key,
-    required this.product,
+    required this.image,
+    required this.productName,
+    required this.price,
     required this.quantity,
     required this.selectedSize,
-    this.onIncrement,
-    this.onDecrement,
+    required this.onIncrement,
+    required this.onDecrement,
   });
 
   @override
@@ -46,7 +49,7 @@ class CheckoutProductCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: .circular(10),
               child: CachedNetworkImage(
-                imageUrl: product.imageUrl,
+                imageUrl: image,
                 fit: .cover,
                 filterQuality: .high,
                 colorBlendMode: .darken,
@@ -72,7 +75,7 @@ class CheckoutProductCard extends StatelessWidget {
               mainAxisAlignment: .center,
               children: [
                 Text(
-                  product.name,
+                  productName,
                   maxLines: 1,
                   overflow: .ellipsis,
                   style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
@@ -81,7 +84,7 @@ class CheckoutProductCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "\$${product.price.toString()}",
+                      "\$$price",
                       style: textTheme.bodySmall?.copyWith(
                         fontWeight: .w500,
                         color: AppColors.primary,
@@ -107,7 +110,7 @@ class CheckoutProductCard extends StatelessWidget {
             children: [
               QuantityActionButton(
                 icon: Icons.remove,
-                onTap: onDecrement ?? () {},
+                onTap: onDecrement,
                 size: 30,
                 iconSize: 15,
               ),
@@ -125,7 +128,7 @@ class CheckoutProductCard extends StatelessWidget {
               ),
               QuantityActionButton(
                 icon: Icons.add,
-                onTap: onIncrement ?? () {},
+                onTap: onIncrement,
                 size: 30,
                 iconSize: 15,
               ),

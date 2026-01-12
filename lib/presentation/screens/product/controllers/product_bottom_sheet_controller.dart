@@ -75,13 +75,7 @@ class ProductBottomSheetController extends ChangeNotifier {
     Navigator.pop(context);
     Navigator.push(
       context,
-      CupertinoPageRoute(
-        builder: (context) => CheckoutScreen(
-          product: product,
-          quantity: quantity,
-          selectedSize: selectedSize,
-        ),
-      ),
+      CupertinoPageRoute(builder: (context) => const CheckoutScreen()),
     );
   }
 }
