@@ -150,7 +150,7 @@ class FavoriteCardState extends State<FavoriteCard>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "\$${productData.price}",
+                                "\$${productData.basePrice}",
                                 style: textTheme.bodyMedium?.copyWith(
                                   color: AppColors.primary,
                                   fontWeight: .w700,

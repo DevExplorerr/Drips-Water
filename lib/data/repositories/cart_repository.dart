@@ -28,7 +28,6 @@ class CartRepository {
         productId: product.id,
         name: product.name,
         imageUrl: product.imageUrl,
-        price: product.price,
         selectedSize: size,
         selectedPrice: product.pricePerSize[size]!,
         quantity: quantity,

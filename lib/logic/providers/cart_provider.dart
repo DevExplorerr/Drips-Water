@@ -112,7 +112,7 @@ class CartProvider with ChangeNotifier {
   }
 
   double get totalPrice {
-    return cartItems.fold(0, (sum, item) => sum + (item.quantity * item.price));
+    return cartItems.fold(0, (sum, item) => sum + (item.quantity * item.selectedPrice));
   }
 
   int get totalItems => cartItems.fold(0, (sum, item) => sum + item.quantity);

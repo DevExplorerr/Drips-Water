@@ -5,7 +5,7 @@ class ProductController extends ChangeNotifier {
   final ProductModel product;
 
   ProductController(this.product) {
-    selectedSize = product.sizes.first;
+    selectedSize = product.baseSize;
   }
 
   late String selectedSize;

@@ -4,7 +4,6 @@ class CartItemModel {
   final String imageUrl;
   final String selectedSize;
   final int selectedPrice;
-  final double price;
   final int quantity;
 
   CartItemModel({
@@ -13,7 +12,6 @@ class CartItemModel {
     required this.imageUrl,
     required this.selectedSize,
     required this.selectedPrice,
-    required this.price,
     required this.quantity,
   });
 
@@ -24,7 +22,6 @@ class CartItemModel {
       'imageUrl': imageUrl,
       'selectedSize': selectedSize,
       'selectedPrice': selectedPrice,
-      'price': price,
       'quantity': quantity,
     };
   }
@@ -36,7 +33,6 @@ class CartItemModel {
       imageUrl: map['imageUrl'],
       selectedSize: map['selectedSize'],
       selectedPrice: map['selectedPrice'],
-      price: (map['price'] as num).toDouble(),
       quantity: (map['quantity'] ?? 1),
     );
   }

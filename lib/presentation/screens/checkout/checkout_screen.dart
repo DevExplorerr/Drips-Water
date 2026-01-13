@@ -71,7 +71,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         pricePerSize: {
                           cartItem.selectedSize: cartItem.selectedPrice,
                         },
-                        price: cartItem.price,
                         rating: 0,
                         reviews: 0,
                         stock: 0,
@@ -80,7 +79,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       return CheckoutProductCard(
                         image: cartItem.imageUrl,
                         productName: cartItem.name,
-                        price: cartItem.price,
+                        selectedPrice: cartItem.selectedPrice,
                         quantity: cartItem.quantity,
                         selectedSize: cartItem.selectedSize,
                         onIncrement: () {

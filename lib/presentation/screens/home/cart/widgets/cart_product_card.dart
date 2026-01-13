@@ -118,7 +118,7 @@ class CartProductCard extends StatelessWidget {
                 const SizedBox(height: 5),
 
                 Text(
-                  "\$${product.price}",
+                  "\$${product.selectedPrice}",
                   style: textTheme.bodyMedium?.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w600,
@@ -166,7 +166,6 @@ class CartProductCard extends StatelessWidget {
                             pricePerSize: {
                               product.selectedSize: product.selectedPrice,
                             },
-                            price: product.price,
                             rating: 0,
                             reviews: 0,
                             stock: 0,

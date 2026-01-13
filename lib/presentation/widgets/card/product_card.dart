@@ -107,13 +107,13 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: .spaceBetween,
                 children: [
                   Text(
-                    '\$${product.price}',
+                    '\$${product.basePrice}',
                     style: textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   AppBadge(
-                    text: product.sizes.first,
+                    text: product.baseSize,
                     padding: const .symmetric(horizontal: 8, vertical: 3),
                     borderRadius: .circular(12),
                     color: AppColors.primary.withOpacity(0.1),

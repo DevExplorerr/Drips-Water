@@ -8,7 +8,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 class CheckoutProductCard extends StatelessWidget {
   final String image;
   final String productName;
-  final double price;
+  final int selectedPrice;
   final int quantity;
   final String selectedSize;
   final VoidCallback onIncrement;
@@ -18,7 +18,7 @@ class CheckoutProductCard extends StatelessWidget {
     super.key,
     required this.image,
     required this.productName,
-    required this.price,
+    required this.selectedPrice,
     required this.quantity,
     required this.selectedSize,
     required this.onIncrement,
@@ -84,7 +84,7 @@ class CheckoutProductCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "\$$price",
+                      "\$$selectedPrice",
                       style: textTheme.bodySmall?.copyWith(
                         fontWeight: .w500,
                         color: AppColors.primary,
