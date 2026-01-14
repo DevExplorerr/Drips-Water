@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TotalSection extends StatelessWidget {
-  const TotalSection({super.key});
+  final double? overrideTotal;
+  const TotalSection({super.key, this.overrideTotal});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final cartProvider = context.watch<CartProvider>();
 
-    final subTotal = cartProvider.totalPrice;
+    final subTotal = overrideTotal ?? cartProvider.totalPrice;
     const deliveryFees = 5.00;
     final totalPrice = subTotal + deliveryFees;
     return Column(

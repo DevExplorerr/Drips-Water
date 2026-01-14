@@ -1,4 +1,5 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
@@ -12,7 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
+  final CartItemModel? buyNowItem;
+  const CheckoutScreen({super.key, this.buyNowItem});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -21,6 +23,14 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   String defaultDeliveryOption = "standard";
   bool get showCalendar => defaultDeliveryOption == 'schedule';
+
+  late int _buyNowQuantity;
+
+  @override
+  void initState() {
+    super.initState();
+    _buyNowQuantity = widget.buyNowItem?.quantity ?? 1;
+  }
 
   void _onOptionSelected(String value) {
     setState(() {
@@ -33,7 +43,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final cartProvider = context.watch<CartProvider>();
-    final cartItems = cartProvider.cartItems;
+    final isBuyNow = widget.buyNowItem != null;
+    final displayItems = isBuyNow
+        ? [
+            CartItemModel(
+              productId: widget.buyNowItem!.productId,
+              name: widget.buyNowItem!.name,
+              imageUrl: widget.buyNowItem!.imageUrl,
+              selectedSize: widget.buyNowItem!.selectedSize,
+              selectedPrice: widget.buyNowItem!.selectedPrice,
+              quantity: _buyNowQuantity,
+            ),
+          ]
+        : cartProvider.cartItems;
+
+    final buyNowTotal = isBuyNow
+        ? (widget.buyNowItem!.selectedPrice * _buyNowQuantity).toDouble()
+        : null;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -58,43 +84,58 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: cartItems.length,
+                    itemCount: displayItems.length,
                     itemBuilder: (context, index) {
-                      final cartItem = cartItems[index];
+                      final item = displayItems[index];
+
                       final product = ProductModel(
-                        id: cartItem.productId,
-                        name: cartItem.name,
-                        imageUrl: cartItem.imageUrl,
+                        id: item.productId,
+                        name: item.name,
+                        imageUrl: item.imageUrl,
                         category: '',
                         description: '',
-                        sizes: [cartItem.selectedSize],
-                        pricePerSize: {
-                          cartItem.selectedSize: cartItem.selectedPrice,
-                        },
+                        sizes: [item.selectedSize],
+                        pricePerSize: {item.selectedSize: item.selectedPrice},
                         rating: 0,
                         reviews: 0,
                         stock: 0,
                       );
 
                       return CheckoutProductCard(
-                        image: cartItem.imageUrl,
-                        productName: cartItem.name,
-                        selectedPrice: cartItem.selectedPrice,
-                        quantity: cartItem.quantity,
-                        selectedSize: cartItem.selectedSize,
-                        onIncrement: () {
-                          context.read<CartProvider>().addToCart(
-                            product,
-                            cartItem.selectedSize,
-                            1,
-                          );
-                        },
-                        onDecrement: () {
-                          context.read<CartProvider>().decrease(
-                            cartItem.productId,
-                            cartItem.selectedSize,
-                          );
-                        },
+                        image: item.imageUrl,
+                        productName: item.name,
+                        selectedPrice: item.selectedPrice,
+                        quantity: item.quantity,
+                        selectedSize: item.selectedSize,
+                        onIncrement: isBuyNow
+                            ? () {
+                                setState(() {
+                                  _buyNowQuantity++;
+                                });
+                              }
+                            : () {
+                                context.read<CartProvider>().addToCart(
+                                  product,
+                                  item.selectedSize,
+                                  1,
+                                );
+                              },
+                        onDecrement: isBuyNow
+                            ? () {
+                                setState(() {
+                                  if (_buyNowQuantity > 1) {
+                                    setState(() {
+                                      _buyNowQuantity--;
+                                    });
+                                  }
+                                });
+                              }
+                            : () {
+                                context.read<CartProvider>().decrease(
+                                  item.productId,
+                                  item.selectedSize,
+                                );
+                              },
                       );
                     },
                   ),
@@ -190,9 +231,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             const SizedBox(height: 25),
             const Center(child: CreditCard()),
             const SizedBox(height: 50),
-            const Padding(
-              padding: .only(left: 15, right: 15, bottom: 15),
-              child: TotalSection(),
+            Padding(
+              padding: const .only(left: 15, right: 15, bottom: 15),
+              child: TotalSection(overrideTotal: buyNowTotal),
             ),
           ],
         ),
@@ -206,7 +247,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           height: 50,
           width: .infinity,
           text: "Place Order",
-          onPressed: () {},
+          onPressed: () {
+            // If Buy Now: _buyNowQuantity and widget.buyNowItem
+            // If Cart: cartProvider.cartItems
+          },
         ),
       ),
     );

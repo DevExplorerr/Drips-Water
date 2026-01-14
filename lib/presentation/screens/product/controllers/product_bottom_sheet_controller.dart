@@ -1,5 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/enums/commerce_enums.dart';
+import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
@@ -72,10 +73,20 @@ class ProductBottomSheetController extends ChangeNotifier {
   }
 
   void handleBuyNow(BuildContext context) {
+    final buyNowItem = CartItemModel(
+      productId: product.id,
+      name: product.name,
+      imageUrl: product.imageUrl,
+      selectedSize: selectedSize,
+      selectedPrice: selectedPrice,
+      quantity: quantity,
+    );
     Navigator.pop(context);
     Navigator.push(
       context,
-      CupertinoPageRoute(builder: (context) => const CheckoutScreen()),
+      CupertinoPageRoute(
+        builder: (context) => CheckoutScreen(buyNowItem: buyNowItem),
+      ),
     );
   }
 }
