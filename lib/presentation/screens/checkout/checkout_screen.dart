@@ -24,6 +24,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String defaultDeliveryOption = "standard";
   bool get showCalendar => defaultDeliveryOption == 'schedule';
   late int _buyNowQuantity;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -35,6 +36,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     setState(() {
       defaultDeliveryOption = value;
     });
+  }
+
+  Future<void> _handleQuantityUpdates(Future<void> Function() action) async {
+    setState(() => _isLoading = true);
+    try {
+      await action();
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -99,16 +109,32 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             selectedSize: item.selectedSize,
                             onIncrement: isBuyNow
                                 ? () {
-                                    setState(() {
-                                      _buyNowQuantity++;
+                                    _handleQuantityUpdates(() async {
+                                      await Future.delayed(
+                                        const Duration(milliseconds: 500),
+                                      );
+
+                                      if (mounted) {
+                                        setState(() {
+                                          _buyNowQuantity++;
+                                        });
+                                      }
                                     });
                                   }
                                 : null,
                             onDecrement: isBuyNow
                                 ? () {
-                                    setState(() {
-                                      if (_buyNowQuantity > 1) {
-                                        _buyNowQuantity--;
+                                    _handleQuantityUpdates(() async {
+                                      await Future.delayed(
+                                        const Duration(milliseconds: 500),
+                                      );
+
+                                      if (mounted) {
+                                        setState(() {
+                                          if (_buyNowQuantity > 1) {
+                                            _buyNowQuantity--;
+                                          }
+                                        });
                                       }
                                     });
                                   }
@@ -241,8 +267,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
           ),
         ),
-        if (cartProvider.isUpdatingQty)
-          const Positioned.fill(child: CustomOverlayLoader()),
+        if (_isLoading) const Positioned.fill(child: CustomOverlayLoader()),
       ],
     );
   }
