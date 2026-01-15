@@ -1,6 +1,5 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
-import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_product_card.dart';
@@ -24,7 +23,6 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   String defaultDeliveryOption = "standard";
   bool get showCalendar => defaultDeliveryOption == 'schedule';
-
   late int _buyNowQuantity;
 
   @override
@@ -93,21 +91,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         itemBuilder: (context, index) {
                           final item = displayItems[index];
 
-                          final product = ProductModel(
-                            id: item.productId,
-                            name: item.name,
-                            imageUrl: item.imageUrl,
-                            category: '',
-                            description: '',
-                            sizes: [item.selectedSize],
-                            pricePerSize: {
-                              item.selectedSize: item.selectedPrice,
-                            },
-                            rating: 0,
-                            reviews: 0,
-                            stock: 0,
-                          );
-
                           return CheckoutProductCard(
                             image: item.imageUrl,
                             productName: item.name,
@@ -120,29 +103,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       _buyNowQuantity++;
                                     });
                                   }
-                                : () {
-                                    context.read<CartProvider>().addToCart(
-                                      product,
-                                      item.selectedSize,
-                                      1,
-                                    );
-                                  },
+                                : null,
                             onDecrement: isBuyNow
                                 ? () {
                                     setState(() {
                                       if (_buyNowQuantity > 1) {
-                                        setState(() {
-                                          _buyNowQuantity--;
-                                        });
+                                        _buyNowQuantity--;
                                       }
                                     });
                                   }
-                                : () {
-                                    context.read<CartProvider>().decrease(
-                                      item.productId,
-                                      item.selectedSize,
-                                    );
-                                  },
+                                : null,
                           );
                         },
                       ),

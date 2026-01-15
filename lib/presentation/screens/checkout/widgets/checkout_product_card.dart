@@ -11,8 +11,8 @@ class CheckoutProductCard extends StatelessWidget {
   final int selectedPrice;
   final int quantity;
   final String selectedSize;
-  final VoidCallback onIncrement;
-  final VoidCallback onDecrement;
+  final VoidCallback? onIncrement;
+  final VoidCallback? onDecrement;
 
   const CheckoutProductCard({
     super.key,
@@ -21,13 +21,14 @@ class CheckoutProductCard extends StatelessWidget {
     required this.selectedPrice,
     required this.quantity,
     required this.selectedSize,
-    required this.onIncrement,
-    required this.onDecrement,
+    this.onIncrement,
+    this.onDecrement,
   });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final isEditable = onIncrement != null && onDecrement != null;
     return Container(
       padding: const .all(10),
       decoration: BoxDecoration(
@@ -106,36 +107,46 @@ class CheckoutProductCard extends StatelessWidget {
             ),
           ),
 
-          Row(
-            children: [
-              QuantityActionButton(
-                icon: Icons.remove,
-                onTap: onDecrement,
-                size: 30,
-                iconSize: 15,
-              ),
-              SizedBox(
-                width: 30,
-                child: Center(
-                  child: Text(
-                    "$quantity",
-                    style: textTheme.bodySmall?.copyWith(
-                      fontWeight: .w500,
-                      color: AppColors.secondaryText,
-                    ),
-                  ),
-                ),
-              ),
-              QuantityActionButton(
-                icon: Icons.add,
-                onTap: onIncrement,
-                size: 30,
-                iconSize: 15,
-              ),
-            ],
-          ),
+          if (isEditable)
+            _buildQuantityControls(context)
+          else
+            Text(
+              "Qty: $quantity",
+              style: textTheme.bodyMedium?.copyWith(fontWeight: .w500),
+            ),
         ],
       ),
+    );
+  }
+
+  Widget _buildQuantityControls(BuildContext context) {
+    return Row(
+      children: [
+        QuantityActionButton(
+          icon: Icons.remove,
+          onTap: onDecrement ?? () {},
+          size: 30,
+          iconSize: 15,
+        ),
+        SizedBox(
+          width: 30,
+          child: Center(
+            child: Text(
+              "$quantity",
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: .w500,
+                color: AppColors.secondaryText,
+              ),
+            ),
+          ),
+        ),
+        QuantityActionButton(
+          icon: Icons.add,
+          onTap: onIncrement ?? () {},
+          size: 30,
+          iconSize: 15,
+        ),
+      ],
     );
   }
 }
