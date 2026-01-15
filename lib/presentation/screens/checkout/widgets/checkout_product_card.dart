@@ -31,6 +31,7 @@ class CheckoutProductCard extends StatelessWidget {
     final isEditable = onIncrement != null && onDecrement != null;
     return Container(
       padding: const .all(10),
+      margin: const .only(bottom: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: .circular(12),
@@ -112,7 +113,7 @@ class CheckoutProductCard extends StatelessWidget {
           else
             Text(
               "Qty: $quantity",
-              style: textTheme.bodyMedium?.copyWith(fontWeight: .w500),
+              style: textTheme.bodySmall?.copyWith(fontWeight: .w500),
             ),
         ],
       ),
