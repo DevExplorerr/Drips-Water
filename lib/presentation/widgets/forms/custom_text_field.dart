@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final IconButton? suffixIcon;
   final Function(String)? onFieldSubmitted;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     super.key,
@@ -21,6 +22,7 @@ class CustomTextField extends StatelessWidget {
     required this.hintText,
     this.suffixIcon,
     this.onFieldSubmitted,
+    this.validator,
   });
 
   @override
@@ -47,13 +49,15 @@ class CustomTextField extends StatelessWidget {
           obscureText: obscureText ?? false,
           textInputAction: textInputAction,
           autofocus: false,
-          onFieldSubmitted: onFieldSubmitted,
+          validator: validator,
           decoration: InputDecoration(
             hintText: hintText,
             suffixIcon: suffixIcon,
             hintStyle: theme.inputDecorationTheme.hintStyle,
             enabledBorder: theme.inputDecorationTheme.enabledBorder,
             focusedBorder: theme.inputDecorationTheme.focusedBorder,
+            errorBorder: theme.inputDecorationTheme.errorBorder,
+            focusedErrorBorder: theme.inputDecorationTheme.focusedErrorBorder
           ),
         ),
       ],

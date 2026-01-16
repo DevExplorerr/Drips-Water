@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class DeliveryAddressSection extends StatelessWidget {
-  const DeliveryAddressSection({super.key});
+  final String name;
+  final String fullAddress;
+  final String phoneNumber;
+  const DeliveryAddressSection({
+    super.key,
+    required this.name,
+    required this.fullAddress,
+    required this.phoneNumber,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -9,15 +17,12 @@ class DeliveryAddressSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        Text(
-          "Home Address",
-          style: textTheme.bodySmall?.copyWith(fontWeight: .w600),
-        ),
+        Text(name, style: textTheme.bodySmall?.copyWith(fontWeight: .w600)),
         const SizedBox(height: 5),
-        Text("123 Street, Karachi, Pakistan", style: textTheme.bodySmall),
+        Text(fullAddress, style: textTheme.bodySmall),
         const SizedBox(height: 5),
         Text(
-          "+92 3467464387",
+          phoneNumber,
           style: textTheme.bodySmall?.copyWith(fontWeight: .w600),
         ),
       ],

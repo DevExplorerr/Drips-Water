@@ -1,6 +1,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
+import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_product_card.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/credit_card.dart';
@@ -9,6 +10,7 @@ import 'package:drips_water/presentation/screens/checkout/widgets/delivery_time_
 import 'package:drips_water/presentation/screens/checkout/widgets/total_section.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +27,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   bool get showCalendar => defaultDeliveryOption == 'schedule';
   late int _buyNowQuantity;
   bool _isLoading = false;
+  Map<String, String>? _selectedAddress;
 
   @override
   void initState() {
@@ -36,6 +39,35 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     setState(() {
       defaultDeliveryOption = value;
     });
+  }
+
+  Future<void> _navigateToAddAddress() async {
+    final result = await Navigator.push(
+      context,
+      CupertinoPageRoute(builder: (context) => const DeliveryAddressScreen()),
+    );
+
+    if (result != null && result is Map<String, String>) {
+      setState(() {
+        _selectedAddress = result;
+      });
+    }
+  }
+
+  Future<void> _navigateToEditAddress() async {
+    final result = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) =>
+            DeliveryAddressScreen(existingAddress: _selectedAddress),
+      ),
+    );
+
+    if (result is Map<String, String>) {
+      setState(() {
+        _selectedAddress = result;
+      });
+    }
   }
 
   Future<void> _handleQuantityUpdates(Future<void> Function() action) async {
@@ -159,9 +191,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                       TextButton(
                         style: theme.textButtonTheme.style,
-                        onPressed: () {},
+                        onPressed: _selectedAddress == null
+                            ? _navigateToAddAddress
+                            : _navigateToEditAddress,
                         child: Text(
-                          "Change",
+                          _selectedAddress == null ? "+ Add" : "Change",
                           style: textTheme.bodySmall?.copyWith(
                             fontWeight: .w500,
                           ),
@@ -171,9 +205,24 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Padding(
-                  padding: .symmetric(horizontal: 15),
-                  child: DeliveryAddressSection(),
+                Padding(
+                  padding: const .symmetric(horizontal: 15),
+                  child: _selectedAddress == null
+                      ? Container(
+                          width: double.infinity,
+                          padding: const .all(15),
+                          decoration: BoxDecoration(
+                            border: .all(color: AppColors.grey),
+                            borderRadius: .circular(8),
+                          ),
+                          child: const Text("No address selected"),
+                        )
+                      : DeliveryAddressSection(
+                          name: _selectedAddress!['name'] ?? "",
+                          phoneNumber: _selectedAddress!['phone'] ?? "",
+                          fullAddress:
+                              "${_selectedAddress!['address']} ${_selectedAddress!['district']}, ${_selectedAddress!['city']} - ${_selectedAddress!['region']}",
+                        ),
                 ),
                 const SizedBox(height: 25),
                 SingleChildScrollView(

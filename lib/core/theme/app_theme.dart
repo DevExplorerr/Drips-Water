@@ -77,6 +77,14 @@ class AppTheme {
         borderRadius: .zero,
         borderSide: BorderSide(color: AppColors.focusedBorder),
       ),
+      focusedErrorBorder: const OutlineInputBorder(
+        borderRadius: .zero,
+        borderSide: BorderSide(color: AppColors.error),
+      ),
+      errorBorder: const OutlineInputBorder(
+        borderRadius: .zero,
+        borderSide: BorderSide(color: AppColors.error),
+      ),
     ),
 
     // Search Bar
