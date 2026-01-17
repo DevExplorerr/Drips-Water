@@ -14,6 +14,10 @@ class CartProvider with ChangeNotifier {
 
   StreamSubscription? _cartSub;
 
+  Map<String, String>? _deliveryAddress;
+
+  Map<String, String>? get deliveryAddress => _deliveryAddress;
+
   CartProvider({required this.repo, required this.uid, required this.service}) {
     listenToCart();
   }
@@ -41,6 +45,12 @@ class CartProvider with ChangeNotifier {
           .toList();
       notifyListeners();
     });
+  }
+
+  // Method to update the address
+  void updateDeliveryAddress(Map<String, String> newAddress) {
+    _deliveryAddress = newAddress;
+    notifyListeners();
   }
 
   @override
@@ -112,7 +122,10 @@ class CartProvider with ChangeNotifier {
   }
 
   double get totalPrice {
-    return cartItems.fold(0, (sum, item) => sum + (item.quantity * item.selectedPrice));
+    return cartItems.fold(
+      0,
+      (sum, item) => sum + (item.quantity * item.selectedPrice),
+    );
   }
 
   int get totalItems => cartItems.fold(0, (sum, item) => sum + item.quantity);

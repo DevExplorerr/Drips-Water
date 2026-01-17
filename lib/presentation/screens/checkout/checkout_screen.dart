@@ -1,5 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
+import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
@@ -27,7 +28,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   bool get showCalendar => defaultDeliveryOption == 'schedule';
   late int _buyNowQuantity;
   bool _isLoading = false;
-  Map<String, String>? _selectedAddress;
 
   @override
   void initState() {
@@ -42,31 +42,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Future<void> _navigateToAddAddress() async {
-    final result = await Navigator.push(
-      context,
-      CupertinoPageRoute(builder: (context) => const DeliveryAddressScreen()),
-    );
+    final provider = context.read<CartProvider>();
 
-    if (result != null && result is Map<String, String>) {
-      setState(() {
-        _selectedAddress = result;
-      });
-    }
-  }
-
-  Future<void> _navigateToEditAddress() async {
     final result = await Navigator.push(
       context,
       CupertinoPageRoute(
         builder: (context) =>
-            DeliveryAddressScreen(existingAddress: _selectedAddress),
+            DeliveryAddressScreen(existingAddress: provider.deliveryAddress),
       ),
     );
 
-    if (result is Map<String, String>) {
-      setState(() {
-        _selectedAddress = result;
-      });
+    if (result != null && result is Map<String, String>) {
+      if (mounted) {
+        context.read<CartProvider>().updateDeliveryAddress(result);
+      }
     }
   }
 
@@ -84,6 +73,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final cartProvider = context.watch<CartProvider>();
+    final addressData = cartProvider.deliveryAddress;
     final isBuyNow = widget.buyNowItem != null;
     final displayItems = isBuyNow
         ? [
@@ -191,11 +181,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                       TextButton(
                         style: theme.textButtonTheme.style,
-                        onPressed: _selectedAddress == null
-                            ? _navigateToAddAddress
-                            : _navigateToEditAddress,
+                        onPressed: _navigateToAddAddress,
                         child: Text(
-                          _selectedAddress == null ? "+ Add" : "Change",
+                          addressData == null ? "+ Add" : "Change",
                           style: textTheme.bodySmall?.copyWith(
                             fontWeight: .w500,
                           ),
@@ -207,21 +195,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const .symmetric(horizontal: 15),
-                  child: _selectedAddress == null
-                      ? Container(
-                          width: double.infinity,
-                          padding: const .all(15),
-                          decoration: BoxDecoration(
-                            border: .all(color: AppColors.grey),
-                            borderRadius: .circular(8),
-                          ),
-                          child: const Text("No address selected"),
-                        )
+                  child: addressData == null
+                      ? const Text("No address selected")
                       : DeliveryAddressSection(
-                          name: _selectedAddress!['name'] ?? "",
-                          phoneNumber: _selectedAddress!['phone'] ?? "",
+                          name: addressData['name'] ?? "",
+                          phoneNumber: addressData['phone'] ?? "",
                           fullAddress:
-                              "${_selectedAddress!['address']} ${_selectedAddress!['district']}, ${_selectedAddress!['city']} - ${_selectedAddress!['region']}",
+                              "${addressData['address']} ${addressData['district']}, ${addressData['city']} - ${addressData['region']}",
                         ),
                 ),
                 const SizedBox(height: 25),
@@ -310,6 +290,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               width: .infinity,
               text: "Place Order",
               onPressed: () {
+                if (cartProvider.deliveryAddress == null) {
+                  showFloatingSnackBar(
+                    context,
+                    message: "Please select an address",
+                    backgroundColor: AppColors.error,
+                  );
+                  return;
+                }
                 // If Buy Now: _buyNowQuantity and widget.buyNowItem
                 // If Cart: cartProvider.cartItems
               },
