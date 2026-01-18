@@ -1,4 +1,5 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
@@ -52,7 +53,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
 
-    if (result != null && result is Map<String, String>) {
+    if (result != null && result is AddressModel) {
       if (mounted) {
         context.read<CartProvider>().updateDeliveryAddress(result);
       }
@@ -198,10 +199,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: addressData == null
                       ? const Text("No address selected")
                       : DeliveryAddressSection(
-                          name: addressData['name'] ?? "",
-                          phoneNumber: addressData['phone'] ?? "",
+                          name: addressData.name,
+                          phoneNumber: addressData.phone,
                           fullAddress:
-                              "${addressData['address']} ${addressData['district']}, ${addressData['city']} - ${addressData['region']}",
+                              "${addressData.address} ${addressData.district}, ${addressData.city} - ${addressData.region}",
                         ),
                 ),
                 const SizedBox(height: 25),

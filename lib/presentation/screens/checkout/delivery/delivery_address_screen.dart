@@ -1,11 +1,12 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryAddressScreen extends StatefulWidget {
-  final Map<String, String>? existingAddress;
+  final AddressModel? existingAddress;
   const DeliveryAddressScreen({super.key, this.existingAddress});
 
   @override
@@ -20,6 +21,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController districtController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
+  final TextEditingController instructionsController = TextEditingController();
 
   bool get isEditing => widget.existingAddress != null;
 
@@ -27,12 +29,13 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
   void initState() {
     super.initState();
     if (isEditing) {
-      recipientName.text = widget.existingAddress!['name'] ?? '';
-      phoneController.text = widget.existingAddress!['phone'] ?? '';
-      regionController.text = widget.existingAddress!['region'] ?? '';
-      cityController.text = widget.existingAddress!['city'] ?? '';
-      districtController.text = widget.existingAddress!['district'] ?? '';
-      addressController.text = widget.existingAddress!['address'] ?? '';
+      recipientName.text = widget.existingAddress!.name;
+      phoneController.text = widget.existingAddress!.phone;
+      regionController.text = widget.existingAddress!.region;
+      cityController.text = widget.existingAddress!.city;
+      districtController.text = widget.existingAddress!.district;
+      addressController.text = widget.existingAddress!.address;
+      instructionsController.text = widget.existingAddress!.instructions ?? '';
     }
   }
 
@@ -44,20 +47,23 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
     cityController.dispose();
     districtController.dispose();
     addressController.dispose();
+    instructionsController.dispose();
     super.dispose();
   }
 
   void _validateAndSave() {
     if (_formKey.currentState!.validate()) {
-      final addressData = {
-        'name': recipientName.text.trim(),
-        'phone': phoneController.text.trim(),
-        'region': regionController.text.trim(),
-        'city': cityController.text.trim(),
-        'district': districtController.text.trim(),
-        'address': addressController.text.trim(),
-      };
-      Navigator.pop(context, addressData);
+      final addressModel = AddressModel(
+        name: recipientName.text.trim(),
+        phone: phoneController.text.trim(),
+        region: regionController.text.trim(),
+        city: cityController.text.trim(),
+        district: districtController.text.trim(),
+        address: addressController.text.trim(),
+        instructions: instructionsController.text.trim(),
+        label: "Home",
+      );
+      Navigator.pop(context, addressModel);
     } else {
       showFloatingSnackBar(
         context,
@@ -170,7 +176,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                 CustomTextField(
                   controller: addressController,
                   textInputType: .streetAddress,
-                  textInputAction: .done,
+                  textInputAction: .next,
                   hintText: "House no./building/street/area",
                   labelText: "Address *",
                   validator: (value) {
@@ -183,6 +189,14 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
+                CustomTextField(
+                  controller: instructionsController,
+                  textInputType: .text,
+                  textInputAction: .done,
+                  hintText: "e.g. Gate code 1234, Leave at door",
+                  labelText: "Delivery Instructions (Optional)",
+                ),
               ],
             ),
           ),
@@ -191,6 +205,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
           padding: .only(
             left: 15,
             right: 15,
+            top: 15,
             bottom: MediaQuery.of(context).padding.bottom + 15,
           ),
           child: CustomButton(
