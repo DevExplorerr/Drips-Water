@@ -1,11 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drips_water/data/models/address_model.dart';
+import 'package:drips_water/data/repositories/user_repository.dart';
 
 class UserService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final UserRepository _userRepository = UserRepository();
 
-  Future<String?> fetchUserName(String uid) async {
-    final snapshot = await _firestore.collection('users').doc(uid).get();
-    if (!snapshot.exists) return null;
-    return snapshot.data()?['name'] ?? 'Guest';
+  Future<String?> getUserName(String uid) {
+    return _userRepository.fetchUserName(uid);
+  }
+
+  Future<AddressModel?> getUserAddress(String uid) async {
+    return await _userRepository.fetchUserAddress(uid);
+  }
+
+  Future<void> saveUserAddress(String uid, AddressModel address) async {
+    try {
+      await _userRepository.setUserAddress(uid, address);
+    } catch (e) {
+      throw Exception('Failed to update address: $e');
+    }
   }
 }

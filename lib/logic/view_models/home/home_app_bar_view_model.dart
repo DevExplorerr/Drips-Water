@@ -24,7 +24,7 @@ class HomeAppBarViewModel extends ChangeNotifier {
 
     _isGuest = false;
 
-    userName = await _userService.fetchUserName(uid) ?? 'Guest';
+    userName = await _userService.getUserName(uid) ?? 'Guest';
 
     isLoading = false;
     notifyListeners();

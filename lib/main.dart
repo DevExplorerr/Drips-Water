@@ -3,8 +3,10 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/app_theme.dart';
 import 'package:drips_water/data/repositories/cart_repository.dart';
 import 'package:drips_water/data/services/cart_service.dart';
+import 'package:drips_water/data/services/user_service.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
+import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
 import 'package:drips_water/data/repositories/favorite_repository.dart';
 import 'package:drips_water/data/services/auth_service.dart';
@@ -56,6 +58,20 @@ class DripsWater extends StatelessWidget {
                 return CartProvider(
                   repo: ctx.read<CartRepository>(),
                   service: ctx.read<CartService>(),
+                  uid: user?.uid ?? '',
+                );
+              },
+            ),
+
+            // User Service
+            Provider<UserService>(create: (_) => UserService()),
+
+            // Checkout Provider
+            ChangeNotifierProvider<CheckoutProvider>(
+              key: ValueKey(user?.uid ?? 'guest_checkout'),
+              create: (ctx) {
+                return CheckoutProvider(
+                  userService: ctx.read<UserService>(),
                   uid: user?.uid ?? '',
                 );
               },

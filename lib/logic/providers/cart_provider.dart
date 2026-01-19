@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:drips_water/core/enums/commerce_enums.dart';
-import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/data/services/cart_service.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +13,6 @@ class CartProvider with ChangeNotifier {
   final String uid;
 
   StreamSubscription? _cartSub;
-
-  AddressModel? _deliveryAddress;
-
-  AddressModel? get deliveryAddress => _deliveryAddress;
 
   CartProvider({required this.repo, required this.uid, required this.service}) {
     listenToCart();
@@ -46,12 +41,6 @@ class CartProvider with ChangeNotifier {
           .toList();
       notifyListeners();
     });
-  }
-
-  // Method to update the address
-  void updateDeliveryAddress(AddressModel newAddress) {
-    _deliveryAddress = newAddress;
-    notifyListeners();
   }
 
   @override

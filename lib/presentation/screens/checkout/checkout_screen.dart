@@ -3,6 +3,7 @@ import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
+import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_product_card.dart';
@@ -43,19 +44,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Future<void> _navigateToAddAddress() async {
-    final provider = context.read<CartProvider>();
+    final checkoutProvider = context.read<CheckoutProvider>();
 
     final result = await Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) =>
-            DeliveryAddressScreen(existingAddress: provider.deliveryAddress),
+        builder: (context) => DeliveryAddressScreen(
+          existingAddress: checkoutProvider.deliveryAddress,
+        ),
       ),
     );
 
     if (result != null && result is AddressModel) {
       if (mounted) {
-        context.read<CartProvider>().updateDeliveryAddress(result);
+        context.read<CheckoutProvider>().updateDeliveryAddress(result);
       }
     }
   }
@@ -74,7 +76,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
     final cartProvider = context.watch<CartProvider>();
-    final addressData = cartProvider.deliveryAddress;
+    final checkoutProvider = context.watch<CheckoutProvider>();
+    final addressData = checkoutProvider.deliveryAddress;
     final isBuyNow = widget.buyNowItem != null;
     final displayItems = isBuyNow
         ? [
@@ -291,7 +294,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               width: .infinity,
               text: "Place Order",
               onPressed: () {
-                if (cartProvider.deliveryAddress == null) {
+                if (checkoutProvider.deliveryAddress == null) {
                   showFloatingSnackBar(
                     context,
                     message: "Please select an address",
