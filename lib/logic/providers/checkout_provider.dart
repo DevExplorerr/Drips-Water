@@ -5,13 +5,21 @@ import 'package:flutter/material.dart';
 class CheckoutProvider with ChangeNotifier {
   final UserService userService;
   final String uid;
+
   AddressModel? _deliveryAddress;
+  AddressModel? get deliveryAddress => _deliveryAddress;
+
+  String _deliveryOption = 'standard';
+  DateTime? _scheduledTime;
+
+  String get deliveryOption => _deliveryOption;
+  DateTime? get scheduledTime => _scheduledTime;
+
+  bool get showCalendar => _deliveryOption == 'schedule';
 
   CheckoutProvider({required this.userService, required this.uid}) {
     _loadSavedAddress();
   }
-
-  AddressModel? get deliveryAddress => _deliveryAddress;
 
   Future<void> _loadSavedAddress() async {
     if (uid.isEmpty) return;
@@ -29,5 +37,22 @@ class CheckoutProvider with ChangeNotifier {
     if (uid.isNotEmpty) {
       await userService.saveUserAddress(uid, newAddress);
     }
+  }
+
+  void setDeliveryOption(String option) {
+    _deliveryOption = option;
+
+    if (option == 'schedule' && _scheduledTime == null) {
+      _scheduledTime = DateTime.now().add(const Duration(days: 1));
+    }
+    notifyListeners();
+  }
+
+  void setScheduledTime(DateTime date) {
+    _scheduledTime = date;
+    if (_deliveryOption != 'schedule') {
+      _deliveryOption = 'schedule';
+    }
+    notifyListeners();
   }
 }

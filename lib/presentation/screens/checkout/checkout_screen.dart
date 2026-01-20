@@ -26,8 +26,6 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  String defaultDeliveryOption = "standard";
-  bool get showCalendar => defaultDeliveryOption == 'schedule';
   late int _buyNowQuantity;
   bool _isLoading = false;
 
@@ -35,12 +33,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   void initState() {
     super.initState();
     _buyNowQuantity = widget.buyNowItem?.quantity ?? 1;
-  }
-
-  void _onOptionSelected(String value) {
-    setState(() {
-      defaultDeliveryOption = value;
-    });
   }
 
   Future<void> _navigateToAddAddress() async {
@@ -219,8 +211,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         text: 'Standard',
                         time: '20-30 Min',
                         value: 'standard',
-                        isSelected: defaultDeliveryOption == 'standard',
-                        onTap: () => _onOptionSelected("standard"),
+                        isSelected:
+                            checkoutProvider.deliveryOption == 'standard',
+                        onTap: () =>
+                            checkoutProvider.setDeliveryOption('standard'),
                       ),
                       const SizedBox(width: 10),
                       DeliveryTimeSelectionCard(
@@ -228,17 +222,24 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         text: 'Schedule Ahead',
                         time: 'Choose Your Time',
                         value: 'schedule',
-                        isSelected: defaultDeliveryOption == 'schedule',
-                        onTap: () => _onOptionSelected("schedule"),
+                        isSelected:
+                            checkoutProvider.deliveryOption == 'schedule',
+                        onTap: () =>
+                            checkoutProvider.setDeliveryOption('schedule'),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 25),
-                if (showCalendar)
-                  const Padding(
-                    padding: .symmetric(horizontal: 15),
-                    child: CheckoutCalendar(),
+                if (checkoutProvider.showCalendar)
+                  Padding(
+                    padding: const .symmetric(horizontal: 15),
+                    child: CheckoutCalendar(
+                      initialDate: checkoutProvider.scheduledTime,
+                      onDateTimeChanged: (newDate) {
+                        checkoutProvider.setScheduledTime(newDate);
+                      },
+                    ),
                   ),
                 const SizedBox(height: 25),
                 Padding(
