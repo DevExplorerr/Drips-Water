@@ -10,6 +10,7 @@ import 'package:drips_water/presentation/screens/checkout/widgets/checkout_produ
 import 'package:drips_water/presentation/screens/checkout/widgets/credit_card.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/delivery_address_section.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/delivery_time_selection_card.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/payment_selection_card.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/total_section.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
@@ -253,30 +254,81 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           fontWeight: .w700,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.add,
-                              color: AppColors.icon,
-                              size: 15,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              "Add New Card",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: AppColors.secondaryText,
+                      if (checkoutProvider.paymentMethod == 'card')
+                        GestureDetector(
+                          onTap: () {},
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: AppColors.icon,
+                                size: 15,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 5),
+                              Text(
+                                "Add New Card",
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: AppColors.secondaryText,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 25),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Column(
+                    children: [
+                      // Option 1: Credit Card
+                      PaymentSelectionCard(
+                        title: "Credit / Debit Card",
+                        icon: Icons.credit_card,
+                        isSelected: checkoutProvider.paymentMethod == 'card',
+                        onTap: () => checkoutProvider.setPaymentMethod('card'),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // Option 2: Cash on Delivery
+                      PaymentSelectionCard(
+                        title: "Cash on Delivery",
+                        icon: Icons.money,
+                        isSelected: checkoutProvider.paymentMethod == 'cod',
+                        onTap: () => checkoutProvider.setPaymentMethod('cod'),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 25),
-                const Center(child: CreditCard()),
+                if (checkoutProvider.paymentMethod == 'card')
+                  const Center(child: CreditCard()),
+
+                if (checkoutProvider.paymentMethod == 'cod')
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.grey.shade200),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.info_outline, color: Colors.grey),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            "You will pay when the water arrives.",
+                            style: textTheme.bodySmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 const SizedBox(height: 50),
                 Padding(
                   padding: const .only(left: 15, right: 15, bottom: 15),

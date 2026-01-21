@@ -10,12 +10,14 @@ class CheckoutProvider with ChangeNotifier {
   AddressModel? get deliveryAddress => _deliveryAddress;
 
   String _deliveryOption = 'standard';
-  DateTime? _scheduledTime;
-
   String get deliveryOption => _deliveryOption;
+  bool get showCalendar => _deliveryOption == 'schedule';
+
+  DateTime? _scheduledTime;
   DateTime? get scheduledTime => _scheduledTime;
 
-  bool get showCalendar => _deliveryOption == 'schedule';
+  String _paymentMethod = 'card';
+  String get paymentMethod => _paymentMethod;
 
   CheckoutProvider({required this.userService, required this.uid}) {
     _loadSavedAddress();
@@ -53,6 +55,11 @@ class CheckoutProvider with ChangeNotifier {
     if (_deliveryOption != 'schedule') {
       _deliveryOption = 'schedule';
     }
+    notifyListeners();
+  }
+
+  void setPaymentMethod(String method) {
+    _paymentMethod = method;
     notifyListeners();
   }
 }
