@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class PaymentSelectionCard extends StatelessWidget {
   final String title;
-  final IconData icon; // Or IconData
+  final IconData icon;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -22,10 +22,10 @@ class PaymentSelectionCard extends StatelessWidget {
       child: Container(
         height: 60,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : Colors.grey.shade200,
+          color: AppColors.white,
+          borderRadius: .circular(12),
+          border: .all(
+            color: isSelected ? AppColors.primary : AppColors.grey,
             width: isSelected ? 1.5 : 1,
           ),
           boxShadow: [
@@ -37,7 +37,7 @@ class PaymentSelectionCard extends StatelessWidget {
               ),
           ],
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const .symmetric(horizontal: 15),
         child: Row(
           children: [
             // Radio Circle
@@ -45,9 +45,9 @@ class PaymentSelectionCard extends StatelessWidget {
               height: 20,
               width: 20,
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected ? AppColors.primary : Colors.grey.shade400,
+                shape: .circle,
+                border: .all(
+                  color: isSelected ? AppColors.primary : AppColors.grey,
                   width: 2,
                 ),
               ),
@@ -58,7 +58,7 @@ class PaymentSelectionCard extends StatelessWidget {
                         width: 10,
                         decoration: const BoxDecoration(
                           color: AppColors.primary,
-                          shape: BoxShape.circle,
+                          shape: .circle,
                         ),
                       ),
                     )
@@ -70,7 +70,7 @@ class PaymentSelectionCard extends StatelessWidget {
               child: Text(
                 title,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: .w600,
                   color: isSelected ? AppColors.primary : AppColors.textLight,
                 ),
               ),

@@ -282,22 +282,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     children: [
-                      // Option 1: Credit Card
-                      PaymentSelectionCard(
-                        title: "Credit / Debit Card",
-                        icon: Icons.credit_card,
-                        isSelected: checkoutProvider.paymentMethod == 'card',
-                        onTap: () => checkoutProvider.setPaymentMethod('card'),
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // Option 2: Cash on Delivery
                       PaymentSelectionCard(
                         title: "Cash on Delivery",
                         icon: Icons.money,
                         isSelected: checkoutProvider.paymentMethod == 'cod',
                         onTap: () => checkoutProvider.setPaymentMethod('cod'),
+                      ),
+                      const SizedBox(height: 10),
+                      PaymentSelectionCard(
+                        title: "Credit / Debit Card",
+                        icon: Icons.credit_card,
+                        isSelected: checkoutProvider.paymentMethod == 'card',
+                        onTap: () => checkoutProvider.setPaymentMethod('card'),
                       ),
                     ],
                   ),
