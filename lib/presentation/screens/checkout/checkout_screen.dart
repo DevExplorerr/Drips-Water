@@ -279,7 +279,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 const SizedBox(height: 25),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const .symmetric(horizontal: 15),
                   child: Column(
                     children: [
                       PaymentSelectionCard(
@@ -299,21 +299,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                if (checkoutProvider.paymentMethod == 'card')
-                  const Center(child: CreditCard()),
 
                 if (checkoutProvider.paymentMethod == 'cod')
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    padding: const EdgeInsets.all(15),
+                    margin: const .symmetric(horizontal: 15),
+                    padding: const .all(15),
                     decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.grey.shade200),
+                      color: AppColors.grey.withValues(alpha: 0.3),
+                      borderRadius: .circular(8),
+                      border: .all(color: AppColors.grey),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.info_outline, color: Colors.grey),
+                        const Icon(Icons.info_outline, color: AppColors.icon),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
@@ -322,6 +320,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+
+                if (checkoutProvider.paymentMethod == 'card')
+                  const Center(
+                    child: CreditCard(
+                      cardType: "Visa",
+                      cardNumber: "**** **** **** 9912",
+                      cardHolderName: "John Doe",
+                      expiryDate: "09/26",
                     ),
                   ),
 

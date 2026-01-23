@@ -2,7 +2,17 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CreditCard extends StatelessWidget {
-  const CreditCard({super.key});
+  final String cardNumber;
+  final String cardHolderName;
+  final String expiryDate;
+  final String cardType;
+  const CreditCard({
+    super.key,
+    required this.cardNumber,
+    required this.cardHolderName,
+    required this.expiryDate,
+    required this.cardType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,14 +23,20 @@ class CreditCard extends StatelessWidget {
       decoration: const BoxDecoration(
         borderRadius: .all(.circular(14)),
         color: AppColors.primary,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.primary, Color(0xFF1E88E5)],
+        ),
       ),
       child: Padding(
         padding: const .symmetric(horizontal: 20, vertical: 10),
         child: Column(
           crossAxisAlignment: .start,
+          mainAxisAlignment: .spaceBetween,
           children: [
             Text(
-              "VISA",
+              cardType,
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: .w700,
                 color: AppColors.textDark,
@@ -28,7 +44,7 @@ class CreditCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              "****  ****  ****  ****  3282",
+              cardNumber,
               style: textTheme.bodyMedium?.copyWith(color: AppColors.textDark),
             ),
             const SizedBox(height: 15),
@@ -46,7 +62,7 @@ class CreditCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      "Saad Jamal",
+                      cardHolderName,
                       style: textTheme.bodySmall?.copyWith(
                         fontWeight: .w600,
                         color: AppColors.textDark,
@@ -64,7 +80,7 @@ class CreditCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      "12/23",
+                      expiryDate,
                       style: textTheme.bodyMedium?.copyWith(
                         fontWeight: .w600,
                         color: AppColors.textDark,
