@@ -4,7 +4,8 @@ import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
 class AddCardScreen extends StatefulWidget {
-  const AddCardScreen({super.key});
+  final CardModel? existingCardDetails;
+  const AddCardScreen({super.key, this.existingCardDetails});
 
   @override
   State<AddCardScreen> createState() => _AddCardScreenState();
@@ -16,6 +17,28 @@ class _AddCardScreenState extends State<AddCardScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _expiryController = TextEditingController();
   final TextEditingController _cvvController = TextEditingController();
+
+  bool get isEditing => widget.existingCardDetails != null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (isEditing) {
+      _numberController.text = widget.existingCardDetails!.cardNumber;
+      _nameController.text = widget.existingCardDetails!.holderName;
+      _expiryController.text = widget.existingCardDetails!.expiryDate;
+      _cvvController.text = widget.existingCardDetails!.cvv;
+    }
+  }
+
+  @override
+  void dispose() {
+    _numberController.dispose();
+    _nameController.dispose();
+    _expiryController.dispose();
+    _cvvController.dispose();
+    super.dispose();
+  }
 
   void _saveCard() {
     if (_formKey.currentState!.validate()) {
@@ -34,7 +57,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text("Add New Card")),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(15),
+        padding: const .all(15),
         child: Form(
           key: _formKey,
           child: Column(
@@ -43,7 +66,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 controller: _nameController,
                 labelText: "Card Holder Name",
                 hintText: "e.g. John Doe",
-                textInputType: TextInputType.name,
+                textInputType: .name,
                 validator: (v) => v!.isEmpty ? "Required" : null,
                 textInputAction: .next,
               ),
@@ -52,7 +75,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 controller: _numberController,
                 labelText: "Card Number",
                 hintText: "0000 0000 0000 0000",
-                textInputType: TextInputType.number,
+                textInputType: .number,
                 validator: (v) => (v!.length < 12) ? "Invalid Number" : null,
                 textInputAction: .next,
               ),
@@ -64,7 +87,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                       controller: _expiryController,
                       labelText: "Expiry Date",
                       hintText: "MM/YY",
-                      textInputType: TextInputType.datetime,
+                      textInputType: .datetime,
                       validator: (v) => v!.isEmpty ? "Required" : null,
                       textInputAction: .next,
                     ),
@@ -75,7 +98,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                       controller: _cvvController,
                       labelText: "CVV",
                       hintText: "123",
-                      textInputType: TextInputType.number,
+                      textInputType: .number,
                       validator: (v) => (v!.length < 3) ? "Invalid CVV" : null,
                       textInputAction: .done,
                     ),
@@ -87,12 +110,17 @@ class _AddCardScreenState extends State<AddCardScreen> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: .only(
+          left: 15,
+          right: 15,
+          top: 15,
+          bottom: MediaQuery.of(context).padding.bottom + 15,
+        ),
         child: CustomButton(
-          text: "Save Card",
           onPressed: _saveCard,
           height: 50,
-          width: double.infinity,
+          width: .infinity,
+          text: "Save",
         ),
       ),
     );

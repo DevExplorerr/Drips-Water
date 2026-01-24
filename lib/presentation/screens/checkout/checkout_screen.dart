@@ -58,9 +58,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Future<void> _navigateToAddCard() async {
+    final checkoutProvider = context.read<CheckoutProvider>();
     final result = await Navigator.push(
       context,
-      CupertinoPageRoute(builder: (context) => const AddCardScreen()),
+      CupertinoPageRoute(
+        builder: (context) =>
+            AddCardScreen(existingCardDetails: checkoutProvider.cardDetails),
+      ),
     );
 
     if (result != null && result is CardModel) {
@@ -281,7 +285,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                               const SizedBox(width: 5),
                               Text(
-                                "Add New Card",
+                                checkoutProvider.cardDetails == null
+                                    ? "Add New Card"
+                                    : "Edit Card Details",
                                 style: textTheme.bodySmall?.copyWith(
                                   color: AppColors.secondaryText,
                                 ),
@@ -347,20 +353,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               height: 140,
                               width: 270,
                               decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: Colors.grey.shade300,
-                                  style: BorderStyle.solid,
+                                color: AppColors.grey.withValues(alpha: 0.1),
+                                borderRadius: .circular(14),
+                                border: .all(
+                                  color: AppColors.grey.withValues(alpha: 0.3),
+                                  style: .solid,
                                 ),
                               ),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: .center,
                                 children: [
                                   const Icon(
                                     Icons.add_card,
                                     size: 40,
-                                    color: Colors.grey,
+                                    color: AppColors.icon,
                                   ),
                                   const SizedBox(height: 10),
                                   Text(
