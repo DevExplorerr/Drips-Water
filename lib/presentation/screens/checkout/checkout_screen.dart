@@ -377,15 +377,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ),
                           )
-                        : Center(
-                            child: CreditCard(
-                              cardType: "Visa",
-                              cardNumber:
-                                  checkoutProvider.cardDetails!.maskedNumber,
-                              cardHolderName:
-                                  checkoutProvider.cardDetails!.holderName,
-                              expiryDate:
-                                  checkoutProvider.cardDetails!.expiryDate,
+                        : GestureDetector(
+                            onTap: _navigateToAddCard,
+                            child: Center(
+                              child: CreditCard(
+                                cardType:
+                                    checkoutProvider.cardDetails!.cardType,
+                                cardNumber:
+                                    checkoutProvider.cardDetails!.maskedNumber,
+                                cardHolderName:
+                                    checkoutProvider.cardDetails!.holderName,
+                                expiryDate:
+                                    checkoutProvider.cardDetails!.expiryDate,
+                              ),
                             ),
                           ),
                   ),
@@ -398,11 +402,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ],
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-            padding: const .all(15),
-            height: 80,
-            color: Colors.transparent,
-            elevation: 0,
+          bottomNavigationBar: Padding(
+            padding: .only(
+              left: 15,
+              right: 15,
+              top: 15,
+              bottom: MediaQuery.of(context).padding.bottom + 15,
+            ),
             child: CustomButton(
               height: 50,
               width: .infinity,

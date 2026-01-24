@@ -3,12 +3,14 @@ class CardModel {
   final String holderName;
   final String expiryDate;
   final String cvv;
+  final String cardType;
 
-  CardModel({
+  const CardModel({
     required this.cardNumber,
     required this.holderName,
     required this.expiryDate,
     required this.cvv,
+    required this.cardType,
   });
 
   String get maskedNumber {

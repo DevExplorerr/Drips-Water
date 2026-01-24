@@ -1,3 +1,4 @@
+import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/card_model.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
@@ -18,16 +19,23 @@ class _AddCardScreenState extends State<AddCardScreen> {
   final TextEditingController _expiryController = TextEditingController();
   final TextEditingController _cvvController = TextEditingController();
 
-  bool get isEditing => widget.existingCardDetails != null;
+  String _selectedCardType = "Visa";
+  final List<String> _cardTypes = [
+    "Visa",
+    "MasterCard",
+    "American Express",
+    "Discover",
+  ];
 
   @override
   void initState() {
     super.initState();
-    if (isEditing) {
+    if (widget.existingCardDetails != null) {
       _numberController.text = widget.existingCardDetails!.cardNumber;
       _nameController.text = widget.existingCardDetails!.holderName;
       _expiryController.text = widget.existingCardDetails!.expiryDate;
       _cvvController.text = widget.existingCardDetails!.cvv;
+      _selectedCardType = widget.existingCardDetails!.cardType;
     }
   }
 
@@ -47,6 +55,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
         holderName: _nameController.text.trim(),
         expiryDate: _expiryController.text.trim(),
         cvv: _cvvController.text.trim(),
+        cardType: _selectedCardType,
       );
       Navigator.pop(context, card);
     }
@@ -61,7 +70,51 @@ class _AddCardScreenState extends State<AddCardScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: .start,
             children: [
+              Text(
+                "Card Type",
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: .w600,
+                  color: AppColors.secondaryText,
+                ),
+              ),
+              const SizedBox(height: 5),
+              Container(
+                padding: const .symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  color: AppColors.grey.withValues(alpha: 0.1),
+                  borderRadius: .circular(8),
+                  border: .all(color: Colors.transparent),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    focusColor: AppColors.primary,
+                    value: _selectedCardType,
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: AppColors.icon,
+                    ),
+                    items: _cardTypes.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(fontWeight: .w500),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      setState(() {
+                        _selectedCardType = newValue!;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               CustomTextField(
                 controller: _nameController,
                 labelText: "Card Holder Name",
