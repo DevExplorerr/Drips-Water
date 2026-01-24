@@ -1,10 +1,12 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/address_model.dart';
+import 'package:drips_water/data/models/card_model.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
+import 'package:drips_water/presentation/screens/checkout/payment/add_card_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_product_card.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/credit_card.dart';
@@ -51,6 +53,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (result != null && result is AddressModel) {
       if (mounted) {
         context.read<CheckoutProvider>().updateDeliveryAddress(result);
+      }
+    }
+  }
+
+  Future<void> _navigateToAddCard() async {
+    final result = await Navigator.push(
+      context,
+      CupertinoPageRoute(builder: (context) => const AddCardScreen()),
+    );
+
+    if (result != null && result is CardModel) {
+      if (mounted) {
+        context.read<CheckoutProvider>().updateCardDetails(result);
       }
     }
   }
@@ -256,7 +271,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                       if (checkoutProvider.paymentMethod == 'card')
                         GestureDetector(
-                          onTap: () {},
+                          onTap: _navigateToAddCard,
                           child: Row(
                             children: [
                               const Icon(
@@ -324,13 +339,49 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
 
                 if (checkoutProvider.paymentMethod == 'card')
-                  const Center(
-                    child: CreditCard(
-                      cardType: "Visa",
-                      cardNumber: "**** **** **** 9912",
-                      cardHolderName: "John Doe",
-                      expiryDate: "09/26",
-                    ),
+                  Center(
+                    child: checkoutProvider.cardDetails == null
+                        ? GestureDetector(
+                            onTap: _navigateToAddCard,
+                            child: Container(
+                              height: 140,
+                              width: 270,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: Colors.grey.shade300,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.add_card,
+                                    size: 40,
+                                    color: Colors.grey,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "Add a Credit Card",
+                                    style: textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Center(
+                            child: CreditCard(
+                              cardType: "Visa",
+                              cardNumber:
+                                  checkoutProvider.cardDetails!.maskedNumber,
+                              cardHolderName:
+                                  checkoutProvider.cardDetails!.holderName,
+                              expiryDate:
+                                  checkoutProvider.cardDetails!.expiryDate,
+                            ),
+                          ),
                   ),
 
                 const SizedBox(height: 50),

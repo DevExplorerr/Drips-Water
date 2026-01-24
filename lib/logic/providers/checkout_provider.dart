@@ -1,4 +1,5 @@
 import 'package:drips_water/data/models/address_model.dart';
+import 'package:drips_water/data/models/card_model.dart';
 import 'package:drips_water/data/services/user_service.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,11 @@ class CheckoutProvider with ChangeNotifier {
   DateTime? _scheduledTime;
   DateTime? get scheduledTime => _scheduledTime;
 
-  String _paymentMethod = 'card';
+  String _paymentMethod = 'cod';
+  CardModel? _cardDetails;
+
   String get paymentMethod => _paymentMethod;
+  CardModel? get cardDetails => _cardDetails;
 
   CheckoutProvider({required this.userService, required this.uid}) {
     _loadSavedAddress();
@@ -60,6 +64,11 @@ class CheckoutProvider with ChangeNotifier {
 
   void setPaymentMethod(String method) {
     _paymentMethod = method;
+    notifyListeners();
+  }
+
+  void updateCardDetails(CardModel card) {
+    _cardDetails = card;
     notifyListeners();
   }
 }
