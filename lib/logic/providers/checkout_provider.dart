@@ -24,16 +24,22 @@ class CheckoutProvider with ChangeNotifier {
   CardModel? get cardDetails => _cardDetails;
 
   CheckoutProvider({required this.userService, required this.uid}) {
-    _loadSavedAddress();
+    _loadSavedData();
   }
 
-  Future<void> _loadSavedAddress() async {
+  Future<void> _loadSavedData() async {
     if (uid.isEmpty) return;
+
     final savedAddress = await userService.getUserAddress(uid);
     if (savedAddress != null) {
       _deliveryAddress = savedAddress;
-      notifyListeners();
     }
+
+    final savedCard = await userService.getUserCard(uid);
+    if (savedCard != null) {
+      _cardDetails = savedCard;
+    }
+    notifyListeners();
   }
 
   Future<void> updateDeliveryAddress(AddressModel newAddress) async {
@@ -67,8 +73,12 @@ class CheckoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateCardDetails(CardModel card) {
+  void updateCardDetails(CardModel card) async {
     _cardDetails = card;
     notifyListeners();
+
+    if (uid.isNotEmpty) {
+      await userService.saveUserCard(uid, card);
+    }
   }
 }
