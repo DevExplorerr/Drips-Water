@@ -422,6 +422,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   );
                   return;
                 }
+
+                if (checkoutProvider.paymentMethod == 'card' &&
+                    checkoutProvider.cardDetails == null) {
+                  showFloatingSnackBar(
+                    context,
+                    message: "Please add your card details",
+                    backgroundColor: AppColors.error,
+                  );
+                }
                 // If Buy Now: _buyNowQuantity and widget.buyNowItem
                 // If Cart: cartProvider.cartItems
               },
