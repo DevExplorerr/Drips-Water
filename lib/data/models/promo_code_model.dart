@@ -1,6 +1,6 @@
 class PromoCodeModel {
   final String code;
-  final int value;
+  final double value;
   final bool isPercentage;
 
   PromoCodeModel({
