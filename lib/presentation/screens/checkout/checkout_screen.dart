@@ -13,6 +13,7 @@ import 'package:drips_water/presentation/screens/checkout/widgets/credit_card.da
 import 'package:drips_water/presentation/screens/checkout/widgets/delivery_address_section.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/delivery_time_selection_card.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/payment_selection_card.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/promo_code_input.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/total_section.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
@@ -110,330 +111,344 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     return Stack(
       children: [
-        Scaffold(
-          backgroundColor: theme.scaffoldBackgroundColor,
-          appBar: AppBar(title: const Text("Checkout")),
-          body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: .start,
-              children: [
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const .symmetric(horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: .start,
-                    children: [
-                      Text(
-                        "Order Summary",
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontWeight: .w700,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: displayItems.length,
-                        itemBuilder: (context, index) {
-                          final item = displayItems[index];
-
-                          return CheckoutProductCard(
-                            image: item.imageUrl,
-                            productName: item.name,
-                            selectedPrice: item.selectedPrice,
-                            quantity: item.quantity,
-                            selectedSize: item.selectedSize,
-                            onIncrement: isBuyNow
-                                ? () {
-                                    _handleQuantityUpdates(() async {
-                                      await Future.delayed(
-                                        const Duration(milliseconds: 500),
-                                      );
-
-                                      if (mounted) {
-                                        setState(() {
-                                          _buyNowQuantity++;
-                                        });
-                                      }
-                                    });
-                                  }
-                                : null,
-                            onDecrement: isBuyNow
-                                ? () {
-                                    _handleQuantityUpdates(() async {
-                                      await Future.delayed(
-                                        const Duration(milliseconds: 500),
-                                      );
-
-                                      if (mounted) {
-                                        setState(() {
-                                          if (_buyNowQuantity > 1) {
-                                            _buyNowQuantity--;
-                                          }
-                                        });
-                                      }
-                                    });
-                                  }
-                                : null,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-                Padding(
-                  padding: const .symmetric(horizontal: 15),
-                  child: Row(
-                    mainAxisAlignment: .spaceBetween,
-                    children: [
-                      Text(
-                        "Delivery Address",
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontWeight: .w700,
-                        ),
-                      ),
-                      TextButton(
-                        style: theme.textButtonTheme.style,
-                        onPressed: _navigateToAddAddress,
-                        child: Text(
-                          addressData == null ? "+ Add" : "Change",
-                          style: textTheme.bodySmall?.copyWith(
-                            fontWeight: .w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const .symmetric(horizontal: 15),
-                  child: addressData == null
-                      ? const Text("No address selected")
-                      : DeliveryAddressSection(
-                          name: addressData.name,
-                          phoneNumber: addressData.phone,
-                          fullAddress:
-                              "${addressData.address} ${addressData.district}, ${addressData.city} - ${addressData.region}",
-                        ),
-                ),
-                const SizedBox(height: 25),
-                SingleChildScrollView(
-                  scrollDirection: .horizontal,
-                  padding: const .symmetric(horizontal: 15),
-                  child: Row(
-                    children: [
-                      DeliveryTimeSelectionCard(
-                        width: 143,
-                        text: 'Standard',
-                        time: '20-30 Min',
-                        value: 'standard',
-                        isSelected:
-                            checkoutProvider.deliveryOption == 'standard',
-                        onTap: () =>
-                            checkoutProvider.setDeliveryOption('standard'),
-                      ),
-                      const SizedBox(width: 10),
-                      DeliveryTimeSelectionCard(
-                        width: 190,
-                        text: 'Schedule Ahead',
-                        time: 'Choose Your Time',
-                        value: 'schedule',
-                        isSelected:
-                            checkoutProvider.deliveryOption == 'schedule',
-                        onTap: () =>
-                            checkoutProvider.setDeliveryOption('schedule'),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-                if (checkoutProvider.showCalendar)
+        GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Scaffold(
+            backgroundColor: theme.scaffoldBackgroundColor,
+            appBar: AppBar(title: const Text("Checkout")),
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: .start,
+                children: [
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const .symmetric(horizontal: 15),
-                    child: CheckoutCalendar(
-                      initialDate: checkoutProvider.scheduledTime,
-                      onDateTimeChanged: (newDate) {
-                        checkoutProvider.setScheduledTime(newDate);
-                      },
-                    ),
-                  ),
-                const SizedBox(height: 25),
-                Padding(
-                  padding: .symmetric(horizontal: 15),
-                  child: Row(
-                    mainAxisAlignment: .spaceBetween,
-                    children: [
-                      Text(
-                        "Payment",
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontWeight: .w700,
-                        ),
-                      ),
-                      if (checkoutProvider.paymentMethod == 'card')
-                        GestureDetector(
-                          onTap: _navigateToAddCard,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.add,
-                                color: AppColors.icon,
-                                size: 15,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                checkoutProvider.cardDetails == null
-                                    ? "Add New Card"
-                                    : "Edit Card Details",
-                                style: textTheme.bodySmall?.copyWith(
-                                  color: AppColors.secondaryText,
-                                ),
-                              ),
-                            ],
+                    child: Column(
+                      crossAxisAlignment: .start,
+                      children: [
+                        Text(
+                          "Order Summary",
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontWeight: .w700,
                           ),
                         ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-                Padding(
-                  padding: const .symmetric(horizontal: 15),
-                  child: Column(
-                    children: [
-                      PaymentSelectionCard(
-                        title: "Cash on Delivery",
-                        icon: Icons.money,
-                        isSelected: checkoutProvider.paymentMethod == 'cod',
-                        onTap: () => checkoutProvider.setPaymentMethod('cod'),
-                      ),
-                      const SizedBox(height: 10),
-                      PaymentSelectionCard(
-                        title: "Credit / Debit Card",
-                        icon: Icons.credit_card,
-                        isSelected: checkoutProvider.paymentMethod == 'card',
-                        onTap: () => checkoutProvider.setPaymentMethod('card'),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
+                        const SizedBox(height: 10),
 
-                if (checkoutProvider.paymentMethod == 'cod')
-                  Container(
-                    margin: const .symmetric(horizontal: 15),
-                    padding: const .all(15),
-                    decoration: BoxDecoration(
-                      color: AppColors.grey.withValues(alpha: 0.3),
-                      borderRadius: .circular(8),
-                      border: .all(color: AppColors.grey),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: displayItems.length,
+                          itemBuilder: (context, index) {
+                            final item = displayItems[index];
+
+                            return CheckoutProductCard(
+                              image: item.imageUrl,
+                              productName: item.name,
+                              selectedPrice: item.selectedPrice,
+                              quantity: item.quantity,
+                              selectedSize: item.selectedSize,
+                              onIncrement: isBuyNow
+                                  ? () {
+                                      _handleQuantityUpdates(() async {
+                                        await Future.delayed(
+                                          const Duration(milliseconds: 500),
+                                        );
+
+                                        if (mounted) {
+                                          setState(() {
+                                            _buyNowQuantity++;
+                                          });
+                                        }
+                                      });
+                                    }
+                                  : null,
+                              onDecrement: isBuyNow
+                                  ? () {
+                                      _handleQuantityUpdates(() async {
+                                        await Future.delayed(
+                                          const Duration(milliseconds: 500),
+                                        );
+
+                                        if (mounted) {
+                                          setState(() {
+                                            if (_buyNowQuantity > 1) {
+                                              _buyNowQuantity--;
+                                            }
+                                          });
+                                        }
+                                      });
+                                    }
+                                  : null,
+                            );
+                          },
+                        ),
+                      ],
                     ),
+                  ),
+                  const SizedBox(height: 25),
+                  Padding(
+                    padding: const .symmetric(horizontal: 15),
                     child: Row(
+                      mainAxisAlignment: .spaceBetween,
                       children: [
-                        const Icon(Icons.info_outline, color: AppColors.icon),
-                        const SizedBox(width: 10),
-                        Expanded(
+                        Text(
+                          "Delivery Address",
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontWeight: .w700,
+                          ),
+                        ),
+                        TextButton(
+                          style: theme.textButtonTheme.style,
+                          onPressed: _navigateToAddAddress,
                           child: Text(
-                            "You will pay when the water arrives.",
-                            style: textTheme.bodySmall,
+                            addressData == null ? "+ Add" : "Change",
+                            style: textTheme.bodySmall?.copyWith(
+                              fontWeight: .w500,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-
-                if (checkoutProvider.paymentMethod == 'card')
-                  Center(
-                    child: checkoutProvider.cardDetails == null
-                        ? GestureDetector(
-                            onTap: _navigateToAddCard,
-                            child: Container(
-                              height: 140,
-                              width: 270,
-                              decoration: BoxDecoration(
-                                color: AppColors.grey.withValues(alpha: 0.1),
-                                borderRadius: .circular(14),
-                                border: .all(
-                                  color: AppColors.grey.withValues(alpha: 0.3),
-                                  style: .solid,
-                                ),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: .center,
-                                children: [
-                                  const Icon(
-                                    Icons.add_card,
-                                    size: 40,
-                                    color: AppColors.icon,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "Add a Credit Card",
-                                    style: textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: _navigateToAddCard,
-                            child: Center(
-                              child: CreditCard(
-                                cardType:
-                                    checkoutProvider.cardDetails!.cardType,
-                                cardNumber:
-                                    checkoutProvider.cardDetails!.maskedNumber,
-                                cardHolderName:
-                                    checkoutProvider.cardDetails!.holderName,
-                                expiryDate:
-                                    checkoutProvider.cardDetails!.expiryDate,
-                              ),
-                            ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const .symmetric(horizontal: 15),
+                    child: addressData == null
+                        ? const Text("No address selected")
+                        : DeliveryAddressSection(
+                            name: addressData.name,
+                            phoneNumber: addressData.phone,
+                            fullAddress:
+                                "${addressData.address} ${addressData.district}, ${addressData.city} - ${addressData.region}",
                           ),
                   ),
+                  const SizedBox(height: 25),
+                  SingleChildScrollView(
+                    scrollDirection: .horizontal,
+                    padding: const .symmetric(horizontal: 15),
+                    child: Row(
+                      children: [
+                        DeliveryTimeSelectionCard(
+                          width: 143,
+                          text: 'Standard',
+                          time: '20-30 Min',
+                          value: 'standard',
+                          isSelected:
+                              checkoutProvider.deliveryOption == 'standard',
+                          onTap: () =>
+                              checkoutProvider.setDeliveryOption('standard'),
+                        ),
+                        const SizedBox(width: 10),
+                        DeliveryTimeSelectionCard(
+                          width: 190,
+                          text: 'Schedule Ahead',
+                          time: 'Choose Your Time',
+                          value: 'schedule',
+                          isSelected:
+                              checkoutProvider.deliveryOption == 'schedule',
+                          onTap: () =>
+                              checkoutProvider.setDeliveryOption('schedule'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  if (checkoutProvider.showCalendar)
+                    Padding(
+                      padding: const .symmetric(horizontal: 15),
+                      child: CheckoutCalendar(
+                        initialDate: checkoutProvider.scheduledTime,
+                        onDateTimeChanged: (newDate) {
+                          checkoutProvider.setScheduledTime(newDate);
+                        },
+                      ),
+                    ),
+                  const SizedBox(height: 25),
+                  Padding(
+                    padding: .symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: .spaceBetween,
+                      children: [
+                        Text(
+                          "Payment",
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontWeight: .w700,
+                          ),
+                        ),
+                        if (checkoutProvider.paymentMethod == 'card')
+                          GestureDetector(
+                            onTap: _navigateToAddCard,
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  color: AppColors.icon,
+                                  size: 15,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  checkoutProvider.cardDetails == null
+                                      ? "Add New Card"
+                                      : "Edit Card Details",
+                                  style: textTheme.bodySmall?.copyWith(
+                                    color: AppColors.secondaryText,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  Padding(
+                    padding: const .symmetric(horizontal: 15),
+                    child: Column(
+                      children: [
+                        PaymentSelectionCard(
+                          title: "Cash on Delivery",
+                          icon: Icons.money,
+                          isSelected: checkoutProvider.paymentMethod == 'cod',
+                          onTap: () => checkoutProvider.setPaymentMethod('cod'),
+                        ),
+                        const SizedBox(height: 10),
+                        PaymentSelectionCard(
+                          title: "Credit / Debit Card",
+                          icon: Icons.credit_card,
+                          isSelected: checkoutProvider.paymentMethod == 'card',
+                          onTap: () =>
+                              checkoutProvider.setPaymentMethod('card'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
 
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const .only(left: 15, right: 15, bottom: 15),
-                  child: TotalSection(overrideTotal: buyNowTotal),
-                ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: Padding(
-            padding: .only(
-              left: 15,
-              right: 15,
-              top: 15,
-              bottom: MediaQuery.of(context).padding.bottom + 15,
-            ),
-            child: CustomButton(
-              height: 50,
-              width: .infinity,
-              text: "Place Order",
-              onPressed: () {
-                if (checkoutProvider.deliveryAddress == null) {
-                  showFloatingSnackBar(
-                    context,
-                    message: "Please select an address",
-                    backgroundColor: AppColors.error,
-                  );
-                  return;
-                }
+                  if (checkoutProvider.paymentMethod == 'cod')
+                    Container(
+                      margin: const .symmetric(horizontal: 15),
+                      padding: const .all(15),
+                      decoration: BoxDecoration(
+                        color: AppColors.grey.withValues(alpha: 0.3),
+                        borderRadius: .circular(8),
+                        border: .all(color: AppColors.grey),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.info_outline, color: AppColors.icon),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              "You will pay when the water arrives.",
+                              style: textTheme.bodySmall,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-                if (checkoutProvider.paymentMethod == 'card' &&
-                    checkoutProvider.cardDetails == null) {
-                  showFloatingSnackBar(
-                    context,
-                    message: "Please add your card details",
-                    backgroundColor: AppColors.error,
-                  );
-                }
-                // If Buy Now: _buyNowQuantity and widget.buyNowItem
-                // If Cart: cartProvider.cartItems
-              },
+                  if (checkoutProvider.paymentMethod == 'card')
+                    Center(
+                      child: checkoutProvider.cardDetails == null
+                          ? GestureDetector(
+                              onTap: _navigateToAddCard,
+                              child: Container(
+                                height: 140,
+                                width: 270,
+                                decoration: BoxDecoration(
+                                  color: AppColors.grey.withValues(alpha: 0.1),
+                                  borderRadius: .circular(14),
+                                  border: .all(
+                                    color: AppColors.grey.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                    style: .solid,
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: .center,
+                                  children: [
+                                    const Icon(
+                                      Icons.add_card,
+                                      size: 40,
+                                      color: AppColors.icon,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Add a Credit Card",
+                                      style: textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: _navigateToAddCard,
+                              child: Center(
+                                child: CreditCard(
+                                  cardType:
+                                      checkoutProvider.cardDetails!.cardType,
+                                  cardNumber: checkoutProvider
+                                      .cardDetails!
+                                      .maskedNumber,
+                                  cardHolderName:
+                                      checkoutProvider.cardDetails!.holderName,
+                                  expiryDate:
+                                      checkoutProvider.cardDetails!.expiryDate,
+                                ),
+                              ),
+                            ),
+                    ),
+                  const SizedBox(height: 35),
+                  const Padding(
+                    padding: .symmetric(horizontal: 15),
+                    child: PromoCodeInput(),
+                  ),
+
+                  const SizedBox(height: 50),
+                  Padding(
+                    padding: const .only(left: 15, right: 15, bottom: 15),
+                    child: TotalSection(overrideTotal: buyNowTotal),
+                  ),
+                ],
+              ),
+            ),
+            bottomNavigationBar: Padding(
+              padding: .only(
+                left: 15,
+                right: 15,
+                top: 15,
+                bottom: MediaQuery.of(context).padding.bottom + 15,
+              ),
+              child: CustomButton(
+                height: 50,
+                width: .infinity,
+                text: "Place Order",
+                onPressed: () {
+                  if (checkoutProvider.deliveryAddress == null) {
+                    showFloatingSnackBar(
+                      context,
+                      message: "Please select an address",
+                      backgroundColor: AppColors.error,
+                    );
+                    return;
+                  }
+
+                  if (checkoutProvider.paymentMethod == 'card' &&
+                      checkoutProvider.cardDetails == null) {
+                    showFloatingSnackBar(
+                      context,
+                      message: "Please add your card details",
+                      backgroundColor: AppColors.error,
+                    );
+                  }
+                  // If Buy Now: _buyNowQuantity and widget.buyNowItem
+                  // If Cart: cartProvider.cartItems
+                },
+              ),
             ),
           ),
         ),

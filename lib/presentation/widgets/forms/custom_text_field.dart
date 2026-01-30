@@ -11,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final IconButton? suffixIcon;
   final Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
+  final bool? isEnabled;
 
   const CustomTextField({
     super.key,
@@ -23,6 +24,7 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.onFieldSubmitted,
     this.validator,
+    this.isEnabled,
   });
 
   @override
@@ -50,6 +52,7 @@ class CustomTextField extends StatelessWidget {
           textInputAction: textInputAction,
           autofocus: false,
           validator: validator,
+          enabled: isEnabled,
           decoration: InputDecoration(
             hintText: hintText,
             suffixIcon: suffixIcon,
@@ -57,7 +60,7 @@ class CustomTextField extends StatelessWidget {
             enabledBorder: theme.inputDecorationTheme.enabledBorder,
             focusedBorder: theme.inputDecorationTheme.focusedBorder,
             errorBorder: theme.inputDecorationTheme.errorBorder,
-            focusedErrorBorder: theme.inputDecorationTheme.focusedErrorBorder
+            focusedErrorBorder: theme.inputDecorationTheme.focusedErrorBorder,
           ),
         ),
       ],
