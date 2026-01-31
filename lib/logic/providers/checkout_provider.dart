@@ -26,7 +26,7 @@ class CheckoutProvider with ChangeNotifier {
 
   PromoCodeModel? _appliedPromo;
   String? _promoError;
-  double _deliveryFee = 5.0;
+  final double _deliveryFee = 5.0;
 
   PromoCodeModel? get appliedPromo => _appliedPromo;
   String? get promoError => _promoError;
