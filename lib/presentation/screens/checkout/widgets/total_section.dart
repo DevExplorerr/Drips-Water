@@ -1,5 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
+import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,18 +12,29 @@ class TotalSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final cartProvider = context.watch<CartProvider>();
+    final checkoutProvider = context.watch<CheckoutProvider>();
 
     final subTotal = overrideTotal ?? cartProvider.totalPrice;
-    const deliveryFees = 5.00;
-    final totalPrice = subTotal + deliveryFees;
+
+    final deliveryFees = checkoutProvider.deliveryFee;
+    final double discount = checkoutProvider.calculateDiscount(subTotal);
+    final double finalTotal = checkoutProvider.calculateFinalTotal(subTotal);
     return Column(
       children: [
-        _buildRow(context, "Subtotal", "\$${subTotal.toStringAsFixed(2)}"),
+        _buildRow("Subtotal", subTotal, textTheme),
         const SizedBox(height: 10),
-        _buildRow(context, "Delivery", "\$${deliveryFees.toStringAsFixed(2)}"),
-        const SizedBox(height: 10),
-        const Divider(),
-        const SizedBox(height: 10),
+        _buildRow("Delivery", deliveryFees, textTheme),
+
+        if (discount > 0) ...[
+          const SizedBox(height: 10),
+          _buildRow("Discount", -discount, textTheme, isDiscount: true),
+        ],
+
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          child: Divider(),
+        ),
+
         Row(
           mainAxisAlignment: .spaceBetween,
           children: [
@@ -31,7 +43,7 @@ class TotalSection extends StatelessWidget {
               style: textTheme.bodyMedium?.copyWith(fontWeight: .w700),
             ),
             Text(
-              totalPrice.toString(),
+              "\$${finalTotal.toStringAsFixed(2)}",
               style: textTheme.bodyMedium?.copyWith(
                 color: AppColors.primary,
                 fontWeight: .w700,
@@ -43,8 +55,12 @@ class TotalSection extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(BuildContext context, String label, String value) {
-    final textTheme = Theme.of(context).textTheme;
+  Widget _buildRow(
+    String label,
+    double value,
+    TextTheme textTheme, {
+    bool isDiscount = false,
+  }) {
     return Row(
       mainAxisAlignment: .spaceBetween,
       children: [
@@ -56,10 +72,10 @@ class TotalSection extends StatelessWidget {
           ),
         ),
         Text(
-          value,
+          "${isDiscount ? '-' : ''}\$${value.abs().toStringAsFixed(2)}",
           style: textTheme.bodySmall?.copyWith(
-            color: AppColors.secondaryText,
             fontWeight: .w700,
+            color: isDiscount ? AppColors.success : AppColors.textLight,
           ),
         ),
       ],
