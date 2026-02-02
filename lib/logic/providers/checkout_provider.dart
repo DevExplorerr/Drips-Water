@@ -1,11 +1,13 @@
 import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/data/models/card_model.dart';
 import 'package:drips_water/data/models/promo_code_model.dart';
+import 'package:drips_water/data/services/promo_service.dart';
 import 'package:drips_water/data/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutProvider with ChangeNotifier {
   final UserService userService;
+  final PromoService promoService;
   final String uid;
 
   AddressModel? _deliveryAddress;
@@ -32,7 +34,14 @@ class CheckoutProvider with ChangeNotifier {
   String? get promoError => _promoError;
   double get deliveryFee => _deliveryFee;
 
-  CheckoutProvider({required this.userService, required this.uid}) {
+  bool _isValidatingPromo = false; // loading state
+  bool get isValidatingPromo => _isValidatingPromo;
+
+  CheckoutProvider({
+    required this.userService,
+    required this.uid,
+    required this.promoService,
+  }) {
     _loadSavedData();
   }
 
@@ -91,19 +100,23 @@ class CheckoutProvider with ChangeNotifier {
     }
   }
 
-  void validatePromoCode(String code) {
+  Future<void> validatePromoCode(String code) async {
     _promoError = null;
+    _isValidatingPromo = true;
+    notifyListeners();
 
     try {
-      final validCode = PromoCodeModel.mockCodes.firstWhere(
-        (element) => element.code.toUpperCase() == code.toUpperCase(),
-      );
+      final validCode = await promoService.validateCode(code.toUpperCase());
 
-      _appliedPromo = validCode;
-      notifyListeners();
+      if (validCode != null) {
+        _appliedPromo = validCode;
+        _promoError = null;
+      }
     } catch (e) {
       _appliedPromo = null;
-      _promoError = "Invalid Promo Code";
+      _promoError = e.toString();
+    } finally {
+      _isValidatingPromo = false;
       notifyListeners();
     }
   }

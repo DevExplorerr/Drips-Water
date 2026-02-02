@@ -3,6 +3,7 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/app_theme.dart';
 import 'package:drips_water/data/repositories/cart_repository.dart';
 import 'package:drips_water/data/services/cart_service.dart';
+import 'package:drips_water/data/services/promo_service.dart';
 import 'package:drips_water/data/services/user_service.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
@@ -66,13 +67,17 @@ class DripsWater extends StatelessWidget {
             // User Service
             Provider<UserService>(create: (_) => UserService()),
 
+            // Promo Service
+            Provider<PromoService>(create: (_) => PromoService()),
+
             // Checkout Provider
             ChangeNotifierProvider<CheckoutProvider>(
               key: ValueKey(user?.uid ?? 'guest_checkout'),
               create: (ctx) {
                 return CheckoutProvider(
-                  userService: ctx.read<UserService>(),
                   uid: user?.uid ?? '',
+                  promoService: ctx.read<PromoService>(),
+                  userService: ctx.read<UserService>(),
                 );
               },
             ),

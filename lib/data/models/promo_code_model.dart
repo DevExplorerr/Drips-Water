@@ -2,18 +2,21 @@ class PromoCodeModel {
   final String code;
   final double value;
   final bool isPercentage;
+  final bool isActive;
 
   PromoCodeModel({
     required this.code,
     required this.value,
     required this.isPercentage,
+    this.isActive = true,
   });
 
-  // Mock Data for testing
-  // TODO: (Later fetch from firestore)
-
-  static List<PromoCodeModel> get mockCodes => [
-    PromoCodeModel(code: "WELCOME", value: 10, isPercentage: true),
-    PromoCodeModel(code: "DRIPS20", value: 20, isPercentage: false),
-  ];
+  factory PromoCodeModel.fromMap(Map<String, dynamic> map) {
+    return PromoCodeModel(
+      code: map['code'] ?? '',
+      value: (map['value'] as num?)?.toDouble() ?? 0.0,
+      isPercentage: map['isPercentage'] ?? false,
+      isActive: map['isActive'] ?? true,
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 class PromoCodeInput extends StatefulWidget {
@@ -112,13 +113,20 @@ class _PromoCodeInputState extends State<PromoCodeInput> {
                       }
                     }
                   },
-                  child: Text(
-                    isApplied ? "Remove" : "Apply",
-                    style: textTheme.bodySmall?.copyWith(
-                      fontWeight: .bold,
-                      color: isApplied ? AppColors.error : AppColors.textDark,
-                    ),
-                  ),
+                  child: checkoutProvider.isValidatingPromo
+                      ? LoadingAnimationWidget.threeArchedCircle(
+                          color: AppColors.white,
+                          size: 20,
+                        )
+                      : Text(
+                          isApplied ? "Remove" : "Apply",
+                          style: textTheme.bodySmall?.copyWith(
+                            fontWeight: .bold,
+                            color: isApplied
+                                ? AppColors.error
+                                : AppColors.textDark,
+                          ),
+                        ),
                 ),
               ),
             ],
