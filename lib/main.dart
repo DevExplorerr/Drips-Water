@@ -12,6 +12,7 @@ import 'package:drips_water/logic/providers/favorite_provider.dart';
 import 'package:drips_water/data/repositories/favorite_repository.dart';
 import 'package:drips_water/data/services/auth_service.dart';
 import 'package:drips_water/data/services/favorite_service.dart';
+import 'package:drips_water/logic/providers/order_provider.dart';
 import 'package:drips_water/presentation/screens/home/home_screen.dart';
 import 'package:drips_water/presentation/screens/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,6 +80,12 @@ class DripsWater extends StatelessWidget {
                   promoService: ctx.read<PromoService>(),
                   userService: ctx.read<UserService>(),
                 );
+              },
+            ),
+
+            ChangeNotifierProvider<OrderProvider>(
+              create: (_) {
+                return OrderProvider();
               },
             ),
           ],

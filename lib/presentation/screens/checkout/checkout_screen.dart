@@ -5,6 +5,7 @@ import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
+import 'package:drips_water/logic/providers/order_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/payment/add_card_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
@@ -90,6 +91,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final textTheme = theme.textTheme;
     final cartProvider = context.watch<CartProvider>();
     final checkoutProvider = context.watch<CheckoutProvider>();
+    final orderProvider = context.watch<OrderProvider>();
     final addressData = checkoutProvider.deliveryAddress;
     final isBuyNow = widget.buyNowItem != null;
     final displayItems = isBuyNow
@@ -427,31 +429,87 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 height: 50,
                 width: .infinity,
                 text: "Place Order",
-                onPressed: () {
-                  if (checkoutProvider.deliveryAddress == null) {
-                    showFloatingSnackBar(
-                      context,
-                      message: "Please select an address",
-                      backgroundColor: AppColors.error,
-                    );
-                    return;
-                  }
+                onPressed: orderProvider.isProcessing
+                    ? null
+                    : () async {
+                        if (checkoutProvider.deliveryAddress == null) {
+                          showFloatingSnackBar(
+                            context,
+                            message: "Please select an address",
+                            backgroundColor: AppColors.error,
+                          );
+                          return;
+                        }
 
-                  if (checkoutProvider.paymentMethod == 'card' &&
-                      checkoutProvider.cardDetails == null) {
-                    showFloatingSnackBar(
-                      context,
-                      message: "Please add your card details",
-                      backgroundColor: AppColors.error,
-                    );
-                  }
-                  // If Buy Now: _buyNowQuantity and widget.buyNowItem
-                  // If Cart: cartProvider.cartItems
-                },
+                        if (checkoutProvider.paymentMethod == 'card' &&
+                            checkoutProvider.cardDetails == null) {
+                          showFloatingSnackBar(
+                            context,
+                            message: "Please add your card details",
+                            backgroundColor: AppColors.error,
+                          );
+                          return;
+                        }
+
+                        try {
+                          final orderId = await context
+                              .read<OrderProvider>()
+                              .placeOrder(
+                                userId: checkoutProvider.uid,
+                                items: displayItems,
+                                address: checkoutProvider.deliveryAddress!,
+                                paymentMethod: checkoutProvider.paymentMethod,
+                                deliveryOption: checkoutProvider.deliveryOption,
+                                scheduledTime:
+                                    checkoutProvider.deliveryOption ==
+                                        'schedule'
+                                    ? checkoutProvider.scheduledTime
+                                    : null,
+                                subtotal: isBuyNow
+                                    ? buyNowTotal!
+                                    : cartProvider.totalPrice,
+                                deliveryFee: checkoutProvider.deliveryFee,
+                                discount: checkoutProvider.calculateDiscount(
+                                  isBuyNow
+                                      ? buyNowTotal!
+                                      : cartProvider.totalPrice,
+                                ),
+                                totalAmount: checkoutProvider
+                                    .calculateFinalTotal(
+                                      isBuyNow
+                                          ? buyNowTotal!
+                                          : cartProvider.totalPrice,
+                                    ),
+                              );
+
+                          if (!context.mounted) return;
+
+                          if (orderId != null) {
+                            if (!isBuyNow) cartProvider.clearCart();
+                            showFloatingSnackBar(
+                              context,
+                              message: "Order Success!",
+                              backgroundColor: AppColors.success,
+                            );
+                            Navigator.popUntil(
+                              context,
+                              (route) => route.isFirst,
+                            );
+                          }
+                        } catch (e) {
+                          showFloatingSnackBar(
+                            context,
+                            message: e.toString(),
+                            backgroundColor: AppColors.error,
+                          );
+                        }
+                      },
               ),
             ),
           ),
         ),
+        if (orderProvider.isProcessing)
+          const Positioned.fill(child: CustomOverlayLoader()),
         if (_isLoading) const Positioned.fill(child: CustomOverlayLoader()),
       ],
     );
