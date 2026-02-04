@@ -1,12 +1,12 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class CreditCard extends StatelessWidget {
+class CreditCardWidget extends StatelessWidget {
   final String cardNumber;
   final String cardHolderName;
   final String expiryDate;
   final String cardType;
-  const CreditCard({
+  const CreditCardWidget({
     super.key,
     required this.cardNumber,
     required this.cardHolderName,

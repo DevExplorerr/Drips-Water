@@ -1,14 +1,14 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class DeliveryTimeSelectionCard extends StatelessWidget {
+class TimeSection extends StatelessWidget {
   final double width;
   final String text;
   final String time;
   final String value;
   final bool isSelected;
   final VoidCallback onTap;
-  const DeliveryTimeSelectionCard({
+  const TimeSection({
     super.key,
     required this.width,
     required this.text,

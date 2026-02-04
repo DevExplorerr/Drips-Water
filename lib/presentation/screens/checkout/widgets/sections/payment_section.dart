@@ -1,13 +1,13 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class PaymentSelectionCard extends StatelessWidget {
+class PaymentSection extends StatelessWidget {
   final String title;
   final IconData icon;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const PaymentSelectionCard({
+  const PaymentSection({
     super.key,
     required this.title,
     required this.icon,

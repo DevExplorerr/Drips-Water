@@ -1,5 +1,5 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/time_container.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/components/time_selection_card.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -130,7 +130,7 @@ class _CheckoutCalendarState extends State<CheckoutCalendar> {
             separatorBuilder: (context, index) => const SizedBox(width: 10),
             itemBuilder: (context, index) {
               final time = timeSlots[index];
-              return TimeContainer(
+              return TimeSelectionCard(
                 time: time,
                 isSelected: _selectedTime == time,
                 onTap: () {

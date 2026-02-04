@@ -1,11 +1,11 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class TimeContainer extends StatelessWidget {
+class TimeSelectionCard extends StatelessWidget {
   final String time;
   final bool isSelected;
   final VoidCallback onTap;
-  const TimeContainer({
+  const TimeSelectionCard({
     super.key,
     required this.time,
     required this.isSelected,

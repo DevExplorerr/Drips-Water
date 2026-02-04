@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DeliveryAddressSection extends StatelessWidget {
+class AddressSection extends StatelessWidget {
   final String name;
   final String fullAddress;
   final String phoneNumber;
-  const DeliveryAddressSection({
+  const AddressSection({
     super.key,
     required this.name,
     required this.fullAddress,

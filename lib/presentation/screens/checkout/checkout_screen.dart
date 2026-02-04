@@ -8,14 +8,14 @@ import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/logic/providers/order_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/payment/add_card_screen.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/checkout_calendar.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/checkout_product_card.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/credit_card.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/delivery_address_section.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/delivery_time_selection_card.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/payment_selection_card.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/promo_code_input.dart';
-import 'package:drips_water/presentation/screens/checkout/widgets/total_section.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/common/checkout_calendar.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/common/checkout_product_card.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/components/credit_card_widget.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/sections/address_section.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/sections/time_section.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/sections/payment_section.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/components/promo_code_input.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/sections/total_section.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
 import 'package:flutter/cupertino.dart';
@@ -220,7 +220,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     padding: const .symmetric(horizontal: 15),
                     child: addressData == null
                         ? const Text("No address selected")
-                        : DeliveryAddressSection(
+                        : AddressSection(
                             name: addressData.name,
                             phoneNumber: addressData.phone,
                             fullAddress:
@@ -233,7 +233,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     padding: const .symmetric(horizontal: 15),
                     child: Row(
                       children: [
-                        DeliveryTimeSelectionCard(
+                        TimeSection(
                           width: 143,
                           text: 'Standard',
                           time: '20-30 Min',
@@ -244,7 +244,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               checkoutProvider.setDeliveryOption('standard'),
                         ),
                         const SizedBox(width: 10),
-                        DeliveryTimeSelectionCard(
+                        TimeSection(
                           width: 190,
                           text: 'Schedule Ahead',
                           time: 'Choose Your Time',
@@ -310,14 +310,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     padding: const .symmetric(horizontal: 15),
                     child: Column(
                       children: [
-                        PaymentSelectionCard(
+                        PaymentSection(
                           title: "Cash on Delivery",
                           icon: Icons.money,
                           isSelected: checkoutProvider.paymentMethod == 'cod',
                           onTap: () => checkoutProvider.setPaymentMethod('cod'),
                         ),
                         const SizedBox(height: 10),
-                        PaymentSelectionCard(
+                        PaymentSection(
                           title: "Credit / Debit Card",
                           icon: Icons.credit_card,
                           isSelected: checkoutProvider.paymentMethod == 'card',
@@ -390,7 +390,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           : GestureDetector(
                               onTap: _navigateToAddCard,
                               child: Center(
-                                child: CreditCard(
+                                child: CreditCardWidget(
                                   cardType:
                                       checkoutProvider.cardDetails!.cardType,
                                   cardNumber: checkoutProvider
