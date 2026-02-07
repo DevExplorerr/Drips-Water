@@ -11,12 +11,12 @@ class TotalSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final cartProvider = context.watch<CartProvider>();
     final checkoutProvider = context.watch<CheckoutProvider>();
 
-    final subTotal = overrideTotal ?? cartProvider.totalPrice;
+    final double subTotal =
+        overrideTotal ?? context.watch<CartProvider>().totalPrice;
 
-    final deliveryFees = checkoutProvider.deliveryFee;
+    final double deliveryFees = checkoutProvider.deliveryFee;
     final double discount = checkoutProvider.calculateDiscount(subTotal);
     final double finalTotal = checkoutProvider.calculateFinalTotal(subTotal);
     return Column(

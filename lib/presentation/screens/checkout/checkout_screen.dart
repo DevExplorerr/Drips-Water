@@ -53,7 +53,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   double get _subTotal {
-    if (!_isBuyNow) {
+    if (_isBuyNow) {
       return (widget.buyNowItem!.selectedPrice * _buyNowQuantity).toDouble();
     }
     return context.read<CartProvider>().totalPrice;
