@@ -6,7 +6,8 @@ import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/logic/providers/order_provider.dart';
-import 'package:drips_water/presentation/screens/checkout/checkout_sections.dart';
+import 'package:drips_water/presentation/screens/checkout/order_success_screen.dart';
+import 'package:drips_water/presentation/screens/checkout/widgets/sections/checkout_sections.dart';
 import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/payment/add_card_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/components/promo_code_input.dart';
@@ -118,8 +119,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     });
   }
 
-  Future<void> onPlaceOrder() async {
-    final navigator = Navigator.of(context);
+  Future<void> _onPlaceOrder() async {
     final checkoutProvider = context.read<CheckoutProvider>();
     final cartProvider = context.read<CartProvider>();
     final orderProvider = context.read<OrderProvider>();
@@ -163,18 +163,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         totalAmount: currentTotal,
       );
 
-      if (!mounted) return;
-
       if (orderId != null) {
         if (!_isBuyNow) cartProvider.clearCart();
-        showFloatingSnackBar(
+        if (!mounted) return;
+        Navigator.pushAndRemoveUntil(
           context,
-          message: "Order Success!",
-          backgroundColor: AppColors.success,
+          CupertinoPageRoute(
+            builder: (context) => OrderSuccessScreen(orderId: orderId),
+          ),
+          (route) => route.isFirst,
         );
-        navigator.popUntil((route) => route.isFirst);
       }
     } catch (e) {
+      if (!mounted) return;
       showFloatingSnackBar(
         context,
         message: e.toString(),
@@ -251,7 +252,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
             ),
             bottomNavigationBar: BottomBarDisplay(
-              onPlaceOrder: onPlaceOrder,
+              onPlaceOrder: _onPlaceOrder,
               isProcessing: isProcessing,
             ),
           ),
