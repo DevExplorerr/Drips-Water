@@ -52,4 +52,28 @@ class OrderModel {
       'createdAt': Timestamp.fromDate(createdAt),
     };
   }
+
+  factory OrderModel.fromMap(Map<String, dynamic> map) {
+    return OrderModel(
+      id: map['id'] ?? '',
+      userId: map['userId'] ?? '',
+      items:
+          (map['cartItems'] as List<dynamic>?)
+              ?.map((x) => CartItemModel.fromMap(x as Map<String, dynamic>))
+              .toList() ??
+          [],
+      address: AddressModel.fromMap(map['address'] as Map<String, dynamic>),
+      paymentMethod: map['paymentMethod'] ?? '',
+      deliveryOption: map['deliveryOption'] ?? '',
+      scheduledTime: map['scheduleTime'] != null
+          ? (map['scheduleTime'] as Timestamp).toDate()
+          : null,
+      subtotal: (map['subtotal'] as num?)?.toDouble() ?? 0.0,
+      deliveryFee: (map['deliveryFee'] as num?)?.toDouble() ?? 0.0,
+      discount: (map['discount'] as num?)?.toDouble() ?? 0.0,
+      totalAmount: (map['totalAmount'] as num?)?.toDouble() ?? 0.0,
+      status: map['status'] ?? '',
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
+    );
+  }
 }
