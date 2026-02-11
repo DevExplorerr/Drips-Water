@@ -1,12 +1,36 @@
 import 'package:drips_water/data/services/auth_service.dart';
-import 'package:drips_water/presentation/screens/orders/order_history_screen.dart'; // Import your new screen
+import 'package:drips_water/presentation/screens/orders/order_history_screen.dart';
 import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/presentation/widgets/dialog/confirmation_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => ConfirmationAlertDialog(
+        title: "Logout",
+        icon: Icons.delete_forever_rounded,
+        desc: "Are you sure you want to logout?",
+        buttonTxt: "Logout",
+        successMessage: "Logged out successfully",
+        onConfirm: () async {
+          await authService.value.logout();
+          if (context.mounted) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              CupertinoPageRoute(builder: (context) => const WelcomeScreen()),
+              (route) => false,
+            );
+          }
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +81,8 @@ class ProfileScreen extends StatelessWidget {
               title: "Logout",
               textColor: AppColors.red,
               iconColor: AppColors.red,
-              onTap: () async {
-                await authService.value.logout();
-                if (context.mounted) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) => const WelcomeScreen(),
-                    ),
-                    (route) => false,
-                  );
-                }
+              onTap: () {
+                _showLogoutDialog(context);
               },
             ),
           ],

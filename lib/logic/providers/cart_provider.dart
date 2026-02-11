@@ -22,11 +22,9 @@ class CartProvider with ChangeNotifier {
 
   bool _isAdding = false;
   bool _isUpdatingQty = false;
-  bool _isClearingCart = false;
 
   bool get isAdding => _isAdding;
   bool get isUpdatingQty => _isUpdatingQty;
-  bool get isClearingCart => _isClearingCart;
 
   // Real-time listener
   void listenToCart() {
@@ -101,13 +99,11 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> clearCart() async {
-    _isClearingCart = true;
     notifyListeners();
 
     await service.clearCart();
 
     cartItems.clear();
-    _isClearingCart = false;
     notifyListeners();
   }
 

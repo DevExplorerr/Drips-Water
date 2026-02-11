@@ -3,7 +3,7 @@
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/presentation/screens/home/cart/widgets/cart_bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/home/cart/widgets/cart_product_card.dart';
-import 'package:drips_water/presentation/widgets/dialog/confirm_clear_cart_dialog.dart';
+import 'package:drips_water/presentation/widgets/dialog/confirmation_alert_dialog.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,12 @@ class CartScreen extends StatelessWidget {
   void _showClearDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => ConfirmClearCartDialog(
+      builder: (context) => ConfirmationAlertDialog(
+        title: "Clear Cart?",
+        icon: Icons.delete_forever_rounded,
+        desc: "Do you really want to remove all items?",
+        buttonTxt: "Clear",
+        successMessage: "Cart cleared successfully",
         onConfirm: () async {
           await context.read<CartProvider>().clearCart();
         },
