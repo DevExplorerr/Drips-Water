@@ -1,3 +1,5 @@
+import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
+import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
@@ -18,18 +20,23 @@ class OrderHistoryScreen extends StatelessWidget {
       body: StreamBuilder<List<OrderModel>>(
         stream: orderRepo.getUserOrders(userId),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+          if (snapshot.connectionState == .waiting) {
+            return const Center(child: CustomOverlayLoader());
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text("No orders found."));
+            return const AppEmptyState(
+              title: "No orders yet.",
+              description:
+                  "Your order history is empty. Start shopping to fill it up!",
+              icon: Icons.add_shopping_cart,
+            );
           }
 
           final orders = snapshot.data!;
 
           return ListView.builder(
-            padding: const EdgeInsets.all(15),
+            padding: const .all(15),
             itemCount: orders.length,
             itemBuilder: (context, index) {
               return OrderHistoryCard(

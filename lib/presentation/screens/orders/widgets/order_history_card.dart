@@ -17,7 +17,7 @@ class OrderHistoryCard extends StatelessWidget {
         margin: const .only(bottom: 15),
         padding: const .all(15),
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: AppColors.card,
           borderRadius: .circular(12),
           border: .all(color: AppColors.grey.withValues(alpha: 0.2)),
           boxShadow: [
