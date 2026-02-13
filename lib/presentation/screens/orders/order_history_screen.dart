@@ -1,5 +1,7 @@
+import 'package:drips_water/presentation/screens/orders/order_details_screen.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
@@ -42,7 +44,13 @@ class OrderHistoryScreen extends StatelessWidget {
               return OrderHistoryCard(
                 order: orders[index],
                 onTap: () {
-                  // Navigate to Order Details (We can build this next)
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) =>
+                          OrderDetailsScreen(order: orders[index]),
+                    ),
+                  );
                 },
               );
             },
