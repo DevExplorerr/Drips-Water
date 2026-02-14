@@ -1,10 +1,18 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/order_model.dart';
+import 'package:drips_water/presentation/screens/orders/order_tracking_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class OrderSuccessScreen extends StatelessWidget {
   final String orderId;
-  const OrderSuccessScreen({super.key, required this.orderId});
+  final OrderModel order;
+  const OrderSuccessScreen({
+    super.key,
+    required this.orderId,
+    required this.order,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +55,12 @@ class OrderSuccessScreen extends StatelessWidget {
               const SizedBox(height: 15),
               TextButton(
                 onPressed: () {
-                  // Navigator.pushReplacement(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => OrderTrackingPage()));
+                  Navigator.pushReplacement(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (_) => OrderTrackingScreen(order: order),
+                    ),
+                  );
                 },
                 child: Text(
                   "Track Order",

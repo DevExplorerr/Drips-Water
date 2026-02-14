@@ -2,6 +2,7 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/data/models/card_model.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
+import 'package:drips_water/data/models/order_model.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
@@ -166,10 +167,28 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       if (orderId != null) {
         if (!_isBuyNow) cartProvider.clearCart();
         if (!mounted) return;
+
+        final placedOrder = OrderModel(
+          id: orderId,
+          userId: checkoutProvider.uid,
+          items: _displayItems,
+          address: checkoutProvider.deliveryAddress!,
+          paymentMethod: checkoutProvider.paymentMethod,
+          deliveryOption: checkoutProvider.deliveryOption,
+          scheduledTime: checkoutProvider.scheduledTime,
+          subtotal: currentSubtotal,
+          deliveryFee: checkoutProvider.deliveryFee,
+          discount: currentDiscount,
+          totalAmount: currentTotal,
+          status: 'pending',
+          createdAt: DateTime.now(),
+        );
+
         Navigator.pushAndRemoveUntil(
           context,
           CupertinoPageRoute(
-            builder: (context) => OrderSuccessScreen(orderId: orderId),
+            builder: (context) =>
+                OrderSuccessScreen(orderId: orderId, order: placedOrder),
           ),
           (route) => route.isFirst,
         );
