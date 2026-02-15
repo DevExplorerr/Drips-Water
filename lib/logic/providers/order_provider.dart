@@ -10,6 +10,9 @@ class OrderProvider extends ChangeNotifier {
   bool _isProcessing = false;
   bool get isProcessing => _isProcessing;
 
+  bool _isCancelling = false;
+  bool get isCancelling => _isCancelling;
+
   void _setLoading(bool value) {
     _isProcessing = value;
     notifyListeners();
@@ -54,6 +57,22 @@ class OrderProvider extends ChangeNotifier {
       rethrow;
     } finally {
       _setLoading(false);
+    }
+  }
+
+  Future<bool> cancelOrder(String orderId) async {
+    _isCancelling = true;
+    notifyListeners();
+
+    try {
+      await _service.cancelOrder(orderId);
+      _isCancelling = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _isCancelling = false;
+      notifyListeners();
+      return false;
     }
   }
 }

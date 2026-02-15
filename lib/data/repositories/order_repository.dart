@@ -20,4 +20,11 @@ class OrderRepository {
               .toList(),
         );
   }
+
+  Future<void> cancelOrder(String orderId) async {
+    await _firebase.collection('orders').doc(orderId).update({
+      'status': 'cancelled',
+      'updateAt': FieldValue.serverTimestamp(),
+    });
+  }
 }

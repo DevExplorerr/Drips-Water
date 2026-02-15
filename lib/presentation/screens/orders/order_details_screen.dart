@@ -1,8 +1,13 @@
+import 'package:drips_water/logic/providers/order_provider.dart';
+import 'package:drips_water/presentation/screens/orders/order_tracking_screen.dart';
+import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/order_model.dart';
 import 'package:drips_water/presentation/screens/orders/widgets/order_item_tile.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderModel order;
@@ -21,7 +26,7 @@ class OrderDetailsScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         padding: const .all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
             // 1. Order Status & ID Card
             _buildSectionCard(
@@ -73,6 +78,27 @@ class OrderDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 20),
+                  if (order.status != 'cancelled')
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: CustomButton(
+                        height: 50,
+                        width: .infinity,
+                        text: "Track Order",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (_) => OrderTrackingScreen(order: order),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  const Divider(height: 40),
+                  if (order.status == 'pending') _buildCancelButton(context),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -296,6 +322,78 @@ class OrderDetailsScreen extends StatelessWidget {
           fontSize: 12,
           letterSpacing: 1.0,
         ),
+      ),
+    );
+  }
+
+  Widget _buildCancelButton(BuildContext context) {
+    return Consumer<OrderProvider>(
+      builder: (context, orderProv, _) {
+        return SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: Colors.red,
+              side: const BorderSide(color: Colors.red),
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: orderProv.isCancelling
+                ? null
+                : () => _showCancelDialog(context, orderProv),
+            child: orderProv.isCancelling
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.red,
+                    ),
+                  )
+                : const Text(
+                    "Cancel Order",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showCancelDialog(BuildContext context, OrderProvider provider) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Cancel Order"),
+        content: const Text(
+          "Are you sure you want to cancel this order? This action cannot be undone.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context); // Close dialog
+              final success = await provider.cancelOrder(order.id);
+              if (success && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Order cancelled successfully"),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            child: const Text(
+              "Yes, Cancel",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
       ),
     );
   }

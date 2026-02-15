@@ -11,4 +11,12 @@ class OrderService {
       throw Exception("Failed to place order");
     }
   }
+
+  Future<void> cancelOrder(String orderId) async {
+    try {
+      await _orderRepository.cancelOrder(orderId);
+    } catch (e) {
+      throw Exception("Failed to cancel order: $e");
+    }
+  }
 }
