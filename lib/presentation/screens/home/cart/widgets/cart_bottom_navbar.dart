@@ -66,7 +66,7 @@ class CartBottomNavbar extends StatelessWidget {
                   ),
                 );
               },
-              color: cart.cartItems.isEmpty
+              buttonColor: cart.cartItems.isEmpty
                   ? AppColors.grey.withValues(alpha: 0.3)
                   : AppColors.primary,
               height: 50,

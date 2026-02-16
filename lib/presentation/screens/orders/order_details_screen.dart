@@ -139,7 +139,7 @@ class _OrderHeaderCard extends StatelessWidget {
                       width: .infinity,
                       text: "Cancel Order",
                       textColor: AppColors.red,
-                      color: AppColors.white,
+                      buttonColor: AppColors.white,
                       borderSide: const BorderSide(color: AppColors.red),
                       onPressed: () =>
                           _confirmCancel(context, orderProv, orderId),

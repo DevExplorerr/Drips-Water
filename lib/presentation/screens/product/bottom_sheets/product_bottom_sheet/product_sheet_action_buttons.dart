@@ -41,7 +41,7 @@ class ProductSheetActionButtons extends StatelessWidget {
             child: CustomButton(
               height: 50,
               width: .infinity,
-              color: AppColors.white,
+              buttonColor: AppColors.white,
               textColor: AppColors.primary,
               elevation: 0,
               borderSide: const BorderSide(
@@ -60,7 +60,7 @@ class ProductSheetActionButtons extends StatelessWidget {
             child: CustomButton(
               height: 50,
               width: .infinity,
-              color: AppColors.primary,
+              buttonColor: AppColors.primary,
               text: "Add to Cart",
               onPressed: onAddToCart,
             ),

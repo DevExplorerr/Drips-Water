@@ -24,7 +24,7 @@ class ProductBottomNavbar extends StatelessWidget {
               height: 50,
               width: .infinity,
               text: "Buy Now",
-              color: AppColors.white,
+              buttonColor: AppColors.white,
               textColor: AppColors.primary,
               elevation: 0,
               borderSide: const BorderSide(

@@ -6,7 +6,7 @@ class CustomButton extends StatelessWidget {
   final double height;
   final double width;
   final String text;
-  final Color? color;
+  final Color? buttonColor;
   final Color? textColor;
   final BorderSide? borderSide;
   final double? elevation;
@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
     required this.height,
     required this.width,
     required this.text,
-    this.color,
+    this.buttonColor,
     this.textColor,
     this.borderSide,
     this.elevation,
@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
         style: ButtonStyle(
           elevation: WidgetStatePropertyAll(elevation),
           backgroundColor: WidgetStatePropertyAll(
-            color ??
+            buttonColor ??
                 theme.elevatedButtonTheme.style?.backgroundColor?.resolve({}),
           ),
           overlayColor: WidgetStatePropertyAll(
