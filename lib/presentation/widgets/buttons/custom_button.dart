@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final BorderSide? borderSide;
   final double? elevation;
+  final double? fontSize;
 
   const CustomButton({
     super.key,
@@ -21,6 +22,7 @@ class CustomButton extends StatelessWidget {
     this.textColor,
     this.borderSide,
     this.elevation,
+    this.fontSize,
   });
 
   @override
@@ -48,6 +50,7 @@ class CustomButton extends StatelessWidget {
           style: theme.textTheme.bodyLarge?.copyWith(
             color: textColor ?? AppColors.textDark,
             fontWeight: .w700,
+            fontSize: fontSize,
           ),
         ),
       ),

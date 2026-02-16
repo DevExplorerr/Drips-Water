@@ -103,6 +103,7 @@ class _ConfirmationAlertDialogState extends State<ConfirmationAlertDialog> {
                         height: 40,
                         width: 40,
                         text: widget.buttonTxt,
+                        fontSize: 14,
                         onPressed: () async {
                           setState(() => _isLoading = true);
                           try {

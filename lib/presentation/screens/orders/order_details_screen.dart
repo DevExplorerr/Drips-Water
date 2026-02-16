@@ -123,6 +123,7 @@ class _OrderHeaderCard extends StatelessWidget {
                     height: 40,
                     width: .infinity,
                     text: "Track Order",
+                    fontSize: 16,
                     onPressed: () => Navigator.push(
                       context,
                       CupertinoPageRoute(
@@ -138,6 +139,7 @@ class _OrderHeaderCard extends StatelessWidget {
                       height: 40,
                       width: .infinity,
                       text: "Cancel Order",
+                      fontSize: 16,
                       textColor: AppColors.red,
                       buttonColor: AppColors.white,
                       borderSide: const BorderSide(color: AppColors.red),
