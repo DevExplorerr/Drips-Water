@@ -11,6 +11,7 @@ class ConfirmationAlertDialog extends StatefulWidget {
   final IconData icon;
   final String desc;
   final String buttonTxt;
+  final String? secondaryButtonText;
   final String successMessage;
   final Future<void> Function() onConfirm;
   const ConfirmationAlertDialog({
@@ -20,6 +21,7 @@ class ConfirmationAlertDialog extends StatefulWidget {
     required this.icon,
     required this.desc,
     required this.buttonTxt,
+    this.secondaryButtonText,
     this.successMessage = "Action completed successfully",
   });
 
@@ -82,10 +84,10 @@ class _ConfirmationAlertDialogState extends State<ConfirmationAlertDialog> {
                 child: TextButton(
                   onPressed: _isLoading ? null : () => Navigator.pop(context),
                   child: Text(
-                    "Cancel",
+                    widget.secondaryButtonText ?? "Cancel",
                     style: textTheme.bodySmall?.copyWith(
                       color: AppColors.primary,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: .w500,
                     ),
                   ),
                 ),
@@ -105,7 +107,7 @@ class _ConfirmationAlertDialogState extends State<ConfirmationAlertDialog> {
                           setState(() => _isLoading = true);
                           try {
                             await widget.onConfirm();
-                            if (context.mounted) {
+                            if (context.mounted && Navigator.canPop(context)) {
                               Navigator.pop(context);
                               showFloatingSnackBar(
                                 context,
