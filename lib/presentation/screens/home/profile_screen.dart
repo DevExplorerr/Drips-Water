@@ -1,10 +1,12 @@
 import 'package:drips_water/data/services/auth_service.dart';
+import 'package:drips_water/logic/view_models/home/home_app_bar_view_model.dart';
 import 'package:drips_water/presentation/screens/orders/order_history_screen.dart';
 import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/widgets/dialog/confirmation_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -34,11 +36,11 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
+    final textTheme = Theme.of(context).textTheme;
+    final vm = context.watch<HomeAppBarViewModel>();
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(title: const Text("Profile"), centerTitle: true),
       body: SingleChildScrollView(
         child: Column(
@@ -50,7 +52,14 @@ class ProfileScreen extends StatelessWidget {
               child: Icon(Icons.person, size: 50, color: AppColors.white),
             ),
             const SizedBox(height: 15),
-            Text("User Name", style: textTheme.titleMedium),
+            Text(
+              vm.isGuest
+                  ? "Guest"
+                  : vm.isLoading
+                  ? "Loading..."
+                  : "${vm.userName}",
+              style: textTheme.titleMedium,
+            ),
             const SizedBox(height: 30),
             _buildProfileTile(
               textTheme: textTheme,

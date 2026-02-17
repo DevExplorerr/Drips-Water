@@ -81,10 +81,10 @@ class HomeAppBar extends StatelessWidget {
           child: Container(
             color: AppColors.primary,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: IgnorePointer(
+            child: const IgnorePointer(
               child: SearchBar(
                 hintText: "Search something...",
-                leading: const Icon(Icons.search, color: AppColors.primary),
+                leading: Icon(Icons.search, color: AppColors.primary),
               ),
             ),
           ),
