@@ -18,7 +18,8 @@ class CartProvider with ChangeNotifier {
     listenToCart();
   }
 
-  List<CartItemModel> cartItems = [];
+  List<CartItemModel> _cartItems = [];
+  List<CartItemModel> get cartItems => _cartItems;
 
   bool _isAdding = false;
   bool _isUpdatingQty = false;
@@ -29,12 +30,12 @@ class CartProvider with ChangeNotifier {
   // Real-time listener
   void listenToCart() {
     if (uid.isEmpty) {
-      cartItems = [];
+      _cartItems = [];
       notifyListeners();
       return;
     }
     _cartSub = repo.cartRef(uid).snapshots().listen((snapshot) {
-      cartItems = snapshot.docs
+      _cartItems = snapshot.docs
           .map((e) => CartItemModel.fromMap(e.data()))
           .toList();
       notifyListeners();
@@ -82,6 +83,24 @@ class CartProvider with ChangeNotifier {
     }
   }
 
+  void addSpecificItem(CartItemModel cartItem) {
+    // Find the Index
+    final int index = _cartItems.indexWhere(
+      (item) =>
+          item.productId == cartItem.productId &&
+          item.selectedSize == cartItem.selectedSize,
+    );
+
+    if (index != -1) {
+      _cartItems[index] = _cartItems[index].copyWith(
+        quantity: _cartItems[index].quantity + cartItem.quantity,
+      );
+    } else {
+      _cartItems.add(cartItem);
+    }
+    notifyListeners();
+  }
+
   Future<void> decrease(String productId, String size) async {
     if (_isUpdatingQty) return;
 
@@ -103,18 +122,18 @@ class CartProvider with ChangeNotifier {
 
     await service.clearCart();
 
-    cartItems.clear();
+    _cartItems.clear();
     notifyListeners();
   }
 
   double get totalPrice {
-    return cartItems.fold(
+    return _cartItems.fold(
       0,
       (sum, item) => sum + (item.quantity * item.selectedPrice),
     );
   }
 
-  int get totalItems => cartItems.fold(0, (sum, item) => sum + item.quantity);
+  int get totalItems => _cartItems.fold(0, (sum, item) => sum + item.quantity);
 }
 
 class CartResponse {

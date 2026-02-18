@@ -36,4 +36,22 @@ class CartItemModel {
       quantity: (map['quantity'] ?? 1),
     );
   }
+
+  CartItemModel copyWith({
+    String? productId,
+    String? name,
+    String? imageUrl,
+    String? selectedSize,
+    int? selectedPrice,
+    int? quantity,
+  }) {
+    return CartItemModel(
+      productId: productId ?? this.productId,
+      name: name ?? this.name,
+      imageUrl: imageUrl ?? this.imageUrl,
+      selectedSize: selectedSize ?? this.selectedSize,
+      selectedPrice: selectedPrice ?? this.selectedPrice,
+      quantity: quantity ?? this.quantity,
+    );
+  }
 }

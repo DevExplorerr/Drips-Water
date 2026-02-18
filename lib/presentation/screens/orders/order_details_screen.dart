@@ -1,7 +1,11 @@
+import 'package:drips_water/global/snackbar.dart';
+import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/order_provider.dart';
+import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/orders/order_tracking_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/dialog/confirmation_alert_dialog.dart';
+import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,38 +14,90 @@ import 'package:drips_water/data/models/order_model.dart';
 import 'package:drips_water/presentation/screens/orders/widgets/order_item_tile.dart';
 import 'package:provider/provider.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
+class OrderDetailsScreen extends StatefulWidget {
   final OrderModel order;
-
   const OrderDetailsScreen({super.key, required this.order});
+
+  @override
+  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
+}
+
+class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  bool _isReordering = false;
+
+  Future<void> _handleReorder(BuildContext context) async {
+    setState(() => _isReordering = true);
+
+    await Future.delayed(const Duration(milliseconds: 800));
+
+    if (context.mounted) {
+      final cartProvider = context.read<CartProvider>();
+
+      for (var item in widget.order.items) {
+        cartProvider.addSpecificItem(item);
+      }
+
+      setState(() => _isReordering = false);
+
+      showFloatingSnackBar(
+        context,
+        message: "Items added to cart!",
+        backgroundColor: AppColors.primary,
+        duration: const Duration(seconds: 2),
+      );
+
+      Navigator.push(
+        context,
+        CupertinoPageRoute(builder: (_) => const CartScreen()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(title: const Text("Order Details"), centerTitle: true),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const .all(20),
-        child: Column(
-          crossAxisAlignment: .start,
-          children: [
-            _OrderHeaderCard(order: order),
-            const SizedBox(height: 24),
-            _sectionHeader("Purchased Items", textTheme),
-            _OrderItemsCard(order: order),
-            const SizedBox(height: 24),
-            _sectionHeader("Delivery Details", textTheme),
-            _DeliveryDetailsCard(order: order),
-            const SizedBox(height: 24),
-            _sectionHeader("Payment Summary", textTheme),
-            _PaymentSummaryCard(order: order),
-            const SizedBox(height: 40),
-          ],
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar: AppBar(title: const Text("Order Details"), centerTitle: true),
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const .all(20),
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                _OrderHeaderCard(order: widget.order),
+                const SizedBox(height: 24),
+                _sectionHeader("Purchased Items", textTheme),
+                _OrderItemsCard(order: widget.order),
+                const SizedBox(height: 24),
+                _sectionHeader("Delivery Details", textTheme),
+                _DeliveryDetailsCard(order: widget.order),
+                const SizedBox(height: 24),
+                _sectionHeader("Payment Summary", textTheme),
+                _PaymentSummaryCard(order: widget.order),
+              ],
+            ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: .only(
+              left: 15,
+              right: 15,
+              top: 15,
+              bottom: MediaQuery.of(context).padding.bottom + 15,
+            ),
+            child: CustomButton(
+              height: 50,
+              width: .infinity,
+              text: "Re Order All Items",
+              onPressed: () => _handleReorder(context),
+            ),
+          ),
         ),
-      ),
+        if (_isReordering) const Positioned.fill(child: CustomOverlayLoader()),
+      ],
     );
   }
 
