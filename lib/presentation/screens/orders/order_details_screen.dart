@@ -27,29 +27,32 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   Future<void> _handleReorder(BuildContext context) async {
     setState(() => _isReordering = true);
-
-    await Future.delayed(const Duration(milliseconds: 800));
-
-    if (context.mounted) {
+    try {
       final cartProvider = context.read<CartProvider>();
+      await cartProvider.reorderAll(widget.order.items);
 
-      for (var item in widget.order.items) {
-        cartProvider.addSpecificItem(item);
+      if (context.mounted) {
+        showFloatingSnackBar(
+          context,
+          message: "Items restored to cart successfully!",
+          backgroundColor: AppColors.primary,
+        );
+
+        Navigator.push(
+          context,
+          CupertinoPageRoute(builder: (_) => const CartScreen()),
+        );
       }
-
-      setState(() => _isReordering = false);
-
-      showFloatingSnackBar(
-        context,
-        message: "Items added to cart!",
-        backgroundColor: AppColors.primary,
-        duration: const Duration(seconds: 2),
-      );
-
-      Navigator.push(
-        context,
-        CupertinoPageRoute(builder: (_) => const CartScreen()),
-      );
+    } catch (e) {
+      if (context.mounted) {
+        showFloatingSnackBar(
+          context,
+          message: "Failed to re-order: ${e.toString()}",
+          backgroundColor: AppColors.error,
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isReordering = false);
     }
   }
 

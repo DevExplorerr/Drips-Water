@@ -83,22 +83,18 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  void addSpecificItem(CartItemModel cartItem) {
-    // Find the Index
-    final int index = _cartItems.indexWhere(
-      (item) =>
-          item.productId == cartItem.productId &&
-          item.selectedSize == cartItem.selectedSize,
-    );
+  Future<void> reorderAll(List<CartItemModel> items) async {
+    if (uid.isEmpty) return;
 
-    if (index != -1) {
-      _cartItems[index] = _cartItems[index].copyWith(
-        quantity: _cartItems[index].quantity + cartItem.quantity,
-      );
-    } else {
-      _cartItems.add(cartItem);
-    }
+    _isAdding = true;
     notifyListeners();
+
+    try {
+      await service.reorderItems(items);
+    } finally {
+      _isAdding = false;
+      notifyListeners();
+    }
   }
 
   Future<void> decrease(String productId, String size) async {

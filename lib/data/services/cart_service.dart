@@ -1,3 +1,4 @@
+import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/data/models/product_model.dart';
 import 'package:drips_water/data/repositories/cart_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,6 +30,15 @@ class CartService {
       return "Added to cart";
     } catch (_) {
       return "Failed to add item";
+    }
+  }
+
+  Future<void> reorderItems(List<CartItemModel> items) async {
+    if (uid == null || items.isEmpty) return;
+    try {
+      await _repo.reorderItems(uid: uid!, items: items);
+    } catch (e) {
+      throw Exception("Failed to sync reordered items to cloud");
     }
   }
 

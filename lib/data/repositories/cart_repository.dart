@@ -36,6 +36,20 @@ class CartRepository {
     }
   }
 
+  // Method to handle re-ordering
+  Future<void> reorderItems({
+    required String uid,
+    required List<CartItemModel> items,
+  }) async {
+    final batch = _firestore.batch();
+
+    for (var item in items) {
+      final ref = cartRef(uid).doc(itemKey(item.productId, item.selectedSize));
+      batch.set(ref, item.toMap(), SetOptions(merge: true));
+    }
+    await batch.commit();
+  }
+
   // Remove Quantity from Cart
   Future<void> decrease({
     required String uid,
