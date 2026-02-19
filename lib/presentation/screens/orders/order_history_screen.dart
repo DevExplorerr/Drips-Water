@@ -1,8 +1,9 @@
+import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/orders/order_details_screen.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
-import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/data/models/order_model.dart';
@@ -23,7 +24,12 @@ class OrderHistoryScreen extends StatelessWidget {
         stream: orderRepo.getUserOrders(userId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == .waiting) {
-            return const Center(child: CustomOverlayLoader());
+            return Center(
+              child: LoadingAnimationWidget.threeRotatingDots(
+                color: AppColors.primary,
+                size: 50,
+              ),
+            );
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
