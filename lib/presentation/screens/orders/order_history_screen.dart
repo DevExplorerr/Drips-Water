@@ -1,67 +1,104 @@
-import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/presentation/screens/orders/order_details_screen.dart';
-import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:provider/provider.dart';
-import 'package:drips_water/logic/providers/checkout_provider.dart';
-import 'package:drips_water/data/models/order_model.dart';
-import 'package:drips_water/data/repositories/order_repository.dart';
-import 'widgets/order_history_card.dart';
+import 'package:drips_water/core/constants/app_colors.dart';
 
-class OrderHistoryScreen extends StatelessWidget {
+class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({super.key});
 
   @override
+  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
+}
+
+class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
+  final List<String> _filters = [
+    'All',
+    'Pending',
+    'On the Way',
+    'Delivered',
+    'Cancelled',
+  ];
+  String _selectedFilter = 'All';
+
+  @override
   Widget build(BuildContext context) {
-    final userId = context.read<CheckoutProvider>().uid;
-    final orderRepo = OrderRepository();
-
     return Scaffold(
-      appBar: AppBar(title: const Text("My Orders")),
-      body: StreamBuilder<List<OrderModel>>(
-        stream: orderRepo.getUserOrders(userId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == .waiting) {
-            return Center(
-              child: LoadingAnimationWidget.threeRotatingDots(
-                color: AppColors.primary,
-                size: 50,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(title: const Text("My Orders"), centerTitle: true),
+      body: Column(
+        children: [
+          _buildFilterBar(),
+          Expanded(child: _buildOrderList()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterBar() {
+    return Container(
+      height: 60,
+      width: double.infinity,
+      color: AppColors.white,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        itemCount: _filters.length,
+        itemBuilder: (context, index) {
+          final filter = _filters[index];
+          final isSelected = _selectedFilter == filter;
+
+          return Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedFilter = filter;
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.grey.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Text(
+                  filter,
+                  style: TextStyle(
+                    color: isSelected
+                        ? AppColors.white
+                        : AppColors.secondaryText,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                    fontSize: 13,
+                  ),
+                ),
               ),
-            );
-          }
-
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const AppEmptyState(
-              title: "No orders yet.",
-              description:
-                  "Your order history is empty. Start shopping to fill it up!",
-              icon: Icons.add_shopping_cart,
-            );
-          }
-
-          final orders = snapshot.data!;
-
-          return ListView.builder(
-            padding: const .all(15),
-            itemCount: orders.length,
-            itemBuilder: (context, index) {
-              return OrderHistoryCard(
-                order: orders[index],
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                      builder: (context) =>
-                          OrderDetailsScreen(order: orders[index]),
-                    ),
-                  );
-                },
-              );
-            },
+            ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildOrderList() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.receipt_long_outlined,
+            size: 80,
+            color: AppColors.grey.withValues(alpha: 0.3),
+          ),
+          const SizedBox(height: 15),
+          Text(
+            "Showing $_selectedFilter orders",
+            style: const TextStyle(color: AppColors.secondaryText),
+          ),
+        ],
       ),
     );
   }
