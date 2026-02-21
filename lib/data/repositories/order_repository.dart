@@ -8,17 +8,24 @@ class OrderRepository {
     await _firebase.collection('orders').doc(order.id).set(order.toMap());
   }
 
-  Stream<List<OrderModel>> getUserOrders(String userId) {
-    return _firebase
+  Stream<List<OrderModel>> getUserOrders(
+    String userId, {
+    String? statusFilter,
+  }) {
+    Query query = _firebase
         .collection('orders')
         .where('userId', isEqualTo: userId)
-        .orderBy('createdAt', descending: true)
-        .snapshots()
-        .map(
-          (snapshot) => snapshot.docs
-              .map((doc) => OrderModel.fromMap(doc.data()))
-              .toList(),
-        );
+        .orderBy('createdAt', descending: true);
+
+    if (statusFilter != null && statusFilter != 'All') {
+      query = query.where('status', isEqualTo: statusFilter.toLowerCase());
+    }
+
+    return query.snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) => OrderModel.fromMap(doc.data() as Map<String, dynamic>))
+          .toList(),
+    );
   }
 
   Future<void> cancelOrder(String orderId) async {
