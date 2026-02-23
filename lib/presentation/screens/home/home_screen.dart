@@ -7,7 +7,7 @@ import 'package:drips_water/logic/view_models/product/product_grid_view_model.da
 import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/home/chatbot/chatbot_screen.dart';
 import 'package:drips_water/presentation/screens/home/favorite/favorite_screen.dart';
-import 'package:drips_water/presentation/screens/home/profile_screen.dart';
+import 'package:drips_water/presentation/screens/home/profile/profile_screen.dart';
 import 'package:drips_water/presentation/widgets/bottom_navbar/bottom_navbar.dart';
 import 'package:drips_water/presentation/screens/home/home_content/home_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';

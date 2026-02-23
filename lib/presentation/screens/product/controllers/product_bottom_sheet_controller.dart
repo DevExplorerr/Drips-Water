@@ -50,6 +50,15 @@ class ProductBottomSheetController extends ChangeNotifier {
     );
 
     if (!context.mounted) return;
+
+    if (response.status == CartStatus.guestBlocked) {
+      showDialog(
+        context: context,
+        builder: (_) => CustomLoginPromptDialog(message: response.message),
+      );
+      return;
+    }
+
     Navigator.pop(context);
 
     if (response.status == CartStatus.success ||
@@ -63,13 +72,6 @@ class ProductBottomSheetController extends ChangeNotifier {
             : AppColors.error,
       );
     }
-
-    if (response.status == CartStatus.guestBlocked) {
-      showDialog(
-        context: context,
-        builder: (_) => CustomLoginPromptDialog(message: response.message),
-      );
-    }
   }
 
   void handleBuyNow(BuildContext context) {
@@ -81,6 +83,7 @@ class ProductBottomSheetController extends ChangeNotifier {
       selectedPrice: selectedPrice,
       quantity: quantity,
     );
+
     Navigator.pop(context);
     Navigator.push(
       context,

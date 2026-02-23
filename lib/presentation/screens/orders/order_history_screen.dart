@@ -71,6 +71,14 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                   );
                 }
 
+                if (uid == "guest" || uid.isEmpty) {
+                  return const AppEmptyState(
+                    title: "History Locked",
+                    description: "Please sign in to view your past orders.",
+                    icon: Icons.account_circle_outlined,
+                  );
+                }
+
                 return ListView.builder(
                   padding: const .fromLTRB(15, 5, 15, 15),
                   itemCount: orders.length,

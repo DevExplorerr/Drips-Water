@@ -1,5 +1,7 @@
+import 'package:drips_water/core/utils/auth_guard.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
+import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/logic/providers/order_provider.dart';
 import 'package:drips_water/presentation/screens/home/cart/cart_screen.dart';
 import 'package:drips_water/presentation/screens/orders/order_tracking_screen.dart';
@@ -95,7 +97,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               height: 50,
               width: .infinity,
               text: "Re Order All Items",
-              onPressed: () => _handleReorder(context),
+              onPressed: () {
+                final uid = context.read<CheckoutProvider>().uid;
+                if (AuthGuard.check(context, uid)) {
+                  _handleReorder(context);
+                }
+              },
             ),
           ),
         ),

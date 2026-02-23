@@ -55,6 +55,7 @@ class CustomLoginPromptDialog extends StatelessWidget {
               height: 40,
               width: 110,
               text: "Sign In",
+              fontSize: 14,
             ),
           ],
         ),

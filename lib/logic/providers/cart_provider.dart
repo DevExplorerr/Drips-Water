@@ -29,7 +29,7 @@ class CartProvider with ChangeNotifier {
 
   // Real-time listener
   void listenToCart() {
-    if (uid.isEmpty) {
+    if (uid == "guest" || uid.isEmpty) {
       _cartItems = [];
       notifyListeners();
       return;

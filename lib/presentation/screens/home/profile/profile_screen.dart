@@ -4,6 +4,7 @@ import 'package:drips_water/presentation/screens/orders/order_history_screen.dar
 import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/widgets/dialog/confirmation_alert_dialog.dart';
+import 'package:drips_water/presentation/widgets/dialog/custom_login_prompt_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,10 +35,20 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  void _showLoginPrompt(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => const CustomLoginPromptDialog(
+        message: "Please sign in to access your orders and account details.",
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final vm = context.watch<HomeAppBarViewModel>();
+    final bool isGuest = vm.isGuest;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -46,18 +57,16 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            const CircleAvatar(
+            CircleAvatar(
               radius: 50,
-              backgroundColor: AppColors.primary,
+              backgroundColor: isGuest ? AppColors.grey : AppColors.primary,
               child: Icon(Icons.person, size: 50, color: AppColors.white),
             ),
             const SizedBox(height: 15),
             Text(
-              vm.isGuest
-                  ? "Guest"
-                  : vm.isLoading
-                  ? "Loading..."
-                  : "${vm.userName}",
+              isGuest
+                  ? "Guest User"
+                  : (vm.isLoading ? "Loading..." : "${vm.userName}"),
               style: textTheme.titleMedium,
             ),
             const SizedBox(height: 30),
@@ -66,12 +75,16 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.shopping_bag_outlined,
               title: "My Orders",
               onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => const OrderHistoryScreen(),
-                  ),
-                );
+                if (isGuest) {
+                  _showLoginPrompt(context);
+                } else {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => const OrderHistoryScreen(),
+                    ),
+                  );
+                }
               },
             ),
 
@@ -80,18 +93,31 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.location_on_outlined,
               title: "Shipping Addresses",
               onTap: () {
+                if (isGuest) {
+                  _showLoginPrompt(context);
+                } else {
+                  // Navigate to Address Management
+                }
                 // Future: Navigate to address management
               },
             ),
 
             _buildProfileTile(
               textTheme: textTheme,
-              icon: Icons.logout,
-              title: "Logout",
-              textColor: AppColors.red,
-              iconColor: AppColors.red,
+              icon: isGuest ? Icons.login_rounded : Icons.logout,
+              title: isGuest ? "Sign In / Register" : "Logout",
+              textColor: isGuest ? AppColors.primary : AppColors.red,
+              iconColor: isGuest ? AppColors.primary : AppColors.red,
               onTap: () {
-                _showLogoutDialog(context);
+                if (isGuest) {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    CupertinoPageRoute(builder: (_) => const WelcomeScreen()),
+                    (route) => false,
+                  );
+                } else {
+                  _showLogoutDialog(context);
+                }
               },
             ),
           ],

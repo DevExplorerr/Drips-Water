@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:drips_water/logic/view_models/home/home_app_bar_view_model.dart';
 import 'package:drips_water/presentation/widgets/dialog/custom_login_prompt_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,8 +28,7 @@ class FavoriteButton extends StatelessWidget {
         final isFavorite = fav.isFavorite(productId);
         return GestureDetector(
           onTap: () async {
-            final success = await fav.toggleFavorite(productId);
-            if (!success && context.mounted) {
+            if (context.read<HomeAppBarViewModel>().isGuest) {
               showDialog(
                 context: context,
                 animationStyle: AnimationStyle(
@@ -36,12 +36,14 @@ class FavoriteButton extends StatelessWidget {
                   duration: const Duration(milliseconds: 300),
                   reverseDuration: const Duration(milliseconds: 200),
                 ),
-                builder: (context) => const CustomLoginPromptDialog(
+                builder: (_) => const CustomLoginPromptDialog(
                   message:
                       "You need to sign in to add products to your favorites.",
                 ),
               );
+              return;
             }
+            await fav.toggleFavorite(productId);
           },
           child: Container(
             height: height,
