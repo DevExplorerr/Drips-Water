@@ -1,14 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drips_water/data/repositories/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-ValueNotifier<AuthService> authService = ValueNotifier(AuthService());
+ValueNotifier<AuthService> authService = ValueNotifier(
+  AuthService(AuthRepository()),
+);
 
 class AuthService {
+  final AuthRepository _authRepo;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  AuthService(this._authRepo);
+
   User? get currentUser => _auth.currentUser;
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  static bool get isGuestUser {
+    final user = FirebaseAuth.instance.currentUser;
+    return user == null || user.isAnonymous;
+  }
+
+  // bool get isGuestUser => currentUser == null || currentUser!.isAnonymous;
 
   // Sign up with email, password and username
   Future<UserCredential> signUp({
@@ -21,16 +33,13 @@ class AuthService {
       password: password,
     );
 
-    // Save user info to firestore
     if (userCredential.user != null) {
-      await _firestore.collection("users").doc(userCredential.user!.uid).set({
-        "uid": userCredential.user!.uid,
-        "name": userName,
-        "email": email,
-        "createdAt": FieldValue.serverTimestamp(),
-      });
+      await _authRepo.saveUserData(
+        uid: userCredential.user!.uid,
+        userName: userName,
+        email: email,
+      );
     }
-
     return userCredential;
   }
 
