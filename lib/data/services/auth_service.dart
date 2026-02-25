@@ -20,8 +20,6 @@ class AuthService {
     return user == null || user.isAnonymous;
   }
 
-  // bool get isGuestUser => currentUser == null || currentUser!.isAnonymous;
-
   // Sign up with email, password and username
   Future<UserCredential> signUp({
     required String email,

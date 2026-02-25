@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
 
+import '../../../data/services/auth_service.dart';
+
 class FavoriteButton extends StatelessWidget {
   final String productId;
   final double iconSize;
@@ -28,7 +30,7 @@ class FavoriteButton extends StatelessWidget {
         final isFavorite = fav.isFavorite(productId);
         return GestureDetector(
           onTap: () async {
-            if (context.read<HomeAppBarViewModel>().isGuest) {
+            if (AuthService.isGuestUser) {
               showDialog(
                 context: context,
                 animationStyle: AnimationStyle(
