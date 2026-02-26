@@ -121,6 +121,7 @@ class LoginScreen extends StatelessWidget {
                           : CustomButton(
                               onPressed: () async {
                                 final success = await loginViewModel.login();
+                                if (!context.mounted) return;
 
                                 if (success) {
                                   showFloatingSnackBar(
@@ -133,9 +134,11 @@ class LoginScreen extends StatelessWidget {
                                     const Duration(milliseconds: 500),
                                   );
 
+                                  if (!context.mounted) return;
+
                                   Navigator.pushAndRemoveUntil(
                                     context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                       builder: (context) => const HomeScreen(),
                                     ),
                                     (route) => false,

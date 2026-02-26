@@ -13,11 +13,21 @@ class LoginViewModel extends ChangeNotifier {
   // For Firebase/auth errors
   String? authError;
 
+  bool _disposed = false;
+
   @override
   void dispose() {
+    _disposed = true;
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
   }
 
   Future<bool> login() async {
@@ -42,11 +52,9 @@ class LoginViewModel extends ChangeNotifier {
       return true;
     } on FirebaseAuthException catch (e) {
       authError = _getFirebaseAuthErrorMessage(e);
-      notifyListeners();
       return false;
     } catch (_) {
       authError = "Unexpected error occurred. Try again later.";
-      notifyListeners();
       return false;
     } finally {
       isLoading = false;
