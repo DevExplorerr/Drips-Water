@@ -1,4 +1,6 @@
 import 'package:drips_water/data/services/auth_service.dart';
+import 'package:drips_water/logic/providers/cart_provider.dart';
+import 'package:drips_water/logic/providers/favorite_provider.dart';
 import 'package:drips_water/logic/view_models/home/home_app_bar_view_model.dart';
 import 'package:drips_water/presentation/screens/orders/order_history_screen.dart';
 import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
@@ -22,7 +24,11 @@ class ProfileScreen extends StatelessWidget {
         buttonTxt: "Logout",
         successMessage: "Logged out successfully",
         onConfirm: () async {
+          context.read<CartProvider>().clear();
+          context.read<FavoriteProvider>().clear();
+
           await authService.value.logout();
+
           if (context.mounted) {
             Navigator.pushAndRemoveUntil(
               context,

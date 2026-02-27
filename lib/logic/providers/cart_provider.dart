@@ -29,6 +29,8 @@ class CartProvider with ChangeNotifier {
 
   // Real-time listener
   void listenToCart() {
+    _cartSub?.cancel();
+
     if (uid == "guest" || uid.isEmpty) {
       _cartItems = [];
       notifyListeners();
@@ -42,6 +44,13 @@ class CartProvider with ChangeNotifier {
     });
   }
 
+  void clear() {
+    _cartSub?.cancel();
+    _cartSub = null;
+    _cartItems = [];
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     _cartSub?.cancel();
@@ -53,7 +62,7 @@ class CartProvider with ChangeNotifier {
     String size,
     int quantity,
   ) async {
-    if (uid.isEmpty) {
+    if (uid == "guest" || uid.isEmpty) {
       return CartResponse(
         status: CartStatus.guestBlocked,
         message: "Please sign in to add items to cart",
@@ -84,7 +93,7 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> reorderAll(List<CartItemModel> items) async {
-    if (uid.isEmpty) return;
+    if (uid == "guest" || uid.isEmpty) return;
 
     _isAdding = true;
     notifyListeners();
@@ -114,10 +123,7 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> clearCart() async {
-    notifyListeners();
-
     await service.clearCart();
-
     _cartItems.clear();
     notifyListeners();
   }

@@ -20,7 +20,7 @@ class FavoriteProvider extends ChangeNotifier {
   void _restartListener() {
     _favoritesSub?.cancel();
 
-    if (_service.uid == null) {
+    if (_service.uid == null || _service.uid == "guest") {
       favorites = [];
       notifyListeners();
       return;
@@ -32,9 +32,19 @@ class FavoriteProvider extends ChangeNotifier {
     });
   }
 
+  void clear() {
+    _favoritesSub?.cancel();
+    _favoritesSub = null;
+    favorites = [];
+    notifyListeners();
+  }
+
   bool isFavorite(String id) => favorites.contains(id);
 
   Future<bool> toggleFavorite(String id) async {
+    if (_service.uid == null || _service.uid == "guest") {
+      return false;
+    }
     return _service.toggleFavorite(id, favorites);
   }
 
