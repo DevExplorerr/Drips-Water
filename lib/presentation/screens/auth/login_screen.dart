@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages, deprecated_member_use, use_build_context_synchronously
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/view_models/auth/login_view_model.dart';

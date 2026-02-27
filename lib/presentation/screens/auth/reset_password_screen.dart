@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/view_models/auth/reset_password_view_model.dart';
@@ -120,6 +118,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                 final success = await resetPasswordViewModel
                                     .resetPasswordWithEmail();
 
+                                if (!context.mounted) return;
+
                                 if (success) {
                                   showFloatingSnackBar(
                                     context,
@@ -131,6 +131,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen>
                                   await Future.delayed(
                                     const Duration(milliseconds: 500),
                                   );
+
+                                  if (!context.mounted) return;
 
                                   Navigator.pushAndRemoveUntil(
                                     context,
