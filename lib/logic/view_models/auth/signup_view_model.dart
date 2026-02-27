@@ -14,12 +14,22 @@ class SignupViewModel extends ChangeNotifier {
   // For Firebase/auth errors
   String? authError;
 
+  bool _disposed = false;
+
   @override
   void dispose() {
+    _disposed = true;
     userNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  @override
+  void notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
   }
 
   Future<bool> register() async {
@@ -49,11 +59,9 @@ class SignupViewModel extends ChangeNotifier {
       return true;
     } on FirebaseAuthException catch (e) {
       authError = _getFirebaseAuthErrorMessage(e);
-      notifyListeners();
       return false;
     } catch (_) {
       authError = "Unexpected error occurred. Try again later.";
-      notifyListeners();
       return false;
     } finally {
       isLoading = false;

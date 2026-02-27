@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, depend_on_referenced_packages, use_build_context_synchronously
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/logic/view_models/auth/signup_view_model.dart';
@@ -109,6 +107,8 @@ class SignupScreen extends StatelessWidget {
                                 final success = await signupViewModel
                                     .register();
 
+                                if (!context.mounted) return;
+
                                 if (success) {
                                   showFloatingSnackBar(
                                     context,
@@ -120,9 +120,11 @@ class SignupScreen extends StatelessWidget {
                                     const Duration(milliseconds: 500),
                                   );
 
+                                  if (!context.mounted) return;
+
                                   Navigator.pushAndRemoveUntil(
                                     context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                       builder: (context) => const HomeScreen(),
                                     ),
                                     (route) => false,
