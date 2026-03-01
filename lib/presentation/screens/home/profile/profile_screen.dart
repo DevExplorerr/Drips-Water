@@ -2,7 +2,7 @@ import 'package:drips_water/data/services/auth_service.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
 import 'package:drips_water/logic/view_models/home/home_app_bar_view_model.dart';
-import 'package:drips_water/presentation/screens/home/profile/address_screen.dart';
+import 'package:drips_water/presentation/screens/home/profile/address/address_management_screen.dart';
 import 'package:drips_water/presentation/screens/orders/order_history_screen.dart';
 import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
@@ -106,7 +106,7 @@ class ProfileScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(
-                      builder: (context) => const AddressScreen(),
+                      builder: (context) => const AddressManagementScreen(),
                     ),
                   );
                 }
