@@ -5,15 +5,15 @@ import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
-class DeliveryAddressScreen extends StatefulWidget {
+class AddressFormScreen extends StatefulWidget {
   final AddressModel? existingAddress;
-  const DeliveryAddressScreen({super.key, this.existingAddress});
+  const AddressFormScreen({super.key, this.existingAddress});
 
   @override
-  State<DeliveryAddressScreen> createState() => _DeliveryAddressScreenState();
+  State<AddressFormScreen> createState() => _AddressFormScreenState();
 }
 
-class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
+class _AddressFormScreenState extends State<AddressFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController recipientName = TextEditingController();
   final TextEditingController phoneController = TextEditingController();

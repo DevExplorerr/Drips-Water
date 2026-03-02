@@ -1,6 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
+import 'package:drips_water/presentation/widgets/forms/address_form_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,9 +28,7 @@ class AddressManagementScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  CupertinoPageRoute(
-                    builder: (_) => const DeliveryAddressScreen(),
-                  ),
+                  CupertinoPageRoute(builder: (_) => const AddressFormScreen()),
                 );
               },
             ),

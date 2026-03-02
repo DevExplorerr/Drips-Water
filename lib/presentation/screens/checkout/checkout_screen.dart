@@ -9,10 +9,10 @@ import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/logic/providers/order_provider.dart';
 import 'package:drips_water/presentation/screens/checkout/order_success_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/sections/checkout_sections.dart';
-import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/payment/add_card_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/components/promo_code_input.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/sections/total_section.dart';
+import 'package:drips_water/presentation/widgets/forms/address_form_screen.dart';
 import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +69,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final result = await Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => DeliveryAddressScreen(
+        builder: (context) => AddressFormScreen(
           existingAddress: checkoutProvider.deliveryAddress,
         ),
       ),
