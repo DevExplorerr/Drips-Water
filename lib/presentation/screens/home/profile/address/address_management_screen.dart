@@ -1,5 +1,6 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/checkout/delivery/delivery_address_screen.dart';
+import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,29 +12,42 @@ class AddressManagementScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Shipping Addresses"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Shipping Addresses")),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const .all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: .start,
           children: [
-            // TOP SECTION: ADD NEW ADDRESS
-            _buildAddAddressButton(context),
+            CustomButton(
+              height: 70,
+              width: .infinity,
+              text: "Add New Address",
+              textColor: AppColors.primary,
+              buttonColor: AppColors.white,
+              borderSide: const BorderSide(color: AppColors.primary),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                    builder: (_) => const DeliveryAddressScreen(),
+                  ),
+                );
+              },
+            ),
 
-            const SizedBox(height: 30),
-            Text("Your Saved Addresses", style: textTheme.titleMedium),
-            const Divider(),
+            const SizedBox(height: 40),
+            Text("Your Saved Addresses", style: textTheme.titleSmall),
+            const Padding(
+              padding: .only(top: 10, bottom: 10),
+              child: Divider(),
+            ),
 
-            // BOTTOM SECTION: LIST OF ADDRESSES
             ListView.builder(
               shrinkWrap: true,
               itemCount: 3,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return _buildAddressCard(context, textTheme);
+                return const _AddressCard();
               },
             ),
           ],
@@ -41,81 +55,55 @@ class AddressManagementScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildAddAddressButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        // Navigate to your existing Form screen (used in Checkout)
-        Navigator.push(
-          context,
-          CupertinoPageRoute(builder: (_) => const DeliveryAddressScreen()),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.primary.withOpacity(0.5)),
-          color: AppColors.primary.withOpacity(0.05),
-        ),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.add_location_alt_rounded,
-              color: AppColors.primary,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              "Add New Address",
-              style: TextStyle(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+class _AddressCard extends StatelessWidget {
+  const _AddressCard();
 
-  Widget _buildAddressCard(BuildContext context, TextTheme textTheme) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(15),
-        title: Row(
-          children: [
-            Text(
-              "Other",
-              style: textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return GestureDetector(
+      onTap: () {},
+      child: Card(
+        margin: const .only(bottom: 15),
+        shape: RoundedRectangleBorder(borderRadius: .circular(10)),
+        child: ListTile(
+          contentPadding: const .only(top: 5, bottom: 5, left: 15, right: 15),
+          title: Row(
+            children: [
+              Text(
+                "Name",
+                style: textTheme.bodySmall?.copyWith(
+                  fontWeight: .w700,
+                  color: AppColors.primary,
+                ),
               ),
-            ),
-            const Spacer(),
-            IconButton(
-              icon: const Icon(
-                Icons.delete_outline,
-                color: AppColors.error,
-                size: 20,
+              const SizedBox(width: 8),
+              Text("Phone Number", style: textTheme.bodySmall),
+              const Spacer(),
+              TextButton(
+                child: Text(
+                  "Edit",
+                  style: textTheme.bodySmall?.copyWith(decoration: .underline),
+                ),
+                onPressed: () {},
               ),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("XYZ", style: textTheme.bodySmall),
-            const SizedBox(height: 5),
-            Text(
-              "Karachi",
-              style: textTheme.bodyMedium,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+            ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: .start,
+            children: [
+              Text(
+                "Full Address",
+                style: textTheme.bodySmall,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 5),
+              Text("District", style: textTheme.bodySmall),
+            ],
+          ),
         ),
       ),
     );
