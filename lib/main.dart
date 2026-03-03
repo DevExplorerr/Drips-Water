@@ -6,6 +6,7 @@ import 'package:drips_water/data/services/cart_service.dart';
 import 'package:drips_water/data/services/promo_service.dart';
 import 'package:drips_water/data/services/user_service.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
+import 'package:drips_water/logic/providers/address_provider.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
@@ -83,9 +84,17 @@ class DripsWater extends StatelessWidget {
               },
             ),
 
+            // Order Provider
             ChangeNotifierProvider<OrderProvider>(
               create: (_) {
                 return OrderProvider();
+              },
+            ),
+
+            // Address Provider
+            ChangeNotifierProvider(
+              create: (_) {
+                return AddressProvider();
               },
             ),
           ],

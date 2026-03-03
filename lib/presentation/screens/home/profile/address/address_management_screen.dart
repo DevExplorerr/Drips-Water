@@ -1,8 +1,12 @@
 import 'package:drips_water/core/constants/app_colors.dart';
+import 'package:drips_water/data/models/address_model.dart';
+import 'package:drips_water/logic/providers/address_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/address_form_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 
 class AddressManagementScreen extends StatelessWidget {
   const AddressManagementScreen({super.key});
@@ -40,12 +44,25 @@ class AddressManagementScreen extends StatelessWidget {
               child: Divider(),
             ),
 
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: 3,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return const _AddressCard();
+            StreamBuilder<List<AddressModel>>(
+              stream: context.watch<AddressProvider>().addressStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: LoadingAnimationWidget.threeRotatingDots(
+                      color: AppColors.primary,
+                      size: 40,
+                    ),
+                  );
+                }
+
+                final addresses = snapshot.data!;
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: addresses.length,
+                  itemBuilder: (context, index) =>
+                      _AddressCard(address: addresses[index]),
+                );
               },
             ),
           ],
@@ -56,7 +73,8 @@ class AddressManagementScreen extends StatelessWidget {
 }
 
 class _AddressCard extends StatelessWidget {
-  const _AddressCard();
+  final AddressModel address;
+  const _AddressCard({required this.address});
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +89,14 @@ class _AddressCard extends StatelessWidget {
           title: Row(
             children: [
               Text(
-                "Name",
+                address.name,
                 style: textTheme.bodySmall?.copyWith(
                   fontWeight: .w700,
                   color: AppColors.primary,
                 ),
               ),
               const SizedBox(width: 8),
-              Text("Phone Number", style: textTheme.bodySmall),
+              Text(address.phone, style: textTheme.bodySmall),
               const Spacer(),
               TextButton(
                 child: Text(
@@ -93,13 +111,16 @@ class _AddressCard extends StatelessWidget {
             crossAxisAlignment: .start,
             children: [
               Text(
-                "Full Address",
+                address.address,
                 style: textTheme.bodySmall,
                 maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                overflow: .ellipsis,
               ),
               const SizedBox(height: 5),
-              Text("District", style: textTheme.bodySmall),
+              Text(
+                "${address.district}, ${address.city}",
+                style: textTheme.bodySmall,
+              ),
             ],
           ),
         ),

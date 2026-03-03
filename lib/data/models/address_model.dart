@@ -1,4 +1,5 @@
 class AddressModel {
+  final String? id;
   final String name;
   final String phone;
   final String region;
@@ -9,6 +10,7 @@ class AddressModel {
   final String? label;
 
   AddressModel({
+    this.id,
     required this.name,
     required this.phone,
     required this.region,
@@ -32,8 +34,9 @@ class AddressModel {
     };
   }
 
-  factory AddressModel.fromMap(Map<String, dynamic> map) {
+  factory AddressModel.fromMap(Map<String, dynamic> map, {String? docId}) {
     return AddressModel(
+      id: docId,
       name: map['name'] ?? '',
       phone: map['phone'] ?? '',
       region: map['region'] ?? '',
