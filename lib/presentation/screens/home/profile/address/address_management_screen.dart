@@ -2,6 +2,7 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/logic/providers/address_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
+import 'package:drips_water/presentation/widgets/dialog/confirmation_alert_dialog.dart';
 import 'package:drips_water/presentation/widgets/forms/address_form_screen.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -146,11 +147,44 @@ class _AddressCard extends StatelessWidget {
                 overflow: .ellipsis,
               ),
               const SizedBox(height: 5),
-              Text(
-                "${address.district}, ${address.city}",
-                style: textTheme.bodySmall?.copyWith(
-                  color: AppColors.secondaryText,
-                ),
+              Row(
+                children: [
+                  Text(
+                    "${address.district}, ${address.city}",
+                    style: textTheme.bodySmall?.copyWith(
+                      color: AppColors.secondaryText,
+                    ),
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ConfirmationAlertDialog(
+                          onConfirm: () async {
+                            final addressProvider = context
+                                .read<AddressProvider>();
+
+                            await addressProvider.deleteAddress(address.id!);
+
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
+                          },
+                          title: "Delete Address",
+                          icon: Icons.delete_outline,
+                          desc: "Are you sure you want to remove this address?",
+                          buttonTxt: "Delete",
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.delete_outline,
+                      color: AppColors.red,
+                      size: 22,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
