@@ -94,7 +94,14 @@ class _AddressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (_) => AddressFormScreen(existingAddress: address),
+          ),
+        );
+      },
       child: Card(
         margin: const .only(bottom: 15),
         shape: RoundedRectangleBorder(borderRadius: .circular(10)),
@@ -117,7 +124,15 @@ class _AddressCard extends StatelessWidget {
                   "Edit",
                   style: textTheme.bodySmall?.copyWith(decoration: .underline),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (_) =>
+                          AddressFormScreen(existingAddress: address),
+                    ),
+                  );
+                },
               ),
             ],
           ),
