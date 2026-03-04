@@ -110,15 +110,20 @@ class _AddressCard extends StatelessWidget {
           contentPadding: const .symmetric(horizontal: 15, vertical: 5),
           title: Row(
             children: [
-              Text(
-                address.name,
-                style: textTheme.bodySmall?.copyWith(
-                  fontWeight: .w700,
-                  color: AppColors.primary,
+              Expanded(
+                child: Text(
+                  address.name,
+                  style: textTheme.bodySmall?.copyWith(
+                    fontWeight: .w700,
+                    color: AppColors.primary,
+                  ),
+                  maxLines: 1,
+                  overflow: .ellipsis,
                 ),
               ),
               const SizedBox(width: 8),
               Text(address.phone, style: textTheme.bodySmall),
+              const SizedBox(width: 8),
               const Spacer(),
               TextButton(
                 child: Text(
@@ -146,7 +151,7 @@ class _AddressCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: .ellipsis,
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 3),
               Row(
                 children: [
                   Text(
