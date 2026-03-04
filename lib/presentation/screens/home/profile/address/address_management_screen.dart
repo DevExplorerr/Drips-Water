@@ -3,6 +3,7 @@ import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/logic/providers/address_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/forms/address_form_screen.dart';
+import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -47,7 +48,7 @@ class AddressManagementScreen extends StatelessWidget {
             StreamBuilder<List<AddressModel>>(
               stream: context.watch<AddressProvider>().addressStream,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == .waiting) {
                   return Center(
                     child: LoadingAnimationWidget.threeRotatingDots(
                       color: AppColors.primary,
@@ -56,9 +57,22 @@ class AddressManagementScreen extends StatelessWidget {
                   );
                 }
 
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Padding(
+                    padding: .symmetric(horizontal: 15),
+                    child: AppEmptyState(
+                      title: 'No Saved Addresses Found',
+                      description:
+                          'Save your home or office address to make checkout faster and easier.',
+                      icon: Icons.home_outlined,
+                    ),
+                  );
+                }
+
                 final addresses = snapshot.data!;
                 return ListView.builder(
                   shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: addresses.length,
                   itemBuilder: (context, index) =>
                       _AddressCard(address: addresses[index]),
@@ -85,7 +99,7 @@ class _AddressCard extends StatelessWidget {
         margin: const .only(bottom: 15),
         shape: RoundedRectangleBorder(borderRadius: .circular(10)),
         child: ListTile(
-          contentPadding: const .only(top: 5, bottom: 5, left: 15, right: 15),
+          contentPadding: const .symmetric(horizontal: 15, vertical: 5),
           title: Row(
             children: [
               Text(
@@ -119,7 +133,9 @@ class _AddressCard extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 "${address.district}, ${address.city}",
-                style: textTheme.bodySmall,
+                style: textTheme.bodySmall?.copyWith(
+                  color: AppColors.secondaryText,
+                ),
               ),
             ],
           ),
