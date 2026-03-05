@@ -1,5 +1,4 @@
 import 'package:drips_water/core/constants/app_colors.dart';
-import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/data/models/card_model.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
 import 'package:drips_water/data/models/order_model.dart';
@@ -12,7 +11,7 @@ import 'package:drips_water/presentation/screens/checkout/widgets/sections/check
 import 'package:drips_water/presentation/screens/checkout/payment/add_card_screen.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/components/promo_code_input.dart';
 import 'package:drips_water/presentation/screens/checkout/widgets/sections/total_section.dart';
-import 'package:drips_water/presentation/widgets/forms/address_form_screen.dart';
+import 'package:drips_water/presentation/screens/home/profile/address/address_management_screen.dart';
 import 'package:drips_water/presentation/widgets/shared/custom_overlay_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,22 +62,22 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   // Navigation Methods
 
-  Future<void> _navigateToAddAddress() async {
-    final checkoutProvider = context.read<CheckoutProvider>();
+  // Future<void> _navigateToAddAddress() async {
+  //   final checkoutProvider = context.read<CheckoutProvider>();
 
-    final result = await Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (context) => AddressFormScreen(
-          existingAddress: checkoutProvider.deliveryAddress,
-        ),
-      ),
-    );
+  //   final result = await Navigator.push(
+  //     context,
+  //     CupertinoPageRoute(
+  //       builder: (context) => AddressFormScreen(
+  //         existingAddress: checkoutProvider.deliveryAddress,
+  //       ),
+  //     ),
+  //   );
 
-    if (result != null && result is AddressModel && mounted) {
-      checkoutProvider.updateDeliveryAddress(result);
-    }
-  }
+  //   if (result != null && result is AddressModel && mounted) {
+  //     checkoutProvider.updateDeliveryAddress(result);
+  //   }
+  // }
 
   Future<void> _navigateToAddCard() async {
     final checkoutProvider = context.read<CheckoutProvider>();
@@ -234,7 +233,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                   const SizedBox(height: 25),
 
-                  DeliveryAddressDisplay(onAddOrChange: _navigateToAddAddress),
+                  DeliveryAddressDisplay(
+                    onAddOrChange: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (_) => const AddressManagementScreen(),
+                        ),
+                      );
+                    },
+                  ),
 
                   const SizedBox(height: 25),
 

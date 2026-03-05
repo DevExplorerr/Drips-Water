@@ -96,16 +96,18 @@ class _AddressCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (_) => AddressFormScreen(existingAddress: address),
-          ),
-        );
+        context.read<AddressProvider>().selectAddress(address);
+        Navigator.pop(context);
       },
       child: Card(
         margin: const .only(bottom: 15),
-        shape: RoundedRectangleBorder(borderRadius: .circular(10)),
+        shape: RoundedRectangleBorder(
+          borderRadius: .circular(10),
+          side:
+              context.watch<AddressProvider>().selectedAddress?.id == address.id
+              ? const BorderSide(color: AppColors.primary)
+              : BorderSide.none,
+        ),
         child: ListTile(
           contentPadding: const .symmetric(horizontal: 15, vertical: 5),
           title: Row(
@@ -193,6 +195,10 @@ class _AddressCard extends StatelessWidget {
               ),
             ],
           ),
+          trailing:
+              context.watch<AddressProvider>().selectedAddress?.id == address.id
+              ? const Icon(Icons.check_circle)
+              : null,
         ),
       ),
     );

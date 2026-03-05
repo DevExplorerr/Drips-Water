@@ -9,6 +9,9 @@ class AddressProvider extends ChangeNotifier {
 
   String? get _currentUid => authService.value.currentUser?.uid;
 
+  AddressModel? _selectedAddress;
+  AddressModel? get selectedAddress => _selectedAddress;
+
   // Save or Update
   Future<bool> handleSaveAddress(
     AddressModel address, {
@@ -43,5 +46,10 @@ class AddressProvider extends ChangeNotifier {
   Stream<List<AddressModel>> get addressStream {
     if (_currentUid == null) return const Stream.empty();
     return _addressService.getAddresses(_currentUid!);
+  }
+
+  void selectAddress(AddressModel address) {
+    _selectedAddress = address;
+    notifyListeners();
   }
 }

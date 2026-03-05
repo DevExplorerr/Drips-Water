@@ -66,6 +66,7 @@ class DeliveryAddressDisplay extends StatelessWidget {
     final address = context.select((CheckoutProvider p) => p.deliveryAddress);
     final theme = Theme.of(context);
     return Column(
+      crossAxisAlignment: .start,
       children: [
         Padding(
           padding: const .symmetric(horizontal: 15),
@@ -81,7 +82,10 @@ class DeliveryAddressDisplay extends StatelessWidget {
                 onPressed: onAddOrChange,
                 child: Text(
                   address == null ? "+ Add" : "Change",
-                  style: theme.textTheme.bodySmall?.copyWith(fontWeight: .w500),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: .w500,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
             ],
@@ -91,12 +95,12 @@ class DeliveryAddressDisplay extends StatelessWidget {
         Padding(
           padding: const .symmetric(horizontal: 15),
           child: address == null
-              ? const Text("No address selected")
+              ? const Text("No address selected, tap '+ Add' to continue.")
               : AddressSection(
                   name: address.name,
                   phoneNumber: address.phone,
                   fullAddress:
-                      "${address.address} ${address.district}, ${address.city} - ${address.region}",
+                      "${address.address}, ${address.district}, ${address.city}, ${address.region}",
                 ),
         ),
       ],
