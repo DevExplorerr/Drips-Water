@@ -1,6 +1,7 @@
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/address_model.dart';
 import 'package:drips_water/logic/providers/address_provider.dart';
+import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
 import 'package:drips_water/presentation/widgets/dialog/confirmation_alert_dialog.dart';
 import 'package:drips_water/presentation/widgets/forms/address_form_screen.dart';
@@ -94,19 +95,21 @@ class _AddressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final isSelected =
+        context.watch<AddressProvider>().selectedAddress?.id == address.id;
+
     return GestureDetector(
       onTap: () {
         context.read<AddressProvider>().selectAddress(address);
+        context.read<CheckoutProvider>().setDeliveryAddress(address);
+
         Navigator.pop(context);
       },
       child: Card(
         margin: const .only(bottom: 15),
         shape: RoundedRectangleBorder(
           borderRadius: .circular(10),
-          side:
-              context.watch<AddressProvider>().selectedAddress?.id == address.id
-              ? const BorderSide(color: AppColors.primary)
-              : BorderSide.none,
+          side: isSelected ? const BorderSide(color: AppColors.primary) : .none,
         ),
         child: ListTile(
           contentPadding: const .symmetric(horizontal: 15, vertical: 5),
@@ -195,10 +198,9 @@ class _AddressCard extends StatelessWidget {
               ),
             ],
           ),
-          trailing:
-              context.watch<AddressProvider>().selectedAddress?.id == address.id
-              ? const Icon(Icons.check_circle)
-              : null,
+          trailing: isSelected
+              ? const Icon(Icons.check_circle, color: AppColors.primary)
+              : const Icon(Icons.check_circle_outline, color: AppColors.grey),
         ),
       ),
     );

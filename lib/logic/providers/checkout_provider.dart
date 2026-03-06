@@ -34,7 +34,7 @@ class CheckoutProvider with ChangeNotifier {
   String? get promoError => _promoError;
   double get deliveryFee => _deliveryFee;
 
-  bool _isValidatingPromo = false; // loading state
+  bool _isValidatingPromo = false;
   bool get isValidatingPromo => _isValidatingPromo;
 
   CheckoutProvider({
@@ -48,11 +48,6 @@ class CheckoutProvider with ChangeNotifier {
   Future<void> _loadSavedData() async {
     if (uid.isEmpty) return;
 
-    final savedAddress = await userService.getUserAddress(uid);
-    if (savedAddress != null) {
-      _deliveryAddress = savedAddress;
-    }
-
     final savedCard = await userService.getUserCard(uid);
     if (savedCard != null) {
       _cardDetails = savedCard;
@@ -60,13 +55,9 @@ class CheckoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateDeliveryAddress(AddressModel newAddress) async {
-    _deliveryAddress = newAddress;
+  void setDeliveryAddress(AddressModel address) {
+    _deliveryAddress = address;
     notifyListeners();
-
-    if (uid.isNotEmpty) {
-      await userService.saveUserAddress(uid, newAddress);
-    }
   }
 
   void setDeliveryOption(String option) {

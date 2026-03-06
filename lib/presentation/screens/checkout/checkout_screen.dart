@@ -62,23 +62,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   // Navigation Methods
 
-  // Future<void> _navigateToAddAddress() async {
-  //   final checkoutProvider = context.read<CheckoutProvider>();
-
-  //   final result = await Navigator.push(
-  //     context,
-  //     CupertinoPageRoute(
-  //       builder: (context) => AddressFormScreen(
-  //         existingAddress: checkoutProvider.deliveryAddress,
-  //       ),
-  //     ),
-  //   );
-
-  //   if (result != null && result is AddressModel && mounted) {
-  //     checkoutProvider.updateDeliveryAddress(result);
-  //   }
-  // }
-
   Future<void> _navigateToAddCard() async {
     final checkoutProvider = context.read<CheckoutProvider>();
     final result = await Navigator.push(
