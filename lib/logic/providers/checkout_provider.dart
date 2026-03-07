@@ -60,6 +60,24 @@ class CheckoutProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateFromList(List<AddressModel> addresses) {
+    if (addresses.isEmpty) {
+      _deliveryAddress = null;
+      notifyListeners();
+      return;
+    }
+
+    final defaultAddress = addresses.firstWhere(
+      (a) => a.isDefault,
+      orElse: () => addresses.first,
+    );
+
+    if (_deliveryAddress?.id != defaultAddress.id) {
+      _deliveryAddress = defaultAddress;
+      notifyListeners();
+    }
+  }
+
   void setDeliveryOption(String option) {
     _deliveryOption = option;
 

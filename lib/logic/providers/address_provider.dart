@@ -52,4 +52,10 @@ class AddressProvider extends ChangeNotifier {
     _selectedAddress = address;
     notifyListeners();
   }
+
+  Future<void> setAsDefault(String addressId) async {
+    if (_currentUid == null) return;
+
+    await _addressService.setAsDefault(_currentUid!, addressId);
+  }
 }

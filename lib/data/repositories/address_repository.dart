@@ -47,4 +47,20 @@ class AddressRepository {
         .doc(addressId)
         .delete();
   }
+
+  Future<void> updateDefaultAddress(String userId, String addressId) async {
+    final batch = _firestore.batch();
+    final collection = _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('addresses');
+
+    final query = await collection.get();
+
+    for (var doc in query.docs) {
+      batch.update(doc.reference, {'isDefault': doc.id == addressId});
+    }
+
+    await batch.commit();
+  }
 }

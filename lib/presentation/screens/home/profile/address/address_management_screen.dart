@@ -71,6 +71,14 @@ class AddressManagementScreen extends StatelessWidget {
                   );
                 }
 
+                if (snapshot.hasData) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    context.read<CheckoutProvider>().updateFromList(
+                      snapshot.data!,
+                    );
+                  });
+                }
+
                 final addresses = snapshot.data!;
                 return ListView.builder(
                   shrinkWrap: true,
@@ -99,11 +107,17 @@ class _AddressCard extends StatelessWidget {
         context.watch<AddressProvider>().selectedAddress?.id == address.id;
 
     return GestureDetector(
-      onTap: () {
-        context.read<AddressProvider>().selectAddress(address);
-        context.read<CheckoutProvider>().setDeliveryAddress(address);
+      onTap: () async {
+        final addressProvider = context.read<AddressProvider>();
+        final checkoutProvider = context.read<CheckoutProvider>();
+        final navigator = Navigator.of(context);
 
-        Navigator.pop(context);
+        addressProvider.selectAddress(address);
+        checkoutProvider.setDeliveryAddress(address);
+
+        navigator.pop();
+
+        await addressProvider.setAsDefault(address.id!);
       },
       child: Card(
         margin: const .only(bottom: 15),

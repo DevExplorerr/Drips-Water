@@ -22,4 +22,12 @@ class AddressService {
   Future<void> removeAddress(String uid, String addressId) async {
     await _repository.deleteAddress(uid, addressId);
   }
+
+  Future<void> setAsDefault(String userId, String addressId) async {
+    try {
+      await _repository.updateDefaultAddress(userId, addressId);
+    } catch (e) {
+      throw Exception("Failed to update default address: $e");
+    }
+  }
 }

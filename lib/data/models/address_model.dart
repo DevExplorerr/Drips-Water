@@ -8,6 +8,7 @@ class AddressModel {
   final String address;
   final String? instructions;
   final String? label;
+  final bool isDefault;
 
   AddressModel({
     this.id,
@@ -19,6 +20,7 @@ class AddressModel {
     required this.address,
     this.instructions,
     this.label,
+    this.isDefault = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -45,6 +47,7 @@ class AddressModel {
       address: map['address'] ?? '',
       instructions: map['instructions'],
       label: map['label'],
+      isDefault: map['isDefault'] ?? false,
     );
   }
 }
