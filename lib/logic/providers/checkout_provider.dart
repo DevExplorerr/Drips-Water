@@ -56,25 +56,47 @@ class CheckoutProvider with ChangeNotifier {
   }
 
   void setDeliveryAddress(AddressModel address) {
+    if (_deliveryAddress?.id == address.id) return;
     _deliveryAddress = address;
     notifyListeners();
   }
 
   void updateFromList(List<AddressModel> addresses) {
     if (addresses.isEmpty) {
-      _deliveryAddress = null;
-      notifyListeners();
+      if (_deliveryAddress != null) {
+        _deliveryAddress = null;
+        notifyListeners();
+      }
       return;
     }
 
-    final defaultAddress = addresses.firstWhere(
+    final databaseDefault = addresses.firstWhere(
       (a) => a.isDefault,
       orElse: () => addresses.first,
     );
 
-    if (_deliveryAddress?.id != defaultAddress.id) {
-      _deliveryAddress = defaultAddress;
-      notifyListeners();
+    // Check if we actually need to update anything
+    bool isSelectionNew = _deliveryAddress == null;
+    bool isCurrentDeleted =
+        _deliveryAddress != null &&
+        !addresses.any((a) => a.id == _deliveryAddress!.id);
+
+    if (isSelectionNew || isCurrentDeleted) {
+      _deliveryAddress = databaseDefault;
+      notifyListeners(); // Only notifies when selection changes
+    } else {
+      // If the data inside the address changed (e.g. edited street name)
+      // but the ID is the same, update it without causing a loop.
+      final updatedData = addresses.firstWhere(
+        (a) => a.id == _deliveryAddress!.id,
+      );
+
+      // Use a unique property or a custom equality check to prevent loops
+      if (_deliveryAddress!.address != updatedData.address ||
+          _deliveryAddress!.isDefault != updatedData.isDefault) {
+        _deliveryAddress = updatedData;
+        notifyListeners();
+      }
     }
   }
 

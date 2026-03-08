@@ -7,10 +7,23 @@ class AddressProvider extends ChangeNotifier {
   final AddressService _addressService = AddressService();
   bool isLoading = false;
 
+  List<AddressModel> _allAddresses = [];
+
   String? get _currentUid => authService.value.currentUser?.uid;
 
-  AddressModel? _selectedAddress;
-  AddressModel? get selectedAddress => _selectedAddress;
+  AddressModel? get selectedAddress {
+    if (_allAddresses.isEmpty) return null;
+    try {
+      return _allAddresses.firstWhere((element) => element.isDefault);
+    } catch (_) {
+      return _allAddresses.first;
+    }
+  }
+
+  void syncAddresses(List<AddressModel> addresses) {
+    _allAddresses = addresses;
+    notifyListeners();
+  }
 
   // Save or Update
   Future<bool> handleSaveAddress(
@@ -46,11 +59,6 @@ class AddressProvider extends ChangeNotifier {
   Stream<List<AddressModel>> get addressStream {
     if (_currentUid == null) return const Stream.empty();
     return _addressService.getAddresses(_currentUid!);
-  }
-
-  void selectAddress(AddressModel address) {
-    _selectedAddress = address;
-    notifyListeners();
   }
 
   Future<void> setAsDefault(String addressId) async {

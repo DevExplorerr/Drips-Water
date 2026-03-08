@@ -48,7 +48,7 @@ class AddressManagementScreen extends StatelessWidget {
             ),
 
             StreamBuilder<List<AddressModel>>(
-              stream: context.watch<AddressProvider>().addressStream,
+              stream: context.read<AddressProvider>().addressStream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == .waiting) {
                   return Center(
@@ -72,21 +72,22 @@ class AddressManagementScreen extends StatelessWidget {
                 }
 
                 if (snapshot.hasData) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    context.read<CheckoutProvider>().updateFromList(
-                      snapshot.data!,
-                    );
-                  });
-                }
+                  final addresses = snapshot.data!;
 
-                final addresses = snapshot.data!;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: addresses.length,
-                  itemBuilder: (context, index) =>
-                      _AddressCard(address: addresses[index]),
-                );
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    context.read<AddressProvider>().syncAddresses(addresses);
+                    context.read<CheckoutProvider>().updateFromList(addresses);
+                  });
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: addresses.length,
+                    itemBuilder: (context, index) =>
+                        _AddressCard(address: addresses[index]),
+                  );
+                }
+                return const SizedBox.shrink();
               },
             ),
           ],
@@ -112,18 +113,19 @@ class _AddressCard extends StatelessWidget {
         final checkoutProvider = context.read<CheckoutProvider>();
         final navigator = Navigator.of(context);
 
-        addressProvider.selectAddress(address);
-        checkoutProvider.setDeliveryAddress(address);
-
         navigator.pop();
 
         await addressProvider.setAsDefault(address.id!);
+
+        checkoutProvider.setDeliveryAddress(address);
       },
       child: Card(
         margin: const .only(bottom: 15),
         shape: RoundedRectangleBorder(
           borderRadius: .circular(10),
-          side: isSelected ? const BorderSide(color: AppColors.primary) : .none,
+          side: isSelected
+              ? const BorderSide(color: AppColors.primary, width: 1.5)
+              : .none,
         ),
         child: ListTile(
           contentPadding: const .symmetric(horizontal: 15, vertical: 5),
