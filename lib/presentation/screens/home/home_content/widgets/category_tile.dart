@@ -4,26 +4,23 @@ import 'package:flutter/material.dart';
 class CategoryTile extends StatelessWidget {
   final String text;
   final bool isSelected;
-
   const CategoryTile({super.key, required this.text, required this.isSelected});
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
       curve: Curves.easeOutCubic,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const .symmetric(horizontal: 20),
       height: 40,
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.primary : Colors.white,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(
+        color: isSelected ? AppColors.primary : AppColors.white,
+        borderRadius: .circular(25),
+        border: .all(
           color: isSelected
               ? AppColors.primary
               : AppColors.grey.withValues(alpha: 0.5),
-          width: 1.2,
+          width: 1.5,
         ),
         boxShadow: isSelected
             ? [
@@ -35,14 +32,12 @@ class CategoryTile extends StatelessWidget {
               ]
             : null,
       ),
-      alignment: Alignment.center,
+      alignment: .center,
       child: Text(
         text,
-        style: textTheme.bodySmall?.copyWith(
-          color: isSelected
-              ? Colors.white
-              : AppColors.textLight.withValues(alpha: 0.7),
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: isSelected ? AppColors.textDark : AppColors.textLight,
+          fontWeight: isSelected ? .w700 : .w500,
           letterSpacing: 0.3,
         ),
       ),

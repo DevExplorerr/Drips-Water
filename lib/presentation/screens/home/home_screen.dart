@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/services/user_service.dart';
 import 'package:drips_water/logic/view_models/home/home_app_bar_view_model.dart';
@@ -14,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget { 
   const HomeScreen({super.key});
 
   @override
@@ -34,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: _onWillPop,
       child: MultiProvider(
@@ -45,10 +44,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ..loadUserName(user?.uid);
             },
           ),
+
           ChangeNotifierProvider(
             create: (_) => ProductGridViewModel()..loadProducts(),
           ),
         ],
+
         child: Scaffold(
           body: IndexedStack(
             index: _currentSelectedIndex,
@@ -59,11 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ProfileScreen(),
             ],
           ),
+
           bottomNavigationBar: BottomNavbar(
             currentSelectedIndex: _currentSelectedIndex,
             updateCurrentIndex: (i) =>
                 setState(() => _currentSelectedIndex = i),
           ),
+
           floatingActionButton: _currentSelectedIndex == 0
               ? const ChatBotFloatingButton()
               : null,
@@ -98,11 +101,13 @@ class ChatBotFloatingButton extends StatelessWidget {
                       parent: animation,
                       curve: Curves.easeInOut,
                     );
+
                     return FadeTransition(opacity: fadeAnimation, child: child);
                   },
             ),
           );
         },
+
         child: const SizedBox(
           height: 60,
           width: 60,
