@@ -2,6 +2,7 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/home/chatbot/widgets/input_area.dart';
 import 'package:drips_water/presentation/screens/home/chatbot/widgets/message_bubble.dart';
 import 'package:drips_water/presentation/screens/home/chatbot/widgets/typing_indicator.dart';
+import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';
 import 'package:flutter/material.dart';
 import 'package:drips_water/logic/services/dialogflow_service.dart';
 
@@ -23,6 +24,18 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   void initState() {
     super.initState();
     _dialogflow.init();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {
+          _messages.add({
+            'text':
+                'Hi! I\'m the Drips Assistant. How can I help you with your water delivery today?',
+            'isUser': false,
+            'time': DateTime.now(),
+          });
+        });
+      }
+    });
   }
 
   Future<void> _sendMessage(String text) async {
@@ -88,39 +101,73 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           toolbarHeight: 70,
-          title: const Text("Drips Chatbot"),
+          title: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: AppColors.primary.withValues(alpha: 0.1),
+                child: const Icon(
+                  Icons.smart_toy_outlined,
+                  color: AppColors.primary,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: .start,
+                children: [
+                  const Text(
+                    "Drips Assistant",
+                    style: TextStyle(fontSize: 16, fontWeight: .w700),
+                  ),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.circle,
+                        size: 8,
+                        color: AppColors.success,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        "Always active",
+                        style: textTheme.bodySmall?.copyWith(
+                          color: AppColors.secondaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () => Navigator.pop(context),
           ),
-          actions: [
-            const Icon(Icons.circle, size: 12, color: AppColors.success),
-            const SizedBox(width: 6),
-            Text("Online", style: textTheme.bodyMedium),
-            const SizedBox(width: 20),
-          ],
         ),
         body: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _messages.length + (_isTyping ? 1 : 0),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
-                itemBuilder: (context, index) {
-                  if (_isTyping && index == _messages.length) {
-                    return const TypingIndicator();
-                  }
-                  final msg = _messages[index];
-                  return MessageBubble(
-                    text: msg['text'],
-                    isUser: msg['isUser'],
-                  );
-                },
-              ),
+              child: _messages.isEmpty
+                  ? const AppEmptyState(
+                      title: "No messages yet",
+                      description:
+                          "I'm your virtual assistant. Ask me anything about our services",
+                      icon: Icons.chat_bubble_outline,
+                    )
+                  : ListView.builder(
+                      controller: _scrollController,
+                      itemCount: _messages.length + (_isTyping ? 1 : 0),
+                      padding: const .fromLTRB(16, 16, 16, 20),
+                      itemBuilder: (context, index) {
+                        if (_isTyping && index == _messages.length) {
+                          return const TypingIndicator();
+                        }
+                        final msg = _messages[index];
+                        return MessageBubble(
+                          text: msg['text'],
+                          isUser: msg['isUser'],
+                        );
+                      },
+                    ),
             ),
             InputArea(
               controller: _controller,
