@@ -12,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget { 
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
@@ -40,13 +40,21 @@ class _HomeScreenState extends State<HomeScreen> {
           ChangeNotifierProvider(
             create: (_) {
               final user = FirebaseAuth.instance.currentUser;
-              return HomeAppBarViewModel(UserService())
-                ..loadUserName(user?.uid);
+              final vm = HomeAppBarViewModel(UserService());
+              Future.microtask(() => vm.loadUserName(user?.uid));
+              return vm;
+              // final user = FirebaseAuth.instance.currentUser;
+              // return HomeAppBarViewModel(UserService())
+              //   ..loadUserName(user?.uid);
             },
           ),
 
           ChangeNotifierProvider(
-            create: (_) => ProductGridViewModel()..loadProducts(),
+            create: (_) {
+              final vm = ProductGridViewModel();
+              Future.microtask(() => vm.loadProducts());
+              return vm;
+            },
           ),
         ],
 
