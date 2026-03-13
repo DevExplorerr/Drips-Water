@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:drips_water/presentation/widgets/dialog/custom_login_prompt_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/global/snackbar.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
@@ -52,7 +50,7 @@ class _ConfirmationAlertDialogState extends State<ConfirmationAlertDialog> {
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-              color: theme.primaryColor.withOpacity(0.2),
+              color: theme.primaryColor.withValues(alpha: 0.2),
               shape: .circle,
             ),
             child: Icon(widget.icon, size: 34, color: AppColors.primary),

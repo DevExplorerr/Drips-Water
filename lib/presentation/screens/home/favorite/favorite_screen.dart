@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:drips_water/logic/providers/favorite_provider.dart';
 import 'package:drips_water/presentation/screens/home/favorite/widgets/favorite_grid.dart';
 import 'package:drips_water/presentation/widgets/shared/app_empty_state.dart';

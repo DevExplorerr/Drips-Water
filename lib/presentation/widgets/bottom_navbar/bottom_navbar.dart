@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, must_be_immutable
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/widgets/icon_badge/cart_icon_badge.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:flutter/material.dart';
 class BottomNavbar extends StatefulWidget {
   int currentSelectedIndex;
   Function(int) updateCurrentIndex;
+
   BottomNavbar({
     super.key,
     required this.currentSelectedIndex,
@@ -32,7 +31,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
         color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withOpacity(0.25),
+            color: AppColors.black.withValues(alpha: 0.25),
             blurRadius: 10,
             offset: const Offset(0, -1),
           ),

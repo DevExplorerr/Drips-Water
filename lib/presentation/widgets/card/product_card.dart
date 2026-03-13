@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/product_model.dart';
@@ -34,7 +32,7 @@ class ProductCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: AppColors.grey.withOpacity(0.1),
+              color: AppColors.grey.withValues(alpha: 0.1),
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),
@@ -59,7 +57,7 @@ class ProductCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       filterQuality: FilterQuality.high,
                       colorBlendMode: BlendMode.darken,
-                      color: AppColors.black.withOpacity(0.05),
+                      color: AppColors.black.withValues(alpha: 0.05),
                       placeholder: (_, __) =>
                           LoadingAnimationWidget.threeArchedCircle(
                             color: AppColors.primary,
@@ -116,7 +114,7 @@ class ProductCard extends StatelessWidget {
                     text: product.baseSize,
                     padding: const .symmetric(horizontal: 8, vertical: 3),
                     borderRadius: .circular(12),
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     textStyle: textTheme.bodySmall?.copyWith(
                       color: AppColors.primary,
                       fontWeight: .w600,

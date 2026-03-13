@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -25,8 +23,8 @@ class ProductCardLoadingIndicator extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
-          baseColor: AppColors.grey.withOpacity(0.3),
-          highlightColor: AppColors.grey.withOpacity(0.1),
+          baseColor: AppColors.grey.withValues(alpha: 0.3),
+          highlightColor: AppColors.grey.withValues(alpha: 0.1),
           period: const Duration(milliseconds: 600),
           child: Container(
             decoration: BoxDecoration(

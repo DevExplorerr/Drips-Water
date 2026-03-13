@@ -1,7 +1,4 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:ui';
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/screens/auth/login_screen.dart';
 import 'package:drips_water/presentation/widgets/buttons/custom_button.dart';
@@ -19,14 +16,14 @@ class CustomLoginPromptDialog extends StatelessWidget {
       children: [
         BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-          child: Container(color: AppColors.black.withOpacity(0.3)),
+          child: Container(color: AppColors.black.withValues(alpha: 0.3)),
         ),
         AlertDialog(
           backgroundColor: AppColors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
-          shadowColor: AppColors.black.withOpacity(0.15),
+          shadowColor: AppColors.black.withValues(alpha: 0.15),
           title: const Icon(
             Icons.lock_outline_rounded,
             size: 48,

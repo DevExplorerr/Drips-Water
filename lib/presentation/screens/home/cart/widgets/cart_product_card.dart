@@ -1,6 +1,3 @@
-// cart_product_card.dart
-// ignore_for_file: deprecated_member_use
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/data/models/cart_item_model.dart';
@@ -30,7 +27,7 @@ class CartProductCard extends StatelessWidget {
           padding: const EdgeInsets.only(right: 20),
           alignment: Alignment.centerRight,
           decoration: BoxDecoration(
-            color: AppColors.red.withOpacity(0.2),
+            color: AppColors.red.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(22),
           ),
           child: const Icon(Icons.delete, color: AppColors.red, size: 28),
@@ -50,11 +47,11 @@ class CartProductCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor.withOpacity(0.95),
+        color: Theme.of(context).cardColor.withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withOpacity(0.12),
+            color: AppColors.black.withValues(alpha: 0.12),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),

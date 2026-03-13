@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +23,7 @@ class AppEmptyState extends StatelessWidget {
             height: 120,
             width: 120,
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: AppColors.primary, size: 60),

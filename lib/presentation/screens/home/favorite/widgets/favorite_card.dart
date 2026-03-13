@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
@@ -65,7 +63,7 @@ class FavoriteCardState extends State<FavoriteCard>
             borderRadius: BorderRadius.circular(22),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withOpacity(0.15),
+                color: AppColors.primary.withValues(alpha: 0.15),
                 blurRadius: 10,
                 offset: const Offset(2, 6),
               ),
@@ -77,9 +75,9 @@ class FavoriteCardState extends State<FavoriteCard>
               filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor.withOpacity(0.5),
+                  color: Theme.of(context).cardColor.withValues(alpha: 0.5),
                   border: Border.all(
-                    color: AppColors.primary.withOpacity(0.3),
+                    color: AppColors.primary.withValues(alpha: 0.3),
                     width: 1,
                   ),
                   borderRadius: BorderRadius.circular(22),
@@ -103,7 +101,7 @@ class FavoriteCardState extends State<FavoriteCard>
                                 fit: BoxFit.cover,
                                 filterQuality: FilterQuality.high,
                                 colorBlendMode: BlendMode.darken,
-                                color: AppColors.black.withOpacity(0.05),
+                                color: AppColors.black.withValues(alpha: 0.05),
                                 placeholder: (_, __) =>
                                     LoadingAnimationWidget.threeArchedCircle(
                                       color: AppColors.primary,
@@ -163,7 +161,7 @@ class FavoriteCardState extends State<FavoriteCard>
                                   vertical: 3,
                                 ),
                                 borderRadius: .circular(12),
-                                color: AppColors.primary.withOpacity(0.7),
+                                color: AppColors.primary.withValues(alpha: 0.7),
                                 textStyle: textTheme.bodySmall?.copyWith(
                                   fontSize: 12,
                                   color: AppColors.textDark,
