@@ -2,21 +2,16 @@ import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/presentation/widgets/icon_badge/cart_icon_badge.dart';
 import 'package:flutter/material.dart';
 
-class BottomNavbar extends StatefulWidget {
-  int currentSelectedIndex;
-  Function(int) updateCurrentIndex;
+class BottomNavbar extends StatelessWidget {
+  final int currentSelectedIndex;
+  final Function(int) updateCurrentIndex;
 
-  BottomNavbar({
+  const BottomNavbar({
     super.key,
     required this.currentSelectedIndex,
     required this.updateCurrentIndex,
   });
 
-  @override
-  State<BottomNavbar> createState() => _BottomNavbarState();
-}
-
-class _BottomNavbarState extends State<BottomNavbar> {
   final List<IconData> _icons = const [
     Icons.home_outlined,
     Icons.favorite_border_outlined,
@@ -42,13 +37,13 @@ class _BottomNavbarState extends State<BottomNavbar> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(_icons.length, (index) {
-            final isSelected = widget.currentSelectedIndex == index;
+            final isSelected = currentSelectedIndex == index;
 
             // Check if this is the cart icon (index 2 in your list)
             if (index == 2) {
               return GestureDetector(
                 onTap: () {
-                  widget.updateCurrentIndex(index);
+                  updateCurrentIndex(index);
                 },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -77,7 +72,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
             } else {
               return GestureDetector(
                 onTap: () {
-                  widget.updateCurrentIndex(index);
+                  updateCurrentIndex(index);
                 },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
