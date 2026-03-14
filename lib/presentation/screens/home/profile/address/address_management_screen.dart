@@ -119,104 +119,149 @@ class _AddressCard extends StatelessWidget {
 
         checkoutProvider.setDeliveryAddress(address);
       },
-      child: Card(
-        margin: const .only(bottom: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: .circular(10),
-          side: isSelected
-              ? const BorderSide(color: AppColors.primary, width: 1.5)
-              : .none,
+      child: Container(
+        margin: const .only(bottom: 16),
+        padding: const .all(16),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: .circular(16),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.primary
+                : AppColors.grey.withValues(alpha: 0.2),
+            width: isSelected ? 2 : 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        child: ListTile(
-          contentPadding: const .symmetric(horizontal: 15, vertical: 5),
-          title: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  address.name,
-                  style: textTheme.bodySmall?.copyWith(
-                    fontWeight: .w700,
-                    color: AppColors.primary,
+        child: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Row(
+              mainAxisAlignment: .spaceBetween,
+              children: [
+                Container(
+                  padding: const .symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.1),
+                    borderRadius: .circular(20),
                   ),
-                  maxLines: 1,
-                  overflow: .ellipsis,
+                  child: Text(
+                    address.label.toUpperCase(),
+                    style: const TextStyle(
+                      color: AppColors.primary,
+                      fontWeight: .w700,
+                      letterSpacing: 1,
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
+                isSelected
+                    ? const Icon(
+                        Icons.check_circle,
+                        color: AppColors.primary,
+                        size: 20,
+                      )
+                    : const Icon(
+                        Icons.check_circle_outline,
+                        color: AppColors.grey,
+                        size: 20,
+                      ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    address.name,
+                    style: textTheme.bodyMedium?.copyWith(
+                      fontWeight: .w700,
+                      color: AppColors.textLight,
+                    ),
+                    maxLines: 1,
+                    overflow: .ellipsis,
+                  ),
+                ),
+                Text(address.phone, style: textTheme.bodySmall),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              "${address.address}, ${address.district}, ${address.city}",
+              style: textTheme.bodySmall?.copyWith(
+                color: AppColors.secondaryText,
               ),
-              const SizedBox(width: 8),
-              Text(address.phone, style: textTheme.bodySmall),
-              const SizedBox(width: 8),
-              const Spacer(),
-              TextButton(
-                child: Text(
-                  "Edit",
-                  style: textTheme.bodySmall?.copyWith(decoration: .underline),
-                ),
-                onPressed: () {
-                  Navigator.push(
+              maxLines: 2,
+              overflow: .ellipsis,
+            ),
+            const Divider(height: 24),
+            Row(
+              mainAxisAlignment: .end,
+              children: [
+                TextButton.icon(
+                  style: Theme.of(context).textButtonTheme.style,
+                  onPressed: () => Navigator.push(
                     context,
                     CupertinoPageRoute(
                       builder: (_) =>
                           AddressFormScreen(existingAddress: address),
                     ),
-                  );
-                },
-              ),
-            ],
-          ),
-          subtitle: Column(
-            crossAxisAlignment: .start,
-            children: [
-              Text(
-                address.address,
-                style: textTheme.bodySmall,
-                maxLines: 2,
-                overflow: .ellipsis,
-              ),
-              const SizedBox(height: 3),
-              Row(
-                children: [
-                  Text(
-                    "${address.district}, ${address.city}",
-                    style: textTheme.bodySmall?.copyWith(
-                      color: AppColors.secondaryText,
+                  ),
+                  icon: const Icon(
+                    Icons.edit_outlined,
+                    size: 18,
+                    color: AppColors.icon,
+                  ),
+                  label: const Text(
+                    "Edit",
+                    style: TextStyle(
+                      color: AppColors.textLight,
+                      decoration: .underline,
                     ),
                   ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => ConfirmationAlertDialog(
-                          onConfirm: () async {
-                            final addressProvider = context
-                                .read<AddressProvider>();
+                ),
+                const SizedBox(width: 10),
+                TextButton.icon(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => ConfirmationAlertDialog(
+                        onConfirm: () async {
+                          final addressProvider = context
+                              .read<AddressProvider>();
 
-                            await addressProvider.deleteAddress(address.id!);
+                          await addressProvider.deleteAddress(address.id!);
 
-                            if (context.mounted) {
-                              Navigator.pop(context);
-                            }
-                          },
-                          title: "Delete Address",
-                          icon: Icons.delete_outline,
-                          desc: "Are you sure you want to remove this address?",
-                          buttonTxt: "Delete",
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.delete_outline,
-                      color: AppColors.red,
-                      size: 22,
-                    ),
+                          if (context.mounted) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        title: "Delete Address",
+                        icon: Icons.delete_outline,
+                        desc: "Are you sure you want to remove this address?",
+                        buttonTxt: "Delete",
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    size: 18,
+                    color: AppColors.red,
                   ),
-                ],
-              ),
-            ],
-          ),
-          trailing: isSelected
-              ? const Icon(Icons.check_circle, color: AppColors.primary)
-              : const Icon(Icons.check_circle_outline, color: AppColors.grey),
+                  label: const Text(
+                    "Delete",
+                    style: TextStyle(color: AppColors.red),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

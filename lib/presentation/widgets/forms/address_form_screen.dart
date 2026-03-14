@@ -28,6 +28,8 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
 
   bool get isEditing => widget.existingAddress != null;
 
+  String selectedLabel = "Home";
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +41,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
       districtController.text = widget.existingAddress!.district;
       addressController.text = widget.existingAddress!.address;
       instructionsController.text = widget.existingAddress!.instructions ?? '';
+      selectedLabel = widget.existingAddress!.label;
     }
   }
 
@@ -65,7 +68,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
         district: districtController.text.trim(),
         address: addressController.text.trim(),
         instructions: instructionsController.text.trim(),
-        label: "Home",
+        label: selectedLabel,
       );
 
       final succes = await context.read<AddressProvider>().handleSaveAddress(
@@ -113,6 +116,7 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
               child: Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: .start,
                   children: [
                     CustomTextField(
                       controller: recipientName,
@@ -218,6 +222,24 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
                       hintText: "e.g. Gate code 1234, Leave at door",
                       labelText: "Delivery Instructions (Optional)",
                     ),
+                    const SizedBox(height: 25),
+                    Text(
+                      "Address Label",
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.secondaryText,
+                        fontWeight: .w700,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        _buildLabelChip("Home", Icons.home),
+                        const SizedBox(width: 8),
+                        _buildLabelChip("Office", Icons.work),
+                        const SizedBox(width: 8),
+                        _buildLabelChip("Other", Icons.location_on),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -240,6 +262,28 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
           if (isLoading) const CustomOverlayLoader(),
         ],
       ),
+    );
+  }
+
+  Widget _buildLabelChip(String label, IconData icon) {
+    bool isSelected = selectedLabel == label;
+    return ChoiceChip(
+      showCheckmark: false,
+      label: Text(label),
+      avatar: Icon(
+        icon,
+        size: 16,
+        color: isSelected ? AppColors.white : AppColors.primary,
+      ),
+      selected: isSelected,
+      selectedColor: AppColors.primary,
+      backgroundColor: AppColors.white,
+      labelStyle: TextStyle(
+        color: isSelected ? AppColors.textDark : AppColors.textLight,
+      ),
+      onSelected: (bool selected) {
+        if (selected) setState(() => selectedLabel = label);
+      },
     );
   }
 }

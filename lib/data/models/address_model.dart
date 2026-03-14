@@ -7,7 +7,7 @@ class AddressModel {
   final String district;
   final String address;
   final String? instructions;
-  final String? label;
+  final String label;
   final bool isDefault;
 
   AddressModel({
@@ -19,7 +19,7 @@ class AddressModel {
     required this.district,
     required this.address,
     this.instructions,
-    this.label,
+    required this.label,
     this.isDefault = false,
   });
 
@@ -46,7 +46,7 @@ class AddressModel {
       district: map['district'] ?? '',
       address: map['address'] ?? '',
       instructions: map['instructions'],
-      label: map['label'],
+      label: map['label'] ?? '',
       isDefault: map['isDefault'] ?? false,
     );
   }
