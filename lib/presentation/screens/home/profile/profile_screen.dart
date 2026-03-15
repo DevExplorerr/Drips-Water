@@ -1,7 +1,7 @@
 import 'package:drips_water/data/services/auth_service.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
-import 'package:drips_water/logic/view_models/home/home_app_bar_view_model.dart';
+import 'package:drips_water/logic/providers/user_provider.dart';
 import 'package:drips_water/presentation/screens/home/profile/address/address_management_screen.dart';
 import 'package:drips_water/presentation/screens/orders/order_history_screen.dart';
 import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final vm = context.watch<HomeAppBarViewModel>();
+    final vm = context.watch<UserProvider>();
     final bool isGuest = vm.isGuest;
 
     return Scaffold(

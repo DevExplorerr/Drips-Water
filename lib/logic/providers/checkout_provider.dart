@@ -48,9 +48,10 @@ class CheckoutProvider with ChangeNotifier {
   Future<void> _loadSavedData() async {
     if (uid.isEmpty) return;
 
-    final savedCard = await userService.getUserCard(uid);
-    if (savedCard != null) {
-      _cardDetails = savedCard;
+    final data = await userService.getUserData(uid);
+
+    if (data != null && data['savedCard'] != null) {
+      _cardDetails = CardModel.fromMap(data['savedCard']);
     }
     notifyListeners();
   }
@@ -75,7 +76,6 @@ class CheckoutProvider with ChangeNotifier {
       orElse: () => addresses.first,
     );
 
-    // Check if we actually need to update anything
     bool isSelectionNew = _deliveryAddress == null;
     bool isCurrentDeleted =
         _deliveryAddress != null &&
@@ -83,15 +83,12 @@ class CheckoutProvider with ChangeNotifier {
 
     if (isSelectionNew || isCurrentDeleted) {
       _deliveryAddress = databaseDefault;
-      notifyListeners(); // Only notifies when selection changes
+      notifyListeners();
     } else {
-      // If the data inside the address changed (e.g. edited street name)
-      // but the ID is the same, update it without causing a loop.
       final updatedData = addresses.firstWhere(
         (a) => a.id == _deliveryAddress!.id,
       );
 
-      // Use a unique property or a custom equality check to prevent loops
       if (_deliveryAddress!.address != updatedData.address ||
           _deliveryAddress!.isDefault != updatedData.isDefault) {
         _deliveryAddress = updatedData;

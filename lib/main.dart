@@ -14,6 +14,7 @@ import 'package:drips_water/data/repositories/favorite_repository.dart';
 import 'package:drips_water/data/services/auth_service.dart';
 import 'package:drips_water/data/services/favorite_service.dart';
 import 'package:drips_water/logic/providers/order_provider.dart';
+import 'package:drips_water/logic/providers/user_provider.dart';
 import 'package:drips_water/presentation/screens/home/home_screen.dart';
 import 'package:drips_water/presentation/screens/splash/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,33 +45,22 @@ class DripsWater extends StatelessWidget {
         final user = snapshot.data;
         return MultiProvider(
           providers: [
-            // Favorite Provider
-            ChangeNotifierProvider(
-              create: (_) =>
-                  FavoriteProvider(FavoriteService(FavoriteRepository())),
-            ),
-
-            // Cart Provider
+            Provider<UserService>(create: (_) => UserService()),
+            Provider<PromoService>(create: (_) => PromoService()),
             Provider<CartRepository>(create: (_) => CartRepository()),
             Provider<CartService>(
               create: (ctx) => CartService(ctx.read<CartRepository>()),
             ),
-            ChangeNotifierProvider<CartProvider>(
-              key: ValueKey(user?.uid ?? 'guest'),
+
+            // User Provider
+            ChangeNotifierProvider(
               create: (ctx) {
-                return CartProvider(
-                  repo: ctx.read<CartRepository>(),
-                  service: ctx.read<CartService>(),
-                  uid: user?.uid ?? '',
-                );
+                final user = FirebaseAuth.instance.currentUser;
+                final provider = UserProvider(ctx.read<UserService>());
+                Future.microtask(() => provider.loadUserName(user?.uid));
+                return provider;
               },
             ),
-
-            // User Service
-            Provider<UserService>(create: (_) => UserService()),
-
-            // Promo Service
-            Provider<PromoService>(create: (_) => PromoService()),
 
             // Checkout Provider
             ChangeNotifierProvider<CheckoutProvider>(
@@ -80,6 +70,24 @@ class DripsWater extends StatelessWidget {
                   uid: user?.uid ?? '',
                   promoService: ctx.read<PromoService>(),
                   userService: ctx.read<UserService>(),
+                );
+              },
+            ),
+
+            // Favorite Provider
+            ChangeNotifierProvider(
+              create: (_) =>
+                  FavoriteProvider(FavoriteService(FavoriteRepository())),
+            ),
+
+            // Cart Provider
+            ChangeNotifierProvider<CartProvider>(
+              key: ValueKey(user?.uid ?? 'guest'),
+              create: (ctx) {
+                return CartProvider(
+                  repo: ctx.read<CartRepository>(),
+                  service: ctx.read<CartService>(),
+                  uid: user?.uid ?? '',
                 );
               },
             ),

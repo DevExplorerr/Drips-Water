@@ -4,12 +4,8 @@ import 'package:drips_water/data/repositories/user_repository.dart';
 class UserService {
   final UserRepository _userRepository = UserRepository();
 
-  Future<String?> getUserName(String uid) {
-    return _userRepository.fetchUserName(uid);
-  }
-
-  Future<CardModel?> getUserCard(String uid) async {
-    return await _userRepository.fetchUserCard(uid);
+  Future<Map<String, dynamic>?> getUserData(String uid) {
+    return _userRepository.fetchUserData(uid);
   }
 
   Future<void> saveUserCard(String uid, CardModel card) async {

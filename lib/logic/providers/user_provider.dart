@@ -1,15 +1,18 @@
 import 'package:drips_water/data/services/user_service.dart';
 import 'package:flutter/material.dart';
 
-class HomeAppBarViewModel extends ChangeNotifier {
+class UserProvider extends ChangeNotifier {
   final UserService _userService;
 
-  HomeAppBarViewModel(this._userService);
+  UserProvider(this._userService);
 
   String? userName;
+  String userRole = 'user';
   bool isLoading = false;
   bool _isGuest = true;
   bool get isGuest => _isGuest;
+
+  bool get isAdmin => userRole == 'admin';
 
   Future<void> loadUserName(String? uid) async {
     isLoading = true;
@@ -17,6 +20,7 @@ class HomeAppBarViewModel extends ChangeNotifier {
 
     if (uid == null) {
       _isGuest = true;
+      userRole = 'user';
       isLoading = false;
       notifyListeners();
       return;
@@ -24,7 +28,12 @@ class HomeAppBarViewModel extends ChangeNotifier {
 
     _isGuest = false;
 
-    userName = await _userService.getUserName(uid) ?? 'Guest';
+    final userData = await _userService.getUserData(uid);
+
+    if (userData != null) {
+      userName = userData['name'] ?? 'Guest';
+      userRole = userData['role'] ?? 'user';
+    }
 
     isLoading = false;
     notifyListeners();
