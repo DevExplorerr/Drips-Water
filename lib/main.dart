@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drips_water/core/constants/app_colors.dart';
 import 'package:drips_water/core/theme/app_theme.dart';
+import 'package:drips_water/data/repositories/admin_repository.dart';
 import 'package:drips_water/data/repositories/cart_repository.dart';
+import 'package:drips_water/data/services/admin_service.dart';
 import 'package:drips_water/data/services/cart_service.dart';
 import 'package:drips_water/data/services/promo_service.dart';
 import 'package:drips_water/data/services/user_service.dart';
 import 'package:drips_water/firebase/firebase_options.dart';
 import 'package:drips_water/logic/providers/address_provider.dart';
+import 'package:drips_water/logic/providers/admin_provider.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/checkout_provider.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
@@ -51,6 +54,10 @@ class DripsWater extends StatelessWidget {
             Provider<CartService>(
               create: (ctx) => CartService(ctx.read<CartRepository>()),
             ),
+            Provider<AdminRepository>(create: (_) => AdminRepository()),
+            ProxyProvider<AdminRepository, AdminService>(
+              update: (_, repo, __) => AdminService(repo),
+            ),
 
             // User Provider
             ChangeNotifierProvider(
@@ -60,6 +67,11 @@ class DripsWater extends StatelessWidget {
                 Future.microtask(() => provider.loadUserName(user?.uid));
                 return provider;
               },
+            ),
+
+            // Admin Provider
+            ChangeNotifierProvider<AdminProvider>(
+              create: (ctx) => AdminProvider(ctx.read<AdminService>()),
             ),
 
             // Checkout Provider

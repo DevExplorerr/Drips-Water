@@ -2,6 +2,7 @@ import 'package:drips_water/data/services/auth_service.dart';
 import 'package:drips_water/logic/providers/cart_provider.dart';
 import 'package:drips_water/logic/providers/favorite_provider.dart';
 import 'package:drips_water/logic/providers/user_provider.dart';
+import 'package:drips_water/presentation/admin/admin_dashboard_screen.dart';
 import 'package:drips_water/presentation/screens/home/profile/address/address_management_screen.dart';
 import 'package:drips_water/presentation/screens/orders/order_history_screen.dart';
 import 'package:drips_water/presentation/screens/welcome/welcome_screen.dart';
@@ -54,8 +55,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final vm = context.watch<UserProvider>();
-    final bool isGuest = vm.isGuest;
+    final userProvider = context.watch<UserProvider>();
+    final bool isGuest = userProvider.isGuest;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -73,7 +74,9 @@ class ProfileScreen extends StatelessWidget {
             Text(
               isGuest
                   ? "Guest User"
-                  : (vm.isLoading ? "Loading..." : "${vm.userName}"),
+                  : (userProvider.isLoading
+                        ? "Loading..."
+                        : "${userProvider.userName}"),
               style: textTheme.titleMedium,
             ),
             const SizedBox(height: 30),
@@ -112,6 +115,23 @@ class ProfileScreen extends StatelessWidget {
                 }
               },
             ),
+
+            if (!isGuest && userProvider.isAdmin)
+              _buildProfileTile(
+                textTheme: textTheme,
+                icon: Icons.admin_panel_settings_outlined,
+                iconColor: AppColors.primary,
+                textColor: AppColors.primary,
+                title: "Admin Dashboard",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => const AdminDashboardScreen(),
+                    ),
+                  );
+                },
+              ),
 
             _buildProfileTile(
               textTheme: textTheme,
