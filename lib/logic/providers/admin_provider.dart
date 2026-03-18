@@ -20,4 +20,15 @@ class AdminProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> deleteOrder(String orderId) async {
+    _isUpdating = true;
+    notifyListeners();
+    try {
+      await _adminService.removeOrder(orderId);
+    } finally {
+      _isUpdating = false;
+      notifyListeners();
+    }
+  }
 }

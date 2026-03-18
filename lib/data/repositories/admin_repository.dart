@@ -15,4 +15,8 @@ class AdminRepository {
       'status': newStatus,
     });
   }
+
+  Future<void> deleteOrder(String orderId) async {
+    await _firestore.collection('orders').doc(orderId).delete();
+  }
 }

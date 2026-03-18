@@ -13,4 +13,8 @@ class AdminService {
   Future<void> changeOrderStatus(String orderId, String status) {
     return _adminRepository.updateStatus(orderId, status);
   }
+
+  Future<void> removeOrder(String orderId) {
+    return _adminRepository.deleteOrder(orderId);
+  }
 }
