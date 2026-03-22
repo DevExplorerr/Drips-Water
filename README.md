@@ -1,59 +1,70 @@
-# 💧 Drips Water 
+# 💧 Drips Water
+**The Future of Hydration**
 
-**A Modern, Real-time Water Delivery & Subscription Management System**
+Drips Water is a high-performance, cross-platform mobile and web solution built with Flutter and Firebase. It streamlines the water delivery lifecycle-from AI-powered customer support to real-time admin fulfillment—ensuring that clean water is always just a tap away.
 
-Drips Water is a high-performance, cross-platform mobile and web application built with Flutter and Firebase. Designed for the 2026 water delivery industry, it features real-time order tracking, multi-address management, and a robust Admin Control Center for seamless operations.
+---
+
+## 📸 App Preview
+
+| Customer UI | AI Chatbot | Admin Dashboard |
+| :---: | :---: | :---: |
+| <img src="screenshots/home.png" width="200" /> | <img src="screenshots/chatbot.png" width="200" /> | <img src="screenshots/admin.png" width="200" /> |
 
 ---
 
 ## 🚀 Key Features
 
-### 👤 Customer Experience
-* **Intuitive Ordering:** Clean, Bento-style UI for browsing products and quick checkout.
-* **Address Management:** Multiple location support (Home, Office, Other) with "Smart Labels" and default settings.
-* **Scheduled Deliveries:** Support for standard and scheduled delivery windows.
-* **Order Tracking:** Real-time status updates from "Pending" to "Delivered."
-* **Promo Engine:** Built-in discount code validation for marketing campaigns.
+### 📱 Customer Experience
+*   **Seamless Onboarding:** Elegant Splash and Onboarding flows with Guest mode support.
+*   **AI-Powered Support:** Integrated **Google DialogFlow Chatbot** for 24/7 instant customer inquiries.
+*   **Dynamic Marketplace:** Home screen featuring product sliders, category filtering, and high-speed search.
+*   **Address Management:** Multiple location support (Home, Office, Other) with "Smart Labels" and default settings.
+*   **Advanced Checkout:** 
+    *   Custom delivery scheduling (User-selected date & time).
+    *   Promo code engine & multi-payment support (COD/Saved Cards).
+*   **Post-Purchase Logic:** 
+    *   Real-time Order Tracking and Order History with status filtering.
+    *   One-tap **Re-order** and **Cancel Order** functionality.
 
 ### 🛡️ Admin Control Center (The "Secret Room")
-* **Role-Based Access:** Secure dashboard accessible only to accounts with `admin` privileges.
-* **Live Order Feed:** Real-time stream of all incoming orders across the platform using Firestore Snapshots.
-* **Bento Stats Grid:** At-a-glance analytics for Revenue, Pending Orders, and Dispatch status.
-* **Fulfillment Logic:** One-tap order dispatching and delivery completion.
+*   **Role-Based Access:** Secure dashboard accessible only to accounts with `admin` privileges.
+*   **Live Order Feed:** Real-time stream of all incoming orders platform-wide using Firestore Snapshots.
+*   **Bento Stats Engine:** Live visualization of Revenue, Pending Dispatches, and Logistics.
+*   **Fulfillment Logic:** Full CRUD capabilities for orders, including status progression (Dispatch -> Deliver).
 
 ---
 
 ## 🏗️ Technical Architecture
 The project follows a strict **Clean Architecture** pattern to ensure scalability and maintainability:
 
-1.  **Repository Layer (Data):** Handles direct Firebase/Firestore communication.
-2.  **Service Layer (Bridge):** Contains business logic and data transformation.
-3.  **Provider Layer (State):** Manages UI state using the `provider` package and handles user interactions.
-4.  **Presentation Layer (UI):** High-quality, responsive widgets with support for Mobile and Web.
+1.  **Repository Layer (Data):** Isolated Firebase/Firestore infrastructure for direct data communication.
+2.  **Service Layer (Bridge):** Logic bridge for processing payments, promos, and AI (DialogFlow) queries.
+3.  **Provider Layer (State):** Manages reactive UI state using the `provider` package.
+4.  **Presentation Layer (UI):** High-quality, responsive widgets using a custom "Bento" design system.
 
 ---
 
 ## 🛠️ Tech Stack
-* **Framework:** [Flutter](https://flutter.dev/) (3.x+)
-* **Backend:** [Firebase](https://firebase.google.com/) (Auth, Firestore, Hosting)
-* **State Management:** [Provider](https://pub.dev/packages/provider)
-* **Database Rules:** Granular Firestore Security Rules for Role-Based Access Control (RBAC).
-* **UI Components:** Custom "Bento" design system, Loading animations, and `ExpansionTile` detail views.
+*   **Frontend:** Flutter 3.x+ (Mobile & Web)
+*   **Backend:** Firebase (Auth, Firestore, Hosting, Analytics)
+*   **AI:** Google DialogFlow
+*   **State Management:** Provider
+*   **Security:** Granular Firestore Security Rules (RBAC)
 
 ---
 
-## 🚦 Getting Started
+## 🚦 Installation & Setup
 
 ### Prerequisites
-* Flutter SDK (v3.19.0 or higher recommended)
+* Flutter SDK (v3.19.0 or higher)
 * A Firebase Project
 
-### Installation
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/yourusername/drips_water.git](https://github.com/yourusername/drips_water.git)
-    cd drips_water
-    ```
+### Setup Steps
+1. **Clone the repository**
+   ```bash
+   git clone [https://github.com/yourusername/drips_water.git](https://github.com/yourusername/drips_water.git)
+   cd drips_water
 
 2.  **Install dependencies**
     ```bash
@@ -75,7 +86,7 @@ To enable Admin features for a specific user:
 1.  Navigate to the **Firestore Console**.
 2.  Locate the user's document in the `users` collection.
 3.  Add a field `role: "admin"` (String).
-4.  The "Admin Dashboard" button will automatically appear in that user's profile.
+4.  The "Admin Panel" button will automatically appear in that user's profile.
 
 ---
 
@@ -84,4 +95,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-**Developed with ❤️ for the future of hydration delivery.**
+**Developed with ❤️ by Muhammad Saad Jamal
