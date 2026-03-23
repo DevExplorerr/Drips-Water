@@ -2,7 +2,7 @@
 
 **The Future of Hydration**
 
-Drips Water is a high-performance, cross-platform mobile and web solution built with Flutter and Firebase. It streamlines the water delivery lifecycle—from AI-powered customer support to real-time admin fulfillment—ensuring that clean water is always just a tap away.
+Drips Water is a high-performance, cross-platform mobile and web solution built with Flutter and Firebase. It streamlines the water delivery lifecycle from AI-powered customer support to real-time admin fulfillment-ensuring that clean water is always just a tap away.
 
 ---
 
@@ -103,4 +103,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-\*\*Developed with ❤️ by Muhammad Saad Jamal
+## Developed with ❤️ by Muhammad Saad Jamal
